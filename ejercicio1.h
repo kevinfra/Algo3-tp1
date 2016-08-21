@@ -1,0 +1,1 @@
+void cruzarPuente(vector<int> canibales, vector<int> arqueologos);

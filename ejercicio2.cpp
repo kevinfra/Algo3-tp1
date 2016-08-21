@@ -11,8 +11,8 @@ using namespace std;
 // 	int[] base = decAter(p);
 //
 // 	int tam = sqrt(p);
-// 	vector<escaque> izq (tam, 0);
-// 	vector<escaque> der (tam, 0);
+// 	vector<int> izq (tam, 0);
+// 	vector<int> der (tam, 0);
 // 	int indIzq = 0;
 // 	int indDer = 0;
 //
