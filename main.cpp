@@ -6,7 +6,7 @@ using namespace std;
 int main(){
   int p;
   cout << "HolaMundo!" << endl;
-  cout << "Ingresar P para ejercicio 2" << endl;
+  cout << "Ingresar P para ejercicio 2.  P: ";
   cin >> p;
   arreglarBalanza(p);
   return 0;
