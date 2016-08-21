@@ -1,3 +1,11 @@
+#include <vector>
+#include <utility>
+#include <iostream>
+
+
+
+
+
 def damePesos p=0, res={d: [], i: []}, anterior="nada", valor_anterior=0, paso=0
   if p == 0
     resto = p % 3
