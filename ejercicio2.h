@@ -1,2 +1,2 @@
-void arreglarBalanza(int p);
+void arreglarBalanza(long p);
 bool esPotencia(int n, int b);

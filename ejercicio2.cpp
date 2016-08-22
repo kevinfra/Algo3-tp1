@@ -45,14 +45,14 @@ using namespace std;
 // }
 
 
-void arreglarBalanza(int p){
+void arreglarBalanza(long p){
   bool izquierda = true;
 	int divisiones = 0;
-	vector<int> izquierdas;
-	vector<int> derechas;
+	vector<long> izquierdas;
+	vector<long> derechas;
 	while(p!=0){
-		int cociente = p / 3 ;
-		int resto = p - (cociente*3);
+		long cociente = p / 3 ;
+		long resto = p - (cociente*3);
 		if(resto == 0){
 			if(!izquierda) izquierdas.push_back(pow(3,divisiones));
 			izquierda = true;
