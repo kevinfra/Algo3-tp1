@@ -1,23 +1,57 @@
-#include "estructuras.h"
+#include "ejercicio1.h"
 
-void cruzarPuente(vector<int> canibales, vector<int> arqueologos){
-  if()
+using namespace std;
+
+int cruzarPuente(std::vector<int> canibales, std::vector<int> arqueologos){
+  return 0;
 }
 
 
 
 void BTCruzarPuente(vector<estadosPuente> &estadosAnteriores, int &velocidad, vector<int> &velocidadesSoluciones){
   int indexUltimoEstado = estadosAnteriores.size() - 1;
-  int ultimoEstado = estadosAnteriores[indexUltimoEstado];
+  estadosPuente ultimoEstado = estadosAnteriores[indexUltimoEstado];
   int cantidadCanibalesOrigen;
   int cantidadArqueologosOrigen;
   int cantidadCanibalesDestino;
   int cantidadArqueologosDestino;
+  //TODO: falta ver el tema del alias en personasOrigen y personasDestino
   if (ultimoEstado.linternaALaDerecha){
-    cantidadCanibalesOrigen = ultimoEstado[indexUltimoEstado].canibalesDerecha.size();
-    cantidadArqueologosOrigen = ultimoEstado[indexUltimoEstado].arqDerecha.size();
-    cantidadCanibalesDestino = ultimoEstado[indexUltimoEstado].canibalesIzquierda.size();
-    cantidadArqueologosDestino = ultimoEstado[indexUltimoEstado].arqIzquierda.size();
+    cantidadCanibalesOrigen = ultimoEstado.canibalesDerecha.size();
+    cantidadArqueologosOrigen = ultimoEstado.arqDerecha.size();
+    cantidadCanibalesDestino = ultimoEstado.canibalesIzquierda.size();
+    cantidadArqueologosDestino = ultimoEstado.arqIzquierda.size();
+    if (cantidadCanibalesOrigen + cantidadArqueologosOrigen > 0){
+
+      for (int i = 0; i < cantidadCanibalesOrigen; ++i){
+        estadosPuente nuevoEstado = ultimoEstado;
+        int canibalQueSeMueve = ultimoEstado.canibalesDerecha[i];
+        nuevoEstado.canibalesIzquierda.push_back(canibalQueSeMueve);
+        nuevoEstado.canibalesDerecha.erase(i);
+        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
+        if(estadoValido(nuevoEstado, estadosAnteriores)){
+          estadosAnteriores.push_back(nuevoEstado);
+          int nuevaVelocidad = velocidad + canibalQueSeMueve;
+          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
+        }
+      }
+
+      for (int i = 0; i < cantidadArqueologosOrigen; ++i){
+        estadosPuente nuevoEstado = ultimoEstado;
+        int arqueologoQueSeMueve = ultimoEstado.arqDerecha[i]
+        nuevoEstado.arqIzquierda.push_back(arqueologoQueSeMueve);
+        nuevoEstado.arqDerecha.erase(i);
+        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
+        if(estadoValido(nuevoEstado, estadosAnteriores)){
+          estadosAnteriores.push_back(nuevoEstado);
+          int nuevaVelocidad = velocidad + arqeologoQueSeMueve;
+          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
+        }
+      }
+
+    }else{
+      velocidadesSoluciones.push_back(velocidad);
+    }
   }else{
     cantidadCanibalesOrigen = ultimoEstado[indexUltimoEstado].canibalesIzquierda.size();
     cantidadArqueologosOrigen = ultimoEstado[indexUltimoEstado].arqIzquierda.size();
@@ -25,29 +59,6 @@ void BTCruzarPuente(vector<estadosPuente> &estadosAnteriores, int &velocidad, ve
     cantidadArqueologosDestino = ultimoEstado[indexUltimoEstado].arqDerecha.size();
   }
 
-  //TODO: falta ver el tema del alias en personasOrigen y personasDestino
-  if (cantidadCanibalesOrigen + cantidadArqueologosOrigen > 0){
-
-    for (int i = 0; i < cantidadCanibalesOrigen; ++i){
-      estadosPuente nuevoEstado = ultimoEstado;
-      int canibalQueSeMueve = ultimoEstado.canibalesDerecha[i]
-      nuevoEstado.canibalesIzquierda.push(canibalQueSeMueve);
-      nuevoEstado.canibalesDerecha.erase(i);
-      nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-      if(estadoValido(nuevoEstado, estadosAnteriores)){
-        estadosAnteriores.push(nuevoEstado);
-        int nuevaVelocidad = velocidad + canibalQueSeMueve;
-        BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-      }
-    }
-
-    for (int i = 0; i < ultimoEstado[]; ++i){
-      /* code */ AWANTIA
-    }
-
-  }else{
-    velocidadesSoluciones.push(velocidad);
-  }
 }
 
 

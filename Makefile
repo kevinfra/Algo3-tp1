@@ -2,7 +2,7 @@
 CC=g++
 
 # flags de compilación
-CFLAGS=-g -Wall
+CXXFLAGS=-g -Wall -std=c++11
 
 # flags de linkeo
 LDFLAGS=
@@ -11,7 +11,7 @@ LDFLAGS=
 INCDIR= .
 
 # Agregar acá los archivos .cpp a compilar [COMPLETAR]
-SOURCES=main.cpp ejercicio2.cpp
+SOURCES=main.cpp ejercicio2.cpp ejercicio1.cpp
 
 # Objetos que serán generados (no tocar)
 OBJECTS=$(SOURCES:.cpp=.o)
@@ -28,4 +28,4 @@ clean:
 	rm -rf $(EXECUTABLE) $(OBJECTS)
 
 .cpp.o:
-	$(CC) -I$(INCDIR) $(CFLAGS) $< -c -o $@
+	$(CC) -I$(INCDIR) $(CXXFLAGS) $< -c -o $@
