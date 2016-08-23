@@ -28,12 +28,12 @@ int main(int argc, char *argv[]){
   cout << "Corriendo ejercicio numero " << numeroDeEjercicio << endl;
 
   if (numeroDeEjercicio == 1){
-    int cantidadArq, cantidadCavernicolas;
+    int cantidadArq, cantidadCanibales;
 
-    cout << "Ingrese la cantidad de Arqueologos y luego la de Cavernicolas: " << endl;
-    cin >> cantidadArq >> cantidadCavernicolas;
+    cout << "Ingrese la cantidad de Arqueologos y luego la de Canibales: " << endl;
+    cin >> cantidadArq >> cantidadCanibales;
     if(debug){
-      cout << "Nro arq: " << cantidadArq << " y nro caver: " << cantidadCavernicolas << endl;
+      cout << "Nro arq: " << cantidadArq << " y nro caver: " << cantidadCanibales << endl;
     }
 
     cout << "Ingrese las velocidades de los Arqueologos: " << endl;
@@ -52,14 +52,22 @@ int main(int argc, char *argv[]){
       cout << endl;
     }
 
-    cout << "Ingrese las velocidades de los Cavernicolas" << endl;
-    vector<int> velocidadesCavernicolas;
-    while((cin >> velocidad) && cantidadCavernicolas > 0){
-      velocidadesCavernicolas.push_back(velocidad);
-      cantidadCavernicolas--;
+    cout << "Ingrese las velocidades de los Canibales" << endl;
+    vector<int> velocidadesCanibales;
+    while(cantidadCanibales > 0 && (cin >> velocidad)){
+      velocidadesCanibales.push_back(velocidad);
+      cantidadCanibales--;
     }
 
-    int tiempo = cruzarPuente(velocidadesCavernicolas, velocidadesArq);
+    if(debug){
+      cout << "velocidades canivales: ";
+      for (int i = 0; i < velocidadesCanibales.size(); ++i){
+        cout << velocidadesCanibales[i] << ", ";
+      }
+      cout << endl;
+    }
+
+    int tiempo = cruzarPuente(velocidadesCanibales, velocidadesArq);
     if(tiempo > -1){
       cout << "El tiempo minimo para cruzar es de " << tiempo << endl;
     }else{
