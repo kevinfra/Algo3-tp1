@@ -55,6 +55,7 @@ int main(int argc, char *argv[]){
     cout << "Ingrese las velocidades de los Canibales" << endl;
     vector<int> velocidadesCanibales;
     while(cantidadCanibales > 0 && (cin >> velocidad)){
+      cout << velocidad << endl;
       velocidadesCanibales.push_back(velocidad);
       cantidadCanibales--;
     }
