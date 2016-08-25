@@ -8,13 +8,14 @@ namespace Ej1
 {
     public class Funciones
     {
-        public void CruzarPuente(List<int> canibalesOrigen, List<int> arqueologosOrigen, List<int> canibalesDestino, List<int> arqueologosDestino, bool linternaDer, List<Estado> estadosAnteriores, int Tiempo, List<int> Soluciones)
+        public void CruzarPuente(List<int> canibalesOrigen, List<int> arqueologosOrigen, List<int> canibalesDestino, List<int> arqueologosDestino, bool linternaDer, List<Estado> estadosAnteriores, int Tiempo, List<int> Soluciones, string Testing)
         {
             List<int> canibalesDer = linternaDer ? canibalesOrigen : canibalesDestino;
             List<int> canibalesIzq = linternaDer ? canibalesDestino : canibalesOrigen;
             List<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
             List<int> arqueologosIzq = linternaDer ? arqueologosDestino : arqueologosOrigen;
 
+            //Hago una copia de las listas para no modificar las listas de las recursiones padres
             canibalesOrigen = canibalesOrigen.OrderBy(x => x).ToList();
             arqueologosOrigen = arqueologosOrigen.OrderBy(x => x).ToList();
             canibalesDestino = canibalesDestino.OrderBy(x => x).ToList();
@@ -25,7 +26,7 @@ namespace Ej1
             if (esSolucion)
             {
                 Soluciones.Add(Tiempo);
-                Console.WriteLine("Encontre una solución: " + Tiempo);
+                Console.WriteLine(Testing + "Encontre una solución: Tiempo total " + Tiempo);
             }
             else
             {
@@ -49,20 +50,21 @@ namespace Ej1
                 {
                     for (int mandarArqueologos = mandarCanibales == 0 ? 1 : 0; mandarArqueologos <= 2 - mandarCanibales; mandarArqueologos++)
                     {
+                        
                         Console.WriteLine("");
-                        Console.WriteLine("Intento mandar " + mandarCanibales + " canibales y " + mandarArqueologos + " arqueologos hacia la " + (linternaDer ? "izquierda" : "derecha"));
+                        Console.WriteLine(Testing + "Intento mandar " + mandarCanibales + " canibales y " + mandarArqueologos + " arqueologos hacia la " + (linternaDer ? "izquierda" : "derecha"));
                         if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores))
                         {
-                            Console.WriteLine("Mando");
+                            Console.WriteLine(Testing + "Mando");
                             if (!linternaDer)
                             {
-                                Console.WriteLine((linternaDer ? "Derecha" : "Izquierda") + " | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
-                                Console.WriteLine((linternaDer ? "Izquierda" : "Derecha") + " | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
+                                Console.WriteLine(Testing + "Izquierda | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
+                                Console.WriteLine(Testing + "Derecha | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
                             }
                             else
                             {
-                                Console.WriteLine((linternaDer ? "Izquierda" : "Derecha") + " | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
-                                Console.WriteLine((linternaDer ? "Derecha" : "Izquierda") + " | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
+                                Console.WriteLine(Testing + "Izquierda | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
+                                Console.WriteLine(Testing + "Derecha | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
                             }
 
                             //Hago una copia de las listas (para no modificar otras listas)
@@ -104,12 +106,12 @@ namespace Ej1
 
                             estadosAnteriores.Add(nuevoEstado);
                             int nuevoTiempo = Tiempo + Math.Max(mandarArqueologos > 0 ? arqueologosMasRapidos.Max() : 0, mandarCanibales > 0 ? canibalesMasRapidos.Max() : 0);
-                            CruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, Soluciones);
+                            CruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, Soluciones, "-" + Testing);
                             estadosAnteriores.Remove(nuevoEstado);
                         }
                         else
                         {
-                            Console.WriteLine("No mando");
+                            Console.WriteLine(Testing + "No mando");
                         }
                     }
                 }

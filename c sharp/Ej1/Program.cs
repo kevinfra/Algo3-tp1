@@ -27,7 +27,7 @@ namespace Ej1
             Funciones f = new Funciones();
             List<int> Soluciones = new List<int>();
 
-            f.CruzarPuente(canibales, arquelogos, new List<int>(), new List<int>(), false, Historial, 0, Soluciones);
+            f.CruzarPuente(canibales, arquelogos, new List<int>(), new List<int>(), false, Historial, 0, Soluciones, "");
         }
     }
 }
