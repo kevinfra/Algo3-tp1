@@ -52,19 +52,17 @@ namespace Ej1
                     {
                         
                         Console.WriteLine("");
-                        Console.WriteLine(Testing + "Intento mandar " + mandarCanibales + " canibales y " + mandarArqueologos + " arqueologos hacia la " + (linternaDer ? "izquierda" : "derecha"));
+                        Console.WriteLine(Testing + "Intento mandar " + mandarCanibales + " canibales y " + mandarArqueologos + " arqueologos hacia la " + (linternaDer ? "IZQUIERDA" : "DERECHA"));
                         if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores))
                         {
                             Console.WriteLine(Testing + "Mando");
                             if (!linternaDer)
                             {
-                                Console.WriteLine(Testing + "Izquierda | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
-                                Console.WriteLine(Testing + "Derecha | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
+                                Console.WriteLine(Testing + "IZQ " + (cantArqueologosOrigen - mandarArqueologos) + "A " + (cantCanibalesOrigen - mandarCanibales) + "C | DER " + (cantArqueologosDestino + mandarArqueologos) + "A " + (cantCanibalesDestino + mandarCanibales) + "C");
                             }
                             else
                             {
-                                Console.WriteLine(Testing + "Izquierda | A = " + (cantArqueologosDestino + mandarArqueologos) + " | C = " + (cantCanibalesDestino + mandarCanibales));
-                                Console.WriteLine(Testing + "Derecha | A = " + (cantArqueologosOrigen - mandarArqueologos) + " | C = " + (cantCanibalesOrigen - mandarCanibales));
+                                Console.WriteLine(Testing + "IZQ " + (cantArqueologosDestino + mandarArqueologos) + "A " + (cantCanibalesDestino + mandarCanibales) + "C | DER " + (cantArqueologosOrigen - mandarArqueologos) + "A " + (cantCanibalesOrigen - mandarCanibales) + "C");
                             }
 
                             //Hago una copia de las listas (para no modificar otras listas)
