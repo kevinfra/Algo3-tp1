@@ -1,0 +1,5 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {A}Ap\IeC {\'e}ndice}{3}{appendix.Alph1}
+\contentsline {subsection}{\numberline {A.1}Funciones principales de Kaioken}{3}{subsection.Alph1.1}
+\contentsline {subsection}{\numberline {A.2}Funciones principales de Genkidama}{3}{subsection.Alph1.2}
+\contentsline {subsection}{\numberline {A.3}Funciones principales de Kamehameha}{4}{subsection.Alph1.3}
