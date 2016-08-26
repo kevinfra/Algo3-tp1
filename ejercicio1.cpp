@@ -5,13 +5,13 @@ using namespace std;
 int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
   vector<int> arqDer;
   vector<int> caniDer;
-  Estado primerEstado(arqueologos, canibales, arqDer, caniDer, false);
+  Estado primerEstado(arqueologos.size(), canibales.size(), arqDer.size(), caniDer.size(), false);
   vector<int> resultados;
   vector<Estado> estados;
   estados.push_back(primerEstado);
   int resultado = -1;
   if(canibales.size() <= arqueologos.size()){
-    BTCruzarPuente(canibales, arqueologos, estados, 0, resultados);
+    BTCruzarPuente(canibales, arqueologos, caniDer, arqDer, false, estados, 0, resultados);
     resultado = minimo(resultados);
   }
   return resultado;
@@ -23,10 +23,10 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
   vector<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
   vector<int> arqueologosIzq = linternaDer ? arqueologosDestino : arqueologosOrigen;
 
-  canibalesOrigen = canibalesOrigen.sort().reverse();
-  arqueologosOrigen = arqueologosOrigen.sort().reverse();
-  canibalesDestino = canibalesDestino.sort().reverse();
-  arqueologosDestino = arqueologosDestino.sort().reverse();
+  sort(canibalesOrigen);
+  sort(arqueologosOrigen);
+  sort(canibalesDestino);
+  sort(arqueologosDestino);
 
   bool esSolucion = canibalesIzq.size() + arqueologosIzq.size() == 0;
 
@@ -35,8 +35,9 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     cout << "Encontre una solución: " << tiempo << endl;
 
   }else{
+    cout << "Todavia no encuentro solucion" << endl;
 
-    Estado nuevoEstado();
+    Estado nuevoEstado;
     vector<int> nuevoCanibalesOrigen;
     vector<int> nuevoArqueologosOrigen;
     vector<int> nuevoCanibalesDestino;
@@ -54,15 +55,15 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     //2 canibales o 0 arqueologos
     for (int mandarCanibales = 0; mandarCanibales <= 2; mandarCanibales++){
       for (int mandarArqueologos = mandarCanibales == 0 ? 1 : 0; mandarArqueologos <= 2 - mandarCanibales; mandarArqueologos++){
-        cout << "Intento mandar " << mandarCanibales << " canibales y " << mandarArqueologos << " arqueologos hacia la " << (linternaDer ? "izquierda" : "derecha")) << endl;
+        cout << "Intento mandar " << mandarCanibales << " canibales y " << mandarArqueologos << " arqueologos hacia la " << (linternaDer ? "izquierda" : "derecha") << endl;
         if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores)){
           cout << "Mando" << endl;
           if (!linternaDer){
-            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales));
-            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales));
+            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales) << endl;
+            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales) << endl;
           }else{
-            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales));
-            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales));
+            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales) << endl;
+            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales) << endl;
           }
 
           //Hago una copia de las listas (para no modificar otras listas)
@@ -91,19 +92,21 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
             }
 
             for (int i = 0; i < mandarArqueologos; i++){
-              int index = indexOf(arqueologosMasRapidos[i], arqueologosMasRapidos)
-              nuevoArqueologosOrigen.erase(arqueologosMasRapidos.begin() + index);
+              int index = indexOf(arqueologosMasRapidos[i], nuevoArqueologosOrigen);
+              // nuevoArqueologosOrigen.erase(nuevoArqueologosOrigen.begin() + index);
+              nuevoArqueologosOrigen.erase(nuevoArqueologosOrigen.begin() + index);
+              cout << "CACA" << nuevoArqueologosOrigen.size() << "index" << index << endl;
               nuevoArqueologosDestino.push_back(arqueologosMasRapidos[i]);
             }
           }
 
-          arqueologosDer = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
-          arqueologosIzq = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
-          canibalesDer = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales;
-          canibalesIzq = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales;
-          linternaDer = nuevaLinternaDer;
+          int arqueologosDerNuevoEstado = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
+          int arqueologosIzqNuevoEstado = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
+          int canibalesDerNuevoEstado = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales;
+          int canibalesIzqNuevoEstado = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales;
+          bool linternaDerNuevoEstado = nuevaLinternaDer;
 
-          nuevoEstado.set_estado(arqueologosIzq, canibalesIzq, arqueologosDer, canibalesDer, linternaDer);
+          nuevoEstado.set_estado(arqueologosIzqNuevoEstado, canibalesIzqNuevoEstado, arqueologosDerNuevoEstado, canibalesDerNuevoEstado, linternaDerNuevoEstado);
 
           estadosAnteriores.push_back(nuevoEstado);
           int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
@@ -118,31 +121,30 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
   }
 }
 
-  bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
-    if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0)
+bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
+  if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0){ return false; }
+
+  int canibalesDer = linternaDer ? cantCanibalesOrigen : cantCanibalesDestino;
+  int canibalesIzq = linternaDer ? cantCanibalesDestino : cantCanibalesOrigen;
+  int arqueologosDer = linternaDer ? cantArqueologosOrigen : cantArqueologosDestino;
+  int arqueologosIzq = linternaDer ? cantArqueologosDestino : cantArqueologosOrigen;
+
+  if ((0 < arqueologosDer && arqueologosDer < canibalesDer) ||
+    (0 < arqueologosIzq && arqueologosIzq < canibalesIzq))
+    return false;
+
+  for (int i = 0; i < estadosAnteriores.size(); i++)
+  {
+    Estado estadoAnterior = estadosAnteriores[i];
+    if (estadoAnterior.arqueologosDer == arqueologosDer &&
+      estadoAnterior.canibalesDer == canibalesDer &&
+      estadoAnterior.linternaDer == !linternaDer)
       return false;
-
-    int canibalesDer = linternaDer ? cantCanibalesOrigen : cantCanibalesDestino;
-    int canibalesIzq = linternaDer ? cantCanibalesDestino : cantCanibalesOrigen;
-    int arqueologosDer = linternaDer ? cantArqueologosOrigen : cantArqueologosDestino;
-    int arqueologosIzq = linternaDer ? cantArqueologosDestino : cantArqueologosOrigen;
-
-    if ((0 < arqueologosDer && arqueologosDer < canibalesDer) ||
-      (0 < arqueologosIzq && arqueologosIzq < canibalesIzq))
-      return false;
-
-    for (int i = 0; i < estadosAnteriores.size(); i++)
-    {
-      Estado estadoAnterior = estadosAnteriores[i];
-      if (estadoAnterior.arqueologosDer == arqueologosDer &&
-        estadoAnterior.canibalesDer == canibalesDer &&
-        estadoAnterior.linternaDer == !linternaDer)
-        return false;
-    }
-
-    return true;
   }
+
+  return true;
 }
+
 
 int indexOf(int valor, vector<int> lista){
   int largo = lista.size();
@@ -156,16 +158,37 @@ int indexOf(int valor, vector<int> lista){
 
 int maximo(vector<int> lista){
   int largo = lista.size();
-  if (largo > 0) int res = lista[0];
+  int res;
+  if (largo > 0) res = lista[0];
   for (int k = 0; k < largo; ++k){
     if (res < lista[k]) res = lista[k];
   }
+  return res;
 }
 
 int minimo(vector<int> lista){
   int largo = lista.size();
-  if (largo > 0) int res = lista[0];
+  int res;
+  if (largo > 0) res = lista[0];
   for (int k = 0; k < largo; ++k){
     if (res > lista[k]) res = lista[k];
   }
+  return res;
+}
+
+void sort(vector<int> &lista){
+  int size = lista.size();
+  for (int i = 1; i < size; ++i){
+    for (int q = 0; q < i-1; ++q){
+      if(lista[q] > lista[q+1]){
+        swap(lista, q, q+1);
+      }
+    }
+  }
+}
+
+void swap(vector<int> &lista, int i, int q){
+  int temp = lista[i];
+  lista[i] = lista[q];
+  lista[q] = temp;
 }

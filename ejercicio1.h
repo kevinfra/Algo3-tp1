@@ -12,3 +12,5 @@ bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCa
 int indexOf(int valor, vector<int> lista);
 int maximo(vector<int> lista);
 int minimo(vector<int> lista);
+void sort(vector<int> &lista);
+void swap(vector<int> &lista, int i, int q);
