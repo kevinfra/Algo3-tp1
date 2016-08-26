@@ -1,23 +1,11 @@
-#include "ejercicio1.h"
+﻿#include <iostream>
+#include <vector>
+#include <algorithm> //Sort esta en O(n*Log n) y reverse en O(n)
+#include "Estado.h"
 
 using namespace std;
 
-int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
-  vector<int> arqDer;
-  vector<int> caniDer;
-  Estado primerEstado(arqueologos, canibales, arqDer, caniDer, false);
-  vector<int> resultados;
-  vector<Estado> estados;
-  estados.push_back(primerEstado);
-  int resultado = -1;
-  if(canibales.size() <= arqueologos.size()){
-    BTCruzarPuente(canibales, arqueologos, estados, 0, resultados);
-    resultado = minimo(resultados);
-  }
-  return resultado;
-}
-
-void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, vector<int> canibalesDestino, vector<int> arqueologosDestino, bool linternaDer, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){
+void cruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, vector<int> canibalesDestino, vector<int> arqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores, int tiempo, vector<int> soluciones){
   vector<int> canibalesDer = linternaDer ? canibalesOrigen : canibalesDestino;
   vector<int> canibalesIzq = linternaDer ? canibalesDestino : canibalesOrigen;
   vector<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
@@ -107,7 +95,7 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
 
           estadosAnteriores.push_back(nuevoEstado);
           int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
-          BTCruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
+          cruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
           estadosAnteriores.pop_back();
 
         }else{
@@ -116,7 +104,6 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
       }
     }
   }
-}
 
   bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
     if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0)
@@ -159,13 +146,5 @@ int maximo(vector<int> lista){
   if (largo > 0) int res = lista[0];
   for (int k = 0; k < largo; ++k){
     if (res < lista[k]) res = lista[k];
-  }
-}
-
-int minimo(vector<int> lista){
-  int largo = lista.size();
-  if (largo > 0) int res = lista[0];
-  for (int k = 0; k < largo; ++k){
-    if (res > lista[k]) res = lista[k];
   }
 }
