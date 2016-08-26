@@ -11,7 +11,7 @@ LDFLAGS=
 INCDIR= .
 
 # Agregar acá los archivos .cpp a compilar [COMPLETAR]
-SOURCES=main.cpp ejercicio2.cpp ejercicio1.cpp
+SOURCES=main.cpp ejercicio2.cpp ejercicio1.cpp Estado.cpp
 
 # Objetos que serán generados (no tocar)
 OBJECTS=$(SOURCES:.cpp=.o)

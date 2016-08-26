@@ -3,277 +3,169 @@
 using namespace std;
 
 int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
-  estadosPuente primerEstado;
-  primerEstado.arqDerecha = arqueologos;
-  primerEstado.canibalesDerecha = canibales;
-  primerEstado.linternaALaDerecha = true;
+  vector<int> arqDer;
+  vector<int> caniDer;
+  Estado primerEstado(arqueologos, canibales, arqDer, caniDer, false);
   vector<int> resultados;
-  vector<estadosPuente> estados;
+  vector<Estado> estados;
   estados.push_back(primerEstado);
-  BTCruzarPuente(estados, 0, resultados);
-  int resultado = dameMinimoTiempo(resultados);
+  int resultado = -1;
+  if(canibales.size() <= arqueologos.size()){
+    BTCruzarPuente(canibales, arqueologos, estados, 0, resultados);
+    resultado = minimo(resultados);
+  }
   return resultado;
 }
 
+void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, vector<int> canibalesDestino, vector<int> arqueologosDestino, bool linternaDer, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){
+  vector<int> canibalesDer = linternaDer ? canibalesOrigen : canibalesDestino;
+  vector<int> canibalesIzq = linternaDer ? canibalesDestino : canibalesOrigen;
+  vector<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
+  vector<int> arqueologosIzq = linternaDer ? arqueologosDestino : arqueologosOrigen;
 
+  canibalesOrigen = canibalesOrigen.sort().reverse();
+  arqueologosOrigen = arqueologosOrigen.sort().reverse();
+  canibalesDestino = canibalesDestino.sort().reverse();
+  arqueologosDestino = arqueologosDestino.sort().reverse();
 
-void BTCruzarPuente(vector<estadosPuente> &estadosAnteriores, int velocidad, vector<int> &velocidadesSoluciones){
-  cout << estadosAnteriores.size() << endl;
-  int indexUltimoEstado = estadosAnteriores.size() - 1;
-  estadosPuente ultimoEstado = estadosAnteriores[indexUltimoEstado];
-  int cantidadCanibalesOrigen = ultimoEstado.canibalesDerecha.size();
-  int cantidadArqueologosOrigen = ultimoEstado.arqDerecha.size();
-  int cantidadCanibalesDestino = ultimoEstado.canibalesIzquierda.size();
-  int cantidadArqueologosDestino = ultimoEstado.arqIzquierda.size();
+  bool esSolucion = canibalesIzq.size() + arqueologosIzq.size() == 0;
 
-  if (cantidadCanibalesOrigen + cantidadArqueologosOrigen > 0){
+  if (esSolucion){
+    soluciones.push_back(tiempo);
+    cout << "Encontre una solución: " << tiempo << endl;
 
-    if (ultimoEstado.linternaALaDerecha){
-
-      cout << "cruza desde la derecha" << endl;
-
-      if (0 < cantidadCanibalesOrigen){
-        cout << "cruza un canibal solo" << endl;
-        estadosPuente nuevoEstado = ultimoEstado;
-        int indexCanibal = indiceDelMasRapido(ultimoEstado.canibalesDerecha);
-        int canibalQueSeMueve = ultimoEstado.canibalesDerecha[indexCanibal];
-        nuevoEstado.canibalesIzquierda.push_back(canibalQueSeMueve);
-        nuevoEstado.canibalesDerecha.erase(nuevoEstado.canibalesDerecha.begin() + indexCanibal);
-        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-        if(estadoValido(nuevoEstado, estadosAnteriores)){
-          estadosAnteriores.push_back(nuevoEstado);
-          int nuevaVelocidad = velocidad + canibalQueSeMueve;
-          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-          estadosAnteriores.pop_back();
-        }
-      }
-
-      if (0 < cantidadArqueologosOrigen){
-        cout << "cruza un arqueologo solo" << endl;
-        estadosPuente nuevoEstado = ultimoEstado;
-        int indexArq = indiceDelMasRapido(ultimoEstado.arqDerecha);
-        int arqueologoQueSeMueve = ultimoEstado.arqDerecha[indexArq];
-        nuevoEstado.arqIzquierda.push_back(arqueologoQueSeMueve);
-        nuevoEstado.arqDerecha.erase(nuevoEstado.arqDerecha.begin() + indexArq);
-        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-        if(estadoValido(nuevoEstado, estadosAnteriores)){
-          estadosAnteriores.push_back(nuevoEstado);
-          int nuevaVelocidad = velocidad + arqueologoQueSeMueve;
-          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-          estadosAnteriores.pop_back();
-        }
-      }
-
-      for (int i = 0; i < cantidadArqueologosOrigen; ++i){
-        for (int k = 0; k < cantidadCanibalesOrigen; ++k){
-          cout << "cruzan un canibal y un arqueologo" << endl;
-          estadosPuente nuevoEstado = ultimoEstado;
-          int canibalQueSeMueve = ultimoEstado.canibalesDerecha[k];
-          int arqueologoQueSeMueve = ultimoEstado.arqDerecha[k];
-          nuevoEstado.canibalesIzquierda.push_back(canibalQueSeMueve);
-          nuevoEstado.arqIzquierda.push_back(arqueologoQueSeMueve);
-          nuevoEstado.canibalesDerecha.erase(nuevoEstado.canibalesDerecha.begin() + k);
-          nuevoEstado.arqDerecha.erase(nuevoEstado.arqDerecha.begin() + k);
-          nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstado, estadosAnteriores)){
-            estadosAnteriores.push_back(nuevoEstado);
-            int nuevaVelocidad = velocidad + canibalQueSeMueve + arqueologoQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-
-      for (int i = 0; i < cantidadCanibalesOrigen; ++i){
-        cout << "cruzan dos canibales: ";
-        estadosPuente nuevoEstado = ultimoEstado;
-        int primerCanibalQueSeMueve = ultimoEstado.canibalesDerecha[i];
-        nuevoEstado.canibalesIzquierda.push_back(primerCanibalQueSeMueve);
-        nuevoEstado.canibalesDerecha.erase(nuevoEstado.canibalesDerecha.begin() + i);
-        int cantidadCanibalesOrigenMenosUno = cantidadCanibalesOrigen - 1;
-        for (int k = 0; k < cantidadCanibalesOrigenMenosUno; ++k){
-          estadosPuente nuevoEstadoDoble = nuevoEstado;
-          int segundoCanibalQueSeMueve = nuevoEstado.canibalesDerecha[k];
-          nuevoEstadoDoble.canibalesIzquierda.push_back(segundoCanibalQueSeMueve);
-          nuevoEstadoDoble.canibalesDerecha.erase(nuevoEstado.canibalesDerecha.begin() + k);
-          nuevoEstadoDoble.linternaALaDerecha = !(nuevoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstadoDoble, estadosAnteriores)){
-            cout << primerCanibalQueSeMueve << " ," << segundoCanibalQueSeMueve << endl;
-            estadosAnteriores.push_back(nuevoEstadoDoble);
-            int nuevaVelocidad = velocidad + segundoCanibalQueSeMueve + primerCanibalQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-
-      for (int i = 0; i < cantidadArqueologosOrigen; ++i){
-        cout << "cruzan dos arqueologos: ";
-        estadosPuente nuevoEstado = ultimoEstado;
-        int primerArqueologoQueSeMueve = ultimoEstado.arqDerecha[i];
-        nuevoEstado.arqIzquierda.push_back(primerArqueologoQueSeMueve);
-        nuevoEstado.arqDerecha.erase(nuevoEstado.arqDerecha.begin() + i);
-        int cantidadArqueologosOrigenMenosUno = cantidadArqueologosOrigen - 1;
-        for (int k = 0; k < cantidadArqueologosOrigenMenosUno; ++k){
-          estadosPuente nuevoEstadoDoble = nuevoEstado;
-          int segundoArqueologoQueSeMueve = nuevoEstado.arqDerecha[k];
-          nuevoEstadoDoble.arqIzquierda.push_back(segundoArqueologoQueSeMueve);
-          nuevoEstadoDoble.arqDerecha.erase(nuevoEstado.arqDerecha.begin() + k);
-          nuevoEstadoDoble.linternaALaDerecha = !(nuevoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstadoDoble, estadosAnteriores)){
-            cout << primerArqueologoQueSeMueve << " ," << segundoArqueologoQueSeMueve << endl;
-            estadosAnteriores.push_back(nuevoEstadoDoble);
-            int nuevaVelocidad = velocidad + segundoArqueologoQueSeMueve + primerArqueologoQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-
-    }else{//Tienen que volver con la linterna
-
-      cout << "cruza desde la izquierda" << endl;
-
-      if (0 < cantidadCanibalesDestino){
-        cout << "cruza un canibal solo" << endl;
-        cout << cantidadCanibalesDestino << endl;
-        estadosPuente nuevoEstado = ultimoEstado;
-        int indexCanibal = indiceDelMasRapido(ultimoEstado.canibalesIzquierda);
-        int canibalQueSeMueve = ultimoEstado.canibalesIzquierda[indexCanibal];
-        nuevoEstado.canibalesDerecha.push_back(canibalQueSeMueve);
-        nuevoEstado.canibalesIzquierda.erase(nuevoEstado.canibalesIzquierda.begin() + indexCanibal);
-        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-        if(estadoValido(nuevoEstado, estadosAnteriores)){
-          estadosAnteriores.push_back(nuevoEstado);
-          int nuevaVelocidad = velocidad + canibalQueSeMueve;
-          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-          estadosAnteriores.pop_back();
-        }
-      }
-
-      if (0 < cantidadArqueologosDestino){
-        estadosPuente nuevoEstado = ultimoEstado;
-        int indexArq = indiceDelMasRapido(ultimoEstado.arqIzquierda);
-        cout << "cruza un arquelogo solo" << endl;
-        int arqueologoQueSeMueve = ultimoEstado.arqIzquierda[indexArq];
-        nuevoEstado.arqDerecha.push_back(arqueologoQueSeMueve);
-        nuevoEstado.arqIzquierda.erase(nuevoEstado.arqIzquierda.begin() + indexArq);
-        nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-        if(estadoValido(nuevoEstado, estadosAnteriores)){
-          estadosAnteriores.push_back(nuevoEstado);
-          int nuevaVelocidad = velocidad + arqueologoQueSeMueve;
-          BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-          estadosAnteriores.pop_back();
-        }
-      }
-
-      for (int i = 0; i < cantidadArqueologosDestino; ++i){
-        for (int k = 0; k < cantidadCanibalesDestino; ++k){
-          estadosPuente nuevoEstado = ultimoEstado;
-          int canibalQueSeMueve = ultimoEstado.canibalesIzquierda[k];
-          int arqueologoQueSeMueve = ultimoEstado.arqIzquierda[k];
-          nuevoEstado.canibalesDerecha.push_back(canibalQueSeMueve);
-          nuevoEstado.arqDerecha.push_back(arqueologoQueSeMueve);
-          nuevoEstado.canibalesIzquierda.erase(nuevoEstado.canibalesIzquierda.begin() + k);
-          nuevoEstado.arqIzquierda.erase(nuevoEstado.arqIzquierda.begin() + k);
-          nuevoEstado.linternaALaDerecha = !(ultimoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstado, estadosAnteriores)){
-            estadosAnteriores.push_back(nuevoEstado);
-            int nuevaVelocidad = velocidad + canibalQueSeMueve + arqueologoQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-
-      for (int i = 0; i < cantidadCanibalesDestino; ++i){
-        estadosPuente nuevoEstado = ultimoEstado;
-        int primerCanibalQueSeMueve = ultimoEstado.canibalesIzquierda[i];
-        nuevoEstado.canibalesDerecha.push_back(primerCanibalQueSeMueve);
-        nuevoEstado.canibalesIzquierda.erase(nuevoEstado.canibalesIzquierda.begin() + i);
-        int cantidadCanibalesDestinoMenosUno = cantidadCanibalesDestino - 1;
-        for (int k = 0; k < cantidadCanibalesDestinoMenosUno; ++k){
-          estadosPuente nuevoEstadoDoble = nuevoEstado;
-          int segundoCanibalQueSeMueve = nuevoEstado.canibalesIzquierda[k];
-          nuevoEstadoDoble.canibalesDerecha.push_back(segundoCanibalQueSeMueve);
-          nuevoEstadoDoble.canibalesIzquierda.erase(nuevoEstado.canibalesIzquierda.begin() + k);
-          nuevoEstadoDoble.linternaALaDerecha = !(nuevoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstadoDoble, estadosAnteriores)){
-            estadosAnteriores.push_back(nuevoEstadoDoble);
-            int nuevaVelocidad = velocidad + segundoCanibalQueSeMueve + primerCanibalQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-
-      for (int i = 0; i < cantidadArqueologosOrigen; ++i){
-        estadosPuente nuevoEstado = ultimoEstado;
-        int primerArqueologoQueSeMueve = ultimoEstado.arqIzquierda[i];
-        nuevoEstado.arqDerecha.push_back(primerArqueologoQueSeMueve);
-        nuevoEstado.arqIzquierda.erase(nuevoEstado.arqIzquierda.begin() + i);
-        int cantidadArqueologosOrigenMenosUno = cantidadArqueologosOrigen - 1;
-        for (int k = 0; k < cantidadArqueologosOrigenMenosUno; ++k){
-          estadosPuente nuevoEstadoDoble = nuevoEstado;
-          int segundoArqueologoQueSeMueve = nuevoEstado.arqIzquierda[k];
-          nuevoEstadoDoble.arqDerecha.push_back(segundoArqueologoQueSeMueve);
-          nuevoEstadoDoble.arqIzquierda.erase(nuevoEstado.arqIzquierda.begin() + k);
-          nuevoEstadoDoble.linternaALaDerecha = !(nuevoEstado.linternaALaDerecha);
-          if(estadoValido(nuevoEstadoDoble, estadosAnteriores)){
-            estadosAnteriores.push_back(nuevoEstadoDoble);
-            int nuevaVelocidad = velocidad + segundoArqueologoQueSeMueve + primerArqueologoQueSeMueve;
-            BTCruzarPuente(estadosAnteriores, nuevaVelocidad, velocidadesSoluciones);
-            estadosAnteriores.pop_back();
-          }
-        }
-      }
-    }
   }else{
-    cout << "guardo " << velocidad << endl;
-    velocidadesSoluciones.push_back(velocidad);
+
+    Estado nuevoEstado();
+    vector<int> nuevoCanibalesOrigen;
+    vector<int> nuevoArqueologosOrigen;
+    vector<int> nuevoCanibalesDestino;
+    vector<int> nuevoArqueologosDestino;
+
+    int cantCanibalesOrigen = canibalesOrigen.size();
+    int cantArqueologosOrigen = arqueologosOrigen.size();
+    int cantCanibalesDestino = canibalesDestino.size();
+    int cantArqueologosDestino = arqueologosDestino.size();
+    bool nuevaLinternaDer = !linternaDer;
+
+    //Mando 0 canibales y 1 arqueologo, o
+    //0 canibales y 2 arqueologos, o
+    //1 canibal y 1 arqueologo o
+    //2 canibales o 0 arqueologos
+    for (int mandarCanibales = 0; mandarCanibales <= 2; mandarCanibales++){
+      for (int mandarArqueologos = mandarCanibales == 0 ? 1 : 0; mandarArqueologos <= 2 - mandarCanibales; mandarArqueologos++){
+        cout << "Intento mandar " << mandarCanibales << " canibales y " << mandarArqueologos << " arqueologos hacia la " << (linternaDer ? "izquierda" : "derecha")) << endl;
+        if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores)){
+          cout << "Mando" << endl;
+          if (!linternaDer){
+            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales));
+            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales));
+          }else{
+            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales));
+            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales));
+          }
+
+          //Hago una copia de las listas (para no modificar otras listas)
+          nuevoCanibalesOrigen = canibalesOrigen;
+          nuevoArqueologosOrigen = arqueologosOrigen;
+          nuevoCanibalesDestino = canibalesDestino;
+          nuevoArqueologosDestino = arqueologosDestino;
+
+          vector<int> canibalesMasRapidos;
+          if (mandarCanibales > 0){
+            for (int q = 0; q < mandarCanibales; ++q){
+              canibalesMasRapidos.push_back(nuevoCanibalesOrigen[q]);
+            }
+
+            for (int i = 0; i < mandarCanibales; i++){
+              int index = indexOf(canibalesMasRapidos[i], nuevoCanibalesOrigen);
+              nuevoCanibalesOrigen.erase(nuevoCanibalesOrigen.begin() + index);
+              nuevoCanibalesDestino.push_back(canibalesMasRapidos[i]);
+            }
+          }
+
+          vector<int> arqueologosMasRapidos;
+          if (mandarArqueologos > 0){
+            for (int q = 0; q < mandarArqueologos; ++q){
+              arqueologosMasRapidos.push_back(nuevoArqueologosOrigen[q]);
+            }
+
+            for (int i = 0; i < mandarArqueologos; i++){
+              int index = indexOf(arqueologosMasRapidos[i], arqueologosMasRapidos)
+              nuevoArqueologosOrigen.erase(arqueologosMasRapidos.begin() + index);
+              nuevoArqueologosDestino.push_back(arqueologosMasRapidos[i]);
+            }
+          }
+
+          arqueologosDer = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
+          arqueologosIzq = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
+          canibalesDer = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales;
+          canibalesIzq = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales;
+          linternaDer = nuevaLinternaDer;
+
+          nuevoEstado.set_estado(arqueologosIzq, canibalesIzq, arqueologosDer, canibalesDer, linternaDer);
+
+          estadosAnteriores.push_back(nuevoEstado);
+          int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
+          BTCruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
+          estadosAnteriores.pop_back();
+
+        }else{
+          cout << "No mando" << endl;
+        }
+      }
+    }
   }
 }
 
-
-bool estadoValido(estadosPuente &nuevoEstado, vector<estadosPuente> &estadosAnteriores){
-  int cantidadArqDerecha = nuevoEstado.arqDerecha.size();
-  int cantidadArqIzquierda = nuevoEstado.arqIzquierda.size();
-  int cantidadCanibalesDerecha = nuevoEstado.canibalesDerecha.size();
-  int cantidadCanibalesIzquierda = nuevoEstado.canibalesIzquierda.size();
-  bool linternaEnLaDerecha = nuevoEstado.linternaALaDerecha;
-
-  for (int i = 0; i < estadosAnteriores.size(); ++i){
-    if ((cantidadArqDerecha == estadosAnteriores[i].arqDerecha.size() &&
-      cantidadCanibalesDerecha == estadosAnteriores[i].canibalesDerecha.size() &&
-      linternaEnLaDerecha == estadosAnteriores[i].linternaALaDerecha) ||
-      ((cantidadArqDerecha > 0 && cantidadArqDerecha < cantidadCanibalesDerecha) || (cantidadArqIzquierda > 0 && cantidadArqIzquierda < cantidadCanibalesIzquierda))){
+  bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
+    if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0)
       return false;
+
+    int canibalesDer = linternaDer ? cantCanibalesOrigen : cantCanibalesDestino;
+    int canibalesIzq = linternaDer ? cantCanibalesDestino : cantCanibalesOrigen;
+    int arqueologosDer = linternaDer ? cantArqueologosOrigen : cantArqueologosDestino;
+    int arqueologosIzq = linternaDer ? cantArqueologosDestino : cantArqueologosOrigen;
+
+    if ((0 < arqueologosDer && arqueologosDer < canibalesDer) ||
+      (0 < arqueologosIzq && arqueologosIzq < canibalesIzq))
+      return false;
+
+    for (int i = 0; i < estadosAnteriores.size(); i++)
+    {
+      Estado estadoAnterior = estadosAnteriores[i];
+      if (estadoAnterior.arqueologosDer == arqueologosDer &&
+        estadoAnterior.canibalesDer == canibalesDer &&
+        estadoAnterior.linternaDer == !linternaDer)
+        return false;
     }
+
+    return true;
   }
-  return true;
 }
 
-int dameMinimoTiempo(vector<int> tiempos){
-  int cantidadTiempos = tiempos.size();
-  int res = -1;
-  if (cantidadTiempos > 0){
-    res = tiempos[0];
-  }
-  for (int i = 1; i < cantidadTiempos; ++i){
-    if(res > tiempos[i]){
-      res = tiempos[i];
+int indexOf(int valor, vector<int> lista){
+  int largo = lista.size();
+  for (int k = 0; k < largo; ++k){
+    if(lista[k] == valor){
+      return k;
     }
   }
-  return res;
+  return -1;
 }
 
-int indiceDelMasRapido(vector<int> velocidades){
-  int size = velocidades.size();
-  int res = 0;
-  for (int i = 0; i < size; ++i){
-    if(velocidades[res] > velocidades[i]){
-      res = i;
-    }
+int maximo(vector<int> lista){
+  int largo = lista.size();
+  if (largo > 0) int res = lista[0];
+  for (int k = 0; k < largo; ++k){
+    if (res < lista[k]) res = lista[k];
   }
-  return res;
+}
+
+int minimo(vector<int> lista){
+  int largo = lista.size();
+  if (largo > 0) int res = lista[0];
+  for (int k = 0; k < largo; ++k){
+    if (res > lista[k]) res = lista[k];
+  }
 }

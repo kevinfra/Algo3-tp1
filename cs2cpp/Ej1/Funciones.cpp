@@ -24,7 +24,7 @@ void cruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, ve
 
   }else{
 
-    Estado nuevoEstado;
+    Estado nuevoEstado();
     vector<int> nuevoCanibalesOrigen;
     vector<int> nuevoArqueologosOrigen;
     vector<int> nuevoCanibalesDestino;
@@ -60,56 +60,52 @@ void cruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, ve
           nuevoArqueologosDestino = arqueologosDestino;
 
           vector<int> canibalesMasRapidos;
-          if (mandarCanibales > 0)
-          {
-            for (int q = 0; q < mandarCanibales; ++q)
-            {
+          if (mandarCanibales > 0){
+            for (int q = 0; q < mandarCanibales; ++q){
               canibalesMasRapidos.push_back(nuevoCanibalesOrigen[q]);
             }
 
-            for (int i = 0; i < mandarCanibales; i++)
-            {
+            for (int i = 0; i < mandarCanibales; i++){
               int index = indexOf(canibalesMasRapidos[i], nuevoCanibalesOrigen);
               nuevoCanibalesOrigen.erase(nuevoCanibalesOrigen.begin() + index);
               nuevoCanibalesDestino.push_back(canibalesMasRapidos[i]);
             }
           }
 
-          vector<int> arqueologosMasRapidos = new vector<int>();
-          if (mandarArqueologos > 0)
-          {
-            arqueologosMasRapidos = nuevoArqueologosOrigen.Take(mandarArqueologos).Tovector();
-            for (int i = 0; i < mandarArqueologos; i++)
-            {
-              nuevoArqueologosOrigen.Remove(arqueologosMasRapidos[i]);
-              nuevoArqueologosDestino.Add(arqueologosMasRapidos[i]);
+          vector<int> arqueologosMasRapidos;
+          if (mandarArqueologos > 0){
+            for (int q = 0; q < mandarArqueologos; ++q){
+              arqueologosMasRapidos.push_back(nuevoArqueologosOrigen[q]);
+            }
+
+            for (int i = 0; i < mandarArqueologos; i++){
+              int index = indexOf(arqueologosMasRapidos[i], arqueologosMasRapidos)
+              nuevoArqueologosOrigen.erase(arqueologosMasRapidos.begin() + index);
+              nuevoArqueologosDestino.push_back(arqueologosMasRapidos[i]);
             }
           }
 
-          nuevoEstado = new Estado()
-          {
-            arqueologosDer = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos,
-            arqueologosIzq = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos,
-            canibalesDer = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales,
-            canibalesIzq = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales,
-            linternaDer = nuevaLinternaDer
-          };
+          arqueologosDer = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
+          arqueologosIzq = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
+          canibalesDer = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales;
+          canibalesIzq = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales;
+          linternaDer = nuevaLinternaDer;
 
-          estadosAnteriores.Add(nuevoEstado);
-          int nuevoTiempo = Tiempo + Math.Max(mandarArqueologos > 0 ? arqueologosMasRapidos.Max() : 0, mandarCanibales > 0 ? canibalesMasRapidos.Max() : 0);
-          CruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, Soluciones);
-          estadosAnteriores.Remove(nuevoEstado);
-        }
-        else
-        {
-          Console.WriteLine("No mando");
+          nuevoEstado.set_estado(arqueologosIzq, canibalesIzq, arqueologosDer, canibalesDer, linternaDer);
+
+          estadosAnteriores.push_back(nuevoEstado);
+          int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
+          cruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
+          estadosAnteriores.pop_back();
+
+        }else{
+          cout << "No mando" << endl;
         }
       }
     }
   }
 
-  public bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores)
-  {
+  bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
     if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0)
       return false;
 
@@ -132,5 +128,23 @@ void cruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, ve
     }
 
     return true;
+  }
+}
+
+int indexOf(int valor, vector<int> lista){
+  int largo = lista.size();
+  for (int k = 0; k < largo; ++k){
+    if(lista[k] == valor){
+      return k;
+    }
+  }
+  return -1;
+}
+
+int maximo(vector<int> lista){
+  int largo = lista.size();
+  if (largo > 0) int res = lista[0];
+  for (int k = 0; k < largo; ++k){
+    if (res < lista[k]) res = lista[k];
   }
 }
