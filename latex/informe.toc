@@ -1,5 +1,29 @@
 \select@language {spanish}
-\contentsline {section}{\numberline {A}Ap\IeC {\'e}ndice}{3}{appendix.Alph1}
-\contentsline {subsection}{\numberline {A.1}Funciones principales de Kaioken}{3}{subsection.Alph1.1}
-\contentsline {subsection}{\numberline {A.2}Funciones principales de Genkidama}{3}{subsection.Alph1.2}
-\contentsline {subsection}{\numberline {A.3}Funciones principales de Kamehameha}{4}{subsection.Alph1.3}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}{section.1}
+\contentsline {section}{\numberline {2}Ejercicio 1}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Descripci\IeC {\'o}n del problema}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Soluci\IeC {\'o}n propuesta}{4}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Detalles implementativos}{5}{subsubsection.2.2.1}
+\contentsline {subsection}{\numberline {2.3}Complejidad te\IeC {\'o}rica}{6}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Experimentaci\IeC {\'o}n}{6}{subsection.2.4}
+\contentsline {section}{\numberline {3}Ejercicio 2: Problemas en el camino}{9}{section.3}
+\contentsline {subsection}{\numberline {3.1}Descripci\IeC {\'o}n del problema}{9}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Soluci\IeC {\'o}n propuesta}{9}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Implementaci\IeC {\'o}n}{10}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Demostraci\IeC {\'o}n de correctitud}{12}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Complejidad te\IeC {\'o}rica}{16}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Experimientacion}{16}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Instancias particulares}{16}{subsubsection.3.4.1}
+\contentsline {section}{\numberline {4}Ejercicio 3}{19}{section.4}
+\contentsline {subsection}{\numberline {4.1}Descripci\IeC {\'o}n del problema}{19}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Soluci\IeC {\'o}n propuesta}{20}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Podas y otras mejoras dise\IeC {\~n}adas}{20}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Detalles implementativos}{22}{subsubsection.4.2.2}
+\contentsline {subsection}{\numberline {4.3}Complejidad te\IeC {\'o}rica}{23}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Experimentaci\IeC {\'o}n}{24}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Instancias particulares}{25}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Instancias aleatorias}{26}{subsubsection.4.4.2}
+\contentsline {section}{\numberline {A}Ap\IeC {\'e}ndice}{28}{appendix.Alph1}
+\contentsline {subsection}{\numberline {A.1}Funciones principales de Kaioken}{28}{subsection.Alph1.1}
+\contentsline {subsection}{\numberline {A.2}Funciones principales de Genkidama}{28}{subsection.Alph1.2}
+\contentsline {subsection}{\numberline {A.3}Funciones principales de Kamehameha}{29}{subsection.Alph1.3}

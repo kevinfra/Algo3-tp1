@@ -1,5 +1,5 @@
 
-\section{Ejercicio 2}
+\section{Ejercicio 2: Problemas en el camino}
     % 1. Describir detalladamente el problema a resolver dando ejemplos del mismo y sus soluciones.
 	\subsection{Descripción del problema}
 
@@ -10,30 +10,23 @@
 		\end{center}
 	\end{figure}
 
-	$N$ soldados de Freezer estan parados en distintos puntos $(X_i,Y_i)$ sobre
-	nuestro planeta y estan dispuestos a acabar con toda la humanidad. Para
-	esto, Gokú desea lanzarles Genkidamas para acabar con ellos. Los puntos
-	cumplen con la propiedad $ X_1 > X_2 >. . . > X_N \geq 0 $ y $ 0 \leq Y_1 <
-	Y_2 < . . . < Y_N$. Una Genkidama lanzada al objetivo con coordenadas $(X,Y)$
-	destruye a todos los enemigos que estan en el rectángulo con lados paralelos
-	a los ejes y extremos en $(0, 0)$ y $(X + T, Y + T )$. Sólo pueden lanzarse
-	Genkidamas a puntos donde hay o hubo un enemigo. 
-
-	La solución al problema debe tomar un $N$ correspondiente a la cantidad de adversarios,
-	$T$ el alcance de la Genkidama, y por último las posiciones de los enemigos
-	de Gokú. Con estos datos calculará a qué enemigos lanzarles una
-	Genkidama para requerir las mínimas posibles.
-
-	La salida consiste en un $G$ que representa la cantidad de Genkidamas
-	seguido de una línea con los índices de los adversarios a los cuáles se
-	les lanzó alguna.
-
-	Este es un ejemplo de una entrada con su respectiva
-	solución:
+	El equipo logro cruzar el puente satisfactoriamente y ya se encuentra dentro de una fortaleza antigua. Al entrar, nuestro grupo de aventureros caminan por los pasillos hasta llegar a una habitación amplia
+con una puerta y algunos esqueletos tirados en el piso.
+Al tratar de abrir la puerta se dan cuenta que la puerta esta cerrada con llave.
+En el medio de la habitación hay una balanza de dos platillos, en el plato de la izquierda se encuentra
+la llave para abrir la siguiente puerta, el otro esta vacío.
+Al tomar la llave, la balanza cambia el equilibrio, se cierra la entrada a la habitación, las paredes se
+empiezan a mover y la llave no sirve para destrabar la puerta.
+Rapidamente observan que debajo de la balanza se encuentra un conjunto de pesas. Curiosamente
+todas tienen un escritas una potencia de 3 distinta que indican el peso de cada una.
+Entre los expedicionarios uno tiene una balanza digital para pesar la llave que retiraron. Quieren
+recomponer el equilibrio de la balanza utilizando las pesas encontradas.
+Ayudemoslo a reestablecer la balanza antes de que las paredes terminen aplastando a los integrantes
+de la expedición!
 
 	~
 
-	\textbf{Entrada}
+	\textbf{Formato de entrada}
 
 	\begin{tabular}{ll}
 		\texttt{3} & \texttt{2} \\
@@ -61,12 +54,20 @@
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
 
-	Si se le dedicara una Genkidama a cada oponente se resolvería el problema de
-	destruir al enemigo, pero no sería una estrategia óptima para cualquier
-	caso. Únicamente daría el valor óptimo para el caso donde el área de cobertura de cada
-	Genkidama no fuera suficiente para alcanzar otros adversarios. Por lo tanto
-	es necesario considerar cuándo al eliminar un oponente se está a su vez
-	destruyendo a otros.
+	La idea propuesta para la resolución del problema consiste en buscar cómo obtener una representación del número p. Si se consigue una representación del mismo se puede equilibrar la balanza. Primero nos abtraemos de las restricciones del problema y pensamos que cualquier número a perteneciente a naturales admite un desarrollo en base d, utilizando sólo símbolos comprendidos en el rango de 0 a d-1. Como se dispone de sólo pesas que son potencias de 3, se decide utilizar la base 3 para representar el número. Si el problema no tuviera la restricción de que sólo se dispone de una pesa de cada potencia de 3, la resolución sería trivial ya que sólo consiste en obtener el desarrollo en base 3 del número p (que es un dato de entrada y que se asume que su desarrollo es en base 10) y poner tantas pesas de cada potencia de 3 (hasta 2 por potencia ya que en base 3, sólo se pueden utilizar los símbolos 0, 1 y 2) como indique el desarrollo, en el plato de la izquierda de la balanza para obtener el mismo peso p. Pero la restricción de que sólo se dispone de una sóla pesa de cada potencia de 3 hace que dicha solución no funcione. No obstante, teniendo en cuenta que en la balanza, las pesas que se colocan en el lado derecho 'restan' el peso colocado en el plato izquierdo se puede pensar en una solución en la cual cuando se tengan que utilizar dos pesas de la misma potencia, se puedan reemplazar por el uso de una pesa mayor colocada en el plato izquierdo (la cual se interpretaría como suma de dicha potencia de 3) y el uso de otra pesa colocada en el plato derecho (la cual se interpretaría como resta de dicha potencia de 3). Para lograr que la suma de dicha pesa menos la resta de la otra pesa, den como resultado el mismo valor que las dos pesas originales, se debe encontrar alguna relación entre las potencias de 3. La solución propuesta consiste en lo siguiente: 
+
+    Caso 1: El desarrollo en base 3 del número p no contiene el símbolo 2.
+
+    Este caso es trivial. Significa que a lo sumo se usa una vez cada potencia de 3 en el desarrollo del número. Por lo tanto, para obtener la solución al problema sólo bastar tomar las pesas correspondientes (las potencias de 3 que se utilizan en el desarrollo) y colocarlas en el plato izquierdo de la balanza para obtener el mismo peso original p y equilibrarla.
+
+    Caso 2: El desarrollo en base 3 del número p contiene al menos un símbolo 2.
+
+    Este es el caso interesante ya que no se dispone de dos pesas de la misma potencia. Sin embargo, se pueden reemplazar dos pesas de la misma potencia de la siguiente manera:
+
+
+
+
+
 
 	Para este problema en particular se encontró un algoritmo goloso que genera
 	la solución óptima con una complejidad temporal lineal. La idea detrás de
