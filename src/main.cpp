@@ -17,7 +17,7 @@ void start_timer() {
 
 double stop_timer() {
     chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-    return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
+    return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
 }
 
 
@@ -56,7 +56,6 @@ int main(int argc, char *argv[]){
     cout << "Ingrese las velocidades de los Canibales" << endl;
     vector<int> velocidadesCanibales;
     while(cantidadCanibales > 0 && (cin >> velocidad)){
-      cout << velocidad << endl;
       velocidadesCanibales.push_back(velocidad);
       cantidadCanibales--;
     }
@@ -64,7 +63,7 @@ int main(int argc, char *argv[]){
     start_timer();
     int tiempo = cruzarPuente(velocidadesCanibales, velocidadesArq);
     cout << tiempo << endl;
-    cout << "tiempo que tarda en ns: " << stop_timer() << endl;
+    cout << "tiempo que tarda en microsegundos: " << stop_timer() << endl;
 
 
   }else if(numeroDeEjercicio == 2){
