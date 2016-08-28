@@ -1,4 +1,4 @@
-#include <vector>
+#include <list>
 #include <utility>
 #include <iostream>
 #include <math.h>
@@ -48,8 +48,8 @@ using namespace std;
 void arreglarBalanza(long p){
   bool izquierda = true;
 	int divisiones = 0;
-	vector<long> izquierdas;
-	vector<long> derechas;
+	list<long> izquierdas;
+	list<long> derechas;
 	while(p!=0){
 		long cociente = p / 3 ;
 		long resto = p - (cociente*3);
@@ -78,12 +78,12 @@ void arreglarBalanza(long p){
 
   // Mostrar en pantalla los resultados
 	cout << izquierdas.size() << " " << derechas.size() << endl;
-  for (int i = 0; i < izquierdas.size(); i++) {
-  	cout << izquierdas[i] << " ";
+  for (list<long>::iterator itIzq = izquierdas.begin(); itIzq != izquierdas.end(); itIzq++) {
+  	cout << *itIzq << " ";
   }
 	cout << endl;
-	for (int i = 0; i < derechas.size(); i++) {
-		cout << derechas[i] << " ";
+	for (list<long>::iterator itDer = derechas.begin(); itDer != derechas.end(); itDer++) {
+		cout << *itDer << " ";
 	}
 	cout << endl;
 }
