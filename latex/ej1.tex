@@ -3,22 +3,21 @@
     \subsection{Descripción del problema}
 		\begin{figure}[ht]
 			\begin{center}
-				\includegraphics[width=0.5\columnwidth]{imagenes/kaioken.jpg}
-				\caption{Los orígenes del CrossFit}
+				\includegraphics[width=0.5\columnwidth]{imagenes/expedicionistas.jpg}
+				\caption{Indiana Jones junto a un Canibal del grupo de exploración}
 			\end{center}
 		\end{figure}
-        Gokú debe entrenar un ejército de $N$ guerreros para enfrentarse a Majin Boo. Para lograr ese objetivo, desea organizar peleas entre sus luchadores. En cada pelea, los guerreros serán divididos en dos bandos que pelearán entre sí. El objetivo es que, para cualquier par de luchadores, haya al menos una pelea en la que se encuentren en bandos distintos. Al mismo tiempo, el número total de peleas debe ser el mínimo necesario.
+        Indiana Jones debe seguir un mapa que posiblemente lo lleve a encontrar la solución a P=NP. Para esto, lleva a un grupo de arquéologos compuesto por $A$ personas y le pide ayuda a un grupo de gente local de tamaño $C$ para poder llegar hasta su destino sin grandes problemas. Sin embargo, durante el camino se encuentran con un puente en mal estado en el que no podrán pasar más de dos personas a la vez. Además, como el grupo local es conocido por su canibalismo, no pueden quedar más caníbales que arqueólogos de alguno de los lados del puente.
 
-        La resolución del problema consiste en elaborar un programa que recibe como entrada el valor de $N$, y devuelve la cantidad mínima de peleas que deben llevarse a cabo para cumplir el cometido de Gokú y a continuación, por cada una de las peleas, una línea indicando el bando al que pertenece cada uno de los luchadores durante la misma. De haber más de una solución posible, puede devolverse cualquiera de ellas.
+        La resolución del problema consiste en elaborar un programa que recibe como entrada el valor de $A$ y $C$, y luego las velocidades de cada arqueólogo ($a_0, ... , a_A$) y la de cada canibal ($c_0, ... , c_C$) y devuelve la velocidad mínima con la que se puede cruzar el puente.
 
-        Por ejemplo, si el programa recibe como entrada el valor \texttt{8}, cualquiera de las siguientes tres salidas sería correcta:
+        Por ejemplo, si el programa recibe lo siguiente como entrada: \newline
+        \texttt{2} \texttt{1} \newline
+        \texttt{1} \texttt{2} \newline
+        \texttt{1}
 
-        \begin{center}\begin{tabular}{l @{\hskip 2em} | @{\hskip 2em} l @{\hskip 2em} | @{\hskip 2em} l}
-            \texttt{3}               & \texttt{3}  &              \texttt{3}               \\
-            \texttt{1 1 1 1 2 2 2 2} & \texttt{1 1 2 2 2 1 2 1} & \texttt{2 1 1 1 2 1 2 2} \\
-            \texttt{1 1 2 2 1 1 2 2} & \texttt{1 1 2 1 2 2 1 2} & \texttt{1 2 1 1 2 2 2 1} \\
-            \texttt{1 2 1 2 1 2 1 2} & \texttt{2 1 2 1 1 1 2 2} & \texttt{1 1 2 1 2 2 1 2} \\
-        \end{tabular}\end{center}
+        La salida correcta sería: \newline
+        \texttt{4}
 
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
