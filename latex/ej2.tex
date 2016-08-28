@@ -56,29 +56,122 @@ de la expedición!
 
 	La idea propuesta para la resolución del problema consiste en buscar cómo obtener una representación del número p. Si se consigue una representación del mismo se puede equilibrar la balanza. Primero nos abtraemos de las restricciones del problema y pensamos que cualquier número a perteneciente a naturales admite un desarrollo en base d, utilizando sólo símbolos comprendidos en el rango de 0 a d-1. Como se dispone de sólo pesas que son potencias de 3, se decide utilizar la base 3 para representar el número. Si el problema no tuviera la restricción de que sólo se dispone de una pesa de cada potencia de 3, la resolución sería trivial ya que sólo consiste en obtener el desarrollo en base 3 del número p (que es un dato de entrada y que se asume que su desarrollo es en base 10) y poner tantas pesas de cada potencia de 3 (hasta 2 por potencia ya que en base 3, sólo se pueden utilizar los símbolos 0, 1 y 2) como indique el desarrollo, en el plato de la izquierda de la balanza para obtener el mismo peso p. Pero la restricción de que sólo se dispone de una sóla pesa de cada potencia de 3 hace que dicha solución no funcione. No obstante, teniendo en cuenta que en la balanza, las pesas que se colocan en el lado derecho 'restan' el peso colocado en el plato izquierdo se puede pensar en una solución en la cual cuando se tengan que utilizar dos pesas de la misma potencia, se puedan reemplazar por el uso de una pesa mayor colocada en el plato izquierdo (la cual se interpretaría como suma de dicha potencia de 3) y el uso de otra pesa colocada en el plato derecho (la cual se interpretaría como resta de dicha potencia de 3). Para lograr que la suma de dicha pesa menos la resta de la otra pesa, den como resultado el mismo valor que las dos pesas originales, se debe encontrar alguna relación entre las potencias de 3. La solución propuesta consiste en lo siguiente: 
 
-    Caso 1: El desarrollo en base 3 del número p no contiene el símbolo 2.
+	\newline
+
+     \textbf{Caso 1:} El desarrollo en base 3 del número $p$ no contiene el símbolo 2.
 
     Este caso es trivial. Significa que a lo sumo se usa una vez cada potencia de 3 en el desarrollo del número. Por lo tanto, para obtener la solución al problema sólo bastar tomar las pesas correspondientes (las potencias de 3 que se utilizan en el desarrollo) y colocarlas en el plato izquierdo de la balanza para obtener el mismo peso original p y equilibrarla.
 
-    Caso 2: El desarrollo en base 3 del número p contiene al menos un símbolo 2.
+	\newline
+
+     \textbf{Caso 2:} El desarrollo en base 3 del número p contiene al menos un símbolo 2.
 
     Este es el caso interesante ya que no se dispone de dos pesas de la misma potencia. Sin embargo, se pueden reemplazar dos pesas de la misma potencia de la siguiente manera:
 
+    \newline
+
+    \begin{center}
+
+    	2.3^n = 3^{n+1} - 3^{n}
+
+    	\newline
+
+		2.3^n = 3.3^n - 3^n
+
+		\newline
+
+		2.3^n = (3 -1).3^n
+
+		\newline
+
+		2.3^n = 2.3^n
+
+    \end{center}
+
+	Es decir, se pueden reemplazar dos pesas de una potencia de 3 por la inmediata potencia de 3 superior menos una sóla pesa de las dos potencias de 3. Igualmente esto no siempre se puede realizar ya que puede darse el caso de que ya se estén usando dos pesas de la potencia de 3 inmediata superior como en el siguiente ejemplo:  
 
 
+    \newline
+    \begin{center}
 
+    	p = 1.3^2 + 2.3^1 + 2.3^0
+    
+    \end{center} 
 
+    Entonces se debe encontrar una solución general que resuelva el problema antes mencionado. Se propone la siguiente solución:
 
-	Para este problema en particular se encontró un algoritmo goloso que genera
-	la solución óptima con una complejidad temporal lineal. La idea detrás de
-	esta solución y la cual la caracteriza como golosa consiste en que la
-	decisión sobre si utilizar una Genkidama depende únicamente del
-	elemento (refiriéndonos a las coordenadas de un adversario) a continuación y dos
-	enteros que ofrecen información sobre los enemigos recorridos anteriormente.
+    \newline
+    \begin{center}
 
-	Al observar el elemento a continuación, se puede saber si al lanzarle una
-	Genkidama a este, la misma alcanza al enemigo actual. Sin embargo no
-	es tan sencillo, y aquí es donde se utilizan los dos enteros mencionados con
+    \sum_{i=0}^{n}2.3^i = 3^{n+1} - 3^i
+
+    \end{center}
+
+    Se realiza la demostración de la anterior fórmula usando inducción en n: 
+
+   \newline
+    \textbf{Caso base:} $n = 0$
+
+    \newline
+    \begin{center}
+    
+    \sum_{i=0}^{0}2.3^i = 3^{1} - 3^0
+
+    \newline
+
+    2.3^0 = 3 - 1
+
+	\newline
+
+    2 = 2
+    \end{center} 
+
+    \newline
+    \textbf{Paso inductivo:} Usamos como hipótesis inductiva (HI) que la fórmula vale para n y queremos probar que vale para n + 1.
+
+    \newline
+    \begin{center}
+
+    \sum_{i=0}^{n+1}2.3^i = 3^{n + 2} - 3^i
+
+    \newline
+    \sum_{i=0}^{n}2.3^i + 2.3^{n+1} = 3^{n + 2} - 3^i
+
+    \newline
+    Por HI:
+
+    3^{n+1} - 3^i + 2.3^{n+1} = 3^{n + 2} - 3^i
+
+   	\newline
+	3.3^{n+1} - 3^i = 3^{n + 2} - 3^i
+
+   	\newline
+	3.3.3^{n} - 3^i = 3^{2}.3^{n} - 3^i
+
+   	\newline
+	9.3^{n} - 3^i = 9.3^{n} - 3^i
+
+    \end{center} 
+
+    \newline
+    \begin{center}{\sum_{i=0}^{n}2.3^i + 2.3^{n+1} = 3^{n + 2} - 3^i}\end{center} 
+
+    \newline
+    Por HI:
+    \begin{center}{3^{n+1} - 3^i + 2.3^{n+1} = 3^{n + 2} - 3^i} \end{center}
+
+ 	\newline
+    \begin{center}{3.3^{n+1} - 3^i = 3^{n + 2} - 3^i}\end{center} 
+
+    \newline
+    \begin{center}{3.3.3^{n} - 3^i = 3^{2}.3^{n} - 3^i}\end{center}
+
+    \newline
+    \begin{center}{9.3^{n} - 3^i = 9.3^{n} - 3^i} \end{center} 
+
+    Como conclusión se puede observar que cuando se tenga el caso de que no sea posible tomar una pesa de una potencia de 3 porque ya se usan dos pesas de dicha potencia y tampoco sea posible reemplazarla por la siguiente ya que también se usan dos pesas de dicha potencia (es decir, en el desarrollo del número hay varios símbolos 2 consecutivos) se debe buscar la primer potencia de 3 más grande de la cual no se tenga que utlizar dos pesas y reemplazar las pesas originales por la suma del valor de la potencia 3 de la pesa encontrada menos el valor de la potencia de 3 más chica de la cual se utilizan dos pesas. 
+
+	es tan sencillo, y aquí es donde se utilizan los dos enteros mencionados continuación
 	anterioridad. Uno de los enteros es $maxY = Y_{E_j} + T$, donde lo que se
 	almacena es la coordenada $Y$ de la última Genkidama lanzada más su alcance
 	$T$, necesaria para saber si mi adversario actual se encuentra bajo el
