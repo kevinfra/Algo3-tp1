@@ -32,10 +32,8 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
 
   if (esSolucion){
     soluciones.push_back(tiempo);
-    cout << "Encontre una solución: " << tiempo << endl;
 
   }else{
-    cout << "Todavia no encuentro solucion" << endl;
 
     Estado nuevoEstado;
     vector<int> nuevoCanibalesOrigen;
@@ -55,16 +53,7 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     //2 canibales o 0 arqueologos
     for (int mandarCanibales = 0; mandarCanibales <= 2; mandarCanibales++){
       for (int mandarArqueologos = mandarCanibales == 0 ? 1 : 0; mandarArqueologos <= 2 - mandarCanibales; mandarArqueologos++){
-        cout << "Intento mandar " << mandarCanibales << " canibales y " << mandarArqueologos << " arqueologos hacia la " << (linternaDer ? "izquierda" : "derecha") << endl;
         if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores)){
-          cout << "Mando" << endl;
-          if (!linternaDer){
-            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales) << endl;
-            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales) << endl;
-          }else{
-            cout << (linternaDer ? "Izquierda" : "Derecha") << " | A = " << (cantArqueologosDestino + mandarArqueologos) << " | C = " << (cantCanibalesDestino + mandarCanibales) << endl;
-            cout << (linternaDer ? "Derecha" : "Izquierda") << " | A = " << (cantArqueologosOrigen - mandarArqueologos) << " | C = " << (cantCanibalesOrigen - mandarCanibales) << endl;
-          }
 
           //Hago una copia de las listas (para no modificar otras listas)
           nuevoCanibalesOrigen = canibalesOrigen;
@@ -93,9 +82,7 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
 
             for (int i = 0; i < mandarArqueologos; i++){
               int index = indexOf(arqueologosMasRapidos[i], nuevoArqueologosOrigen);
-              // nuevoArqueologosOrigen.erase(nuevoArqueologosOrigen.begin() + index);
               nuevoArqueologosOrigen.erase(nuevoArqueologosOrigen.begin() + index);
-              cout << "CACA" << nuevoArqueologosOrigen.size() << "index" << index << endl;
               nuevoArqueologosDestino.push_back(arqueologosMasRapidos[i]);
             }
           }
@@ -112,9 +99,6 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
           int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
           BTCruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
           estadosAnteriores.pop_back();
-
-        }else{
-          cout << "No mando" << endl;
         }
       }
     }
@@ -159,7 +143,11 @@ int indexOf(int valor, vector<int> lista){
 int maximo(vector<int> lista){
   int largo = lista.size();
   int res;
-  if (largo > 0) res = lista[0];
+  if (largo > 0) {
+    res = lista[0];
+  }else{
+    res = -1;
+  }
   for (int k = 0; k < largo; ++k){
     if (res < lista[k]) res = lista[k];
   }
@@ -169,7 +157,11 @@ int maximo(vector<int> lista){
 int minimo(vector<int> lista){
   int largo = lista.size();
   int res;
-  if (largo > 0) res = lista[0];
+  if (largo > 0) {
+    res = lista[0];
+  }else{
+    res = -1;
+  }
   for (int k = 0; k < largo; ++k){
     if (res > lista[k]) res = lista[k];
   }
@@ -180,7 +172,7 @@ void sort(vector<int> &lista){
   int size = lista.size();
   for (int i = 1; i < size; ++i){
     for (int q = 0; q < i-1; ++q){
-      if(lista[q] > lista[q+1]){
+      if(lista[q] >  lista[q+1]){
         swap(lista, q, q+1);
       }
     }

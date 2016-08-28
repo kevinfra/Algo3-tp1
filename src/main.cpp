@@ -3,10 +3,22 @@
 #include <stdlib.h>     /* atol */
 #include <vector>
 #include <string>
+#include <chrono>
 #include "ejercicio2.h"
 #include "ejercicio1.h"
 
 using namespace std;
+
+static chrono::time_point<chrono::high_resolution_clock> start_time;
+
+void start_timer() {
+    start_time = chrono::high_resolution_clock::now();
+}
+
+double stop_timer() {
+    chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
+    return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
+}
 
 
 int main(int argc, char *argv[]){
@@ -32,9 +44,6 @@ int main(int argc, char *argv[]){
 
     cout << "Ingrese la cantidad de Arqueologos y luego la de Canibales: " << endl;
     cin >> cantidadArq >> cantidadCanibales;
-    if(debug){
-      cout << "Nro arq: " << cantidadArq << " y nro caver: " << cantidadCanibales << endl;
-    }
 
     cout << "Ingrese las velocidades de los Arqueologos: " << endl;
     int velocidad;
@@ -44,36 +53,18 @@ int main(int argc, char *argv[]){
       cantidadArq--;
     }
 
-    if(debug){
-      cout << "velocidades arq: ";
-      for (int i = 0; i < velocidadesArq.size(); ++i){
-        cout << velocidadesArq[i] << ", ";
-      }
-      cout << endl;
-    }
-
     cout << "Ingrese las velocidades de los Canibales" << endl;
     vector<int> velocidadesCanibales;
     while(cantidadCanibales > 0 && (cin >> velocidad)){
-      cout << velocidad << endl;
       velocidadesCanibales.push_back(velocidad);
       cantidadCanibales--;
     }
 
-    if(debug){
-      cout << "velocidades canivales: ";
-      for (int i = 0; i < velocidadesCanibales.size(); ++i){
-        cout << velocidadesCanibales[i] << ", ";
-      }
-      cout << endl;
-    }
-
+    start_timer();
     int tiempo = cruzarPuente(velocidadesCanibales, velocidadesArq);
-    if(tiempo > -1){
-      cout << "El tiempo minimo para cruzar es de " << tiempo << endl;
-    }else{
-      cout << "No es posible cruzar el puente y que todos los arqueologos se salven!" << endl;
-    }
+    cout << tiempo << endl;
+    cout << "tiempo que tarda en microsegundos: " << stop_timer() << endl;
+
 
   }else if(numeroDeEjercicio == 2){
     long p;
@@ -88,4 +79,6 @@ int main(int argc, char *argv[]){
   }
   return 0;
 }
+
+
 
