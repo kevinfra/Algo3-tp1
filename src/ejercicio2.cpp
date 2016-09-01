@@ -45,7 +45,7 @@ using namespace std;
 // }
 
 
-void arreglarBalanza(long p){
+pair<list< long >, list< long > > arreglarBalanza(long p){
   bool izquierda = true;
 	int divisiones = 0;
 	list<long> izquierdas;
@@ -76,14 +76,10 @@ void arreglarBalanza(long p){
 	}
 	if(!izquierda) izquierdas.push_back(pow(3,divisiones));
 
+	pair<list< long >, list< long > > res (izquierdas, derechas);
+	return res;
+/*
   // Mostrar en pantalla los resultados
-	cout << izquierdas.size() << " " << derechas.size() << endl;
-  for (list<long>::iterator itIzq = izquierdas.begin(); itIzq != izquierdas.end(); itIzq++) {
-  	cout << *itIzq << " ";
-  }
-	cout << endl;
-	for (list<long>::iterator itDer = derechas.begin(); itDer != derechas.end(); itDer++) {
-		cout << *itDer << " ";
-	}
-	cout << endl;
+	Ahora se hace desde Main
+*/
 }
