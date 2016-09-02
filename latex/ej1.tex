@@ -21,40 +21,36 @@
 
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
-        La solución que se propone para el problema resulta más fácil de comprender con un sencillo cambio de óptica. En lugar de entender una solución como una sucesión de peleas, donde a cada una de ellas le corresponde una lista representando a un peleador, puede pensarse en una asignación entre cada guerrero y su \emph{historial de peleas}: la lista de los bandos que le fueron asignados en cada una de las peleas. Por ejemplo, si el historial de peleas de un guerrero es \texttt{2122}, esto significa que en la primera, la tercera y la cuarta pelea formó parte del bando número 2, mientras que en el segundo enfrentamiento peleó en el bando número 1. En una solución presentada según el formato requerido, los historiales de peleas de cada guerrero pueden verse si se la lee por columnas.
+        La solución de este problema fue lograda considerando todos las formas de cruzar el puente suponiendo que de esa forma se pueda llegar a un final válido. Dado que el fin es cruzar el puente de la forma màs rápida, dejamos de lado la velocidad de quién va a cruzar el puente y nos enfocamos en a qué grupo pertenece. Siguiendo esta idea, siempre cruzarán los más rápidos de los que tengan la posibilidad de cruzar. Solamente van a tener esta chance quienes estén del lado que está en la linterna y que cruzar el puente no lleve a un \emph{estado inválido}. Un estado válido es aquél en el que no se estuvo anteriormente (es decir, que sea una situación que no haya ocurrido con anterioridad) y que no deje a más caníbales que arqueólogos de alguno de los dos lados. Si bien lo mejor es que crucen siempre los más rápidos, esto no siempre será posible. Es por esto, que los que crucen el puente serán los más rápidos de todas las combinaciones posibles entre los dos grupos siendo un cruce de 1 o 2 personas. Luego, los posibles cruces serán 2 personas del mismo grupo, 1 de un grupo y 1 de otro, o 1 sola de alguno de los dos grupos. Aquí es donde entra la importancia del estado inválido. La forma de corroborar que el movimiento lleve a un estádo válido es observando la cantidad de personas pertenecientes a cada uno de los grupos en cada lado del puente, sin importar su velocidad.
 
-        Para que una solución al problema sea válida, es necesario cualquier par de peleadores diferentes se enfrente al menos en una pelea. Puede observarse que esto equivale a que el historial de peleas asignado a cada guerrero sea distinto, es decir, que difiera como mínimo en un dígito de todos los demás. Por otro lado, se pide que se lleve a cabo el mínimo número de peleas necesario, o lo que es lo mismo, que la longitud de los historiales de peleas sea la menor posible.
+        La razón de esto es que da igual si los que están en algún lado del puente son tienen velocidad $a_1$ o $a_2$ ya que simplemente sería una permutación de éstos. A pesar de que esto puede impactar en el tiempo total del cruce del puente, el objetivo de probar con todos los caminos y obtener todos las \emph{soluciones válidas} hace que luego no sea importante quién está de cada lado.
 
-        Observando el problema desde esta perspectiva, es posible apreciar su semejanza con la construcción de un sistema de numeración posicional. Mientras que en un sistema de numeración se busca representar a los números naturales mediante una serie finita de símbolos provenientes de un alfabeto también finito, en una solución al problema planteado se busca asignar a cada peleador un historial de peleas, que consiste también en una serie finita de elementos de un conjunto finito: los bandos $1$ y $2$. Además, en un sistema de numeración, la representación de cada número tiene, en cierto sentido, la mínima longitud posible: estas se van asignando en orden creciente, y si queda ``libre'' una representación de cinco dígitos para un número, se utiliza esta antes que una de seis. Esto se parece al requisito de optimalidad requerido por el problema. Por último, dados dos números distintos, es necesario que sus representaciones en un sistema de numeración difieran como mínimo en un dígito, de forma análoga a lo que se desea que suceda con los historiales de peleas de dos guerreros diferentes.
+        Para que una solución al problema sea válida, el tiempo que tome cruzar el puente debe ser mayor o igual a la suma de las velocidades de los todos los exploradores (caníbales y arqueólogos) y además en ninǵún momento del recorrido deben haber estados inválidos. Además, se pide que la solución final sea el menor tiempo posible que tome cruzar el puente. Este mismo será el mínimo entre todas las soluciones válidas.
 
-        El sistema de numeración binario utiliza, comúnmente, los símbolos \texttt{0} y \texttt{1}. Sin embargo, esta elección es completamente arbitraria. Si se piensa en una variante de este sistema construida en base a los símbolos \texttt{1} y \texttt{2}, el problema de asignar un historial de peleas para $N$ guerreros que cumpla los requerimientos de Gokú puede reducirse a encontrar una representación en dicho sistema para los primeros $N$ números naturales. (A modo ilustrativo, pueden observarse las columnas de las soluciones de ejemplo expuestas en la descripción del problema. Si se reemplazan los símbolos $\lbrace\mathtt{1},\mathtt{2}\rbrace$ por $\lbrace\mathtt{0},\mathtt{1}\rbrace$, las columnas corresponden exactamente a la escritura binaria de los números entre $0$ y $7$).
+        Teniendo en cuenta lo planteado en este informe sobre el problema, podemos remarcar que el algoritmo realizado, fue construido en base a la técnica de \emph{backtracking}. Así, se prueban todos los caminos posibles para cruzar el puente y al final se obtiene una lista con todas los tiempos que puede tomar cruzar el puente.
 
-        El algoritmo propuesto para resolver el problema planteado se basa en esta idea, y consiste simplemente en escribir los números naturales entre $0$ y $N-1$ en notación binaria utilizando $\lceil \log_2(N) \rceil$ dígitos para cada uno de ellos, pero cambiando los símbolos \texttt{0} y \texttt{1} por \texttt{1} y \texttt{2}, respectivamente. Estas escrituras representarán el historial de peleas de cada guerrero. Dado que para escribir los primeros $N$ naturales en notación binaria son necesarios exactamente $\lceil\log_2(N)\rceil$ dígitos, esta será la mínima cantidad de peleas necesarias para que todos los guerreros se enfrenten alguna vez entre sí. La línea correspondiente a la $i$-ésima pelea se obtiene tomando en orden los $i$-ésimos dígitos de las escrituras generadas; en otras palabras, leyendo las mismas ``por columnas''.
+        Los casos base de la recursión son triviales, ya que resultan del cruce del puente de 1 o 2 exploradores, sin importar su grupo, y el tiempo que toma eso es la velocidad del más lento. Aquí solo pueden ocurrir casos inválidos cuando habiendo 2 exploradores, se intente realizar el cruce de solo uno de ellos. En cualquier otro caso, el cruce será de un solo cambio de estado y en ningún momento pueden haber más exploradores de algúno de los grupos.
 
-        El resultado así obtenido cumple con los requisitos necesarios para ser solución del problema. En efecto:
-        \begin{itemize}
-            \item Dados dos guerreros distintos, estos se enfrentan como mínimo en una pelea, ya que sus historiales de peleas (las escrituras binarias de sus respectivos índices) difieren al menos en un elemento.
-
-            \item No existe una solución con menos peleas. Para ver esto, es importante notar que, dado cualquier $k \in \mathbb{N}$, se pueden generar como máximo $2^k$ escrituras binarias distintas de longitud $k$. En otras palabras, si Gokú hace que más de $2^k$ luchadores se enfrenten en $k$ peleas, habrá al menos dos de ellos que compartirán bando en todas las peleas.
-
-            Consideremos, para cualquier cantidad de guerreros $N$, una serie de $k$ peleas, donde $k \leq \lceil \log_2(N) \rceil - 1$. En tal caso
-            \[ 2^k \leq 2^{\lceil \log_2(N) \rceil - 1} = \frac{1}{2} 2^{\lceil \log_2(N) \rceil} < N\]
-            dado que $ 2^{\lceil \log_2(N) \rceil}$ es la mínima potencia de dos mayor o igual que $N$. Como acaba de verse, esto significa que habrá al menos un par de guerreros que no se enfrentará nunca. Es decir, no existen soluciones válidas al problema con menos de $\lceil \log_2(N) \rceil$ peleas.
-        \end{itemize}
+        Para el caso recursivo, se chequeará antes de entrar en la recursión que el estado al que se va a cambiar sea uno válido. Si no lo es, cambia la cantidad de exploradores que vayan a cruzar. Si siguen obteniéndose estados inválidos, entonces no quedarán casos para probar y simplemente terminará la búsqueda en esa rama de estados sin haber encontrado una solución válida.
 
         \subsubsection{Detalles implementativos}
             El algoritmo fue implementado en lenguaje C++. Para almacenar la solución, se recurre a la clase \texttt{vector}, proporcionada por la librería estándar del lenguaje.
 
-            La ejecución consiste en un ciclo que se repite $\lceil \log_2(N) \rceil$ veces. La $i$-ésima iteración de este ciclo corresponde a la $i$-ésima pelea de la solución, y durante ella se construye la línea correspondiente a la misma, escribiendo repetidamente los símbolos \texttt{1} y \texttt{2}, alternando entre ellos cada $2^i$ símbolos. Es decir, la primera línea generada tiene la forma \texttt{1212121...}, la segunda, \texttt{1122112...}, y así sucesivamente. Si se observan las columnas del resultado así obtenido, se encuentran (con sus dígitos en orden inverso) las escrituras binarias de los primeros $N$ naturales, escritas con los símbolos \texttt{1} y \texttt{2}.
+            Para manejar los estados en el árbol de ejecución, se van almacenando los nuevos estados en un vector de \texttt{Estados} antes de entrar en una recursión y se quita al retornar de la misma. Esto es para que en la misma altura del arbol haya la misma cantidad de estados y para que no haya estados inválidos de una rama de desiciones en otra en la que se tomaron otros caminos.
+
+            Un \texttt{Estado} es una clase la cual consiste de 4 \texttt{Int}, 2 para la cantidad de arqueólogos y 2 para la cantidad de caníbales de cada uno de los lados en ese momento, y de un \texttt{Bool} para indicar si la linterna se encuentra a la derecha o no.
+
+            Llamamos \emph{árbol de ejecución} al árbol que se va generando de acuerdo a las desiciones tomadas en cuanto a qué explorador cruzará el puente.
 
         \begin{codesnippet}
         \begin{verbatim}
-cantidadPeleas = parte entera de log_2(n)
-peleas = vector de tamaño cantidadPeleas inicializado en 2
-saltos = 1
-para i entre 0 y cantidadPeleas:
-    para j entre 0 y n, con incrementos de 2 * saltos:
-        para k entre 0 y saltos:
+si estadoActual tiene linterna a la derecha
+  lado de origen = lado derecho
+si no
+  lado de origen = lado izquierdo
+para i entre 0 y maximo(2, #arqueólogos del lado de origen):
+    para j entre 0 y maximo(2, #canibales del lado de origen):
+        :TENGO_QUE_TERMINAR_ESTO_BY_KEVIN:
             si j + k < n:
                 peleas[i][j + k] = 1
             fin si
@@ -68,9 +64,9 @@ devolver peleas
         \end{verbatim}
         \end{codesnippet}
 
-            En rigor, dado que la matriz necesaria para almacenar la solución es creada al comienzo de la ejecución, se aprovecha este momento para inicializarla con el símbolo \texttt{2}, utilizando el ciclo recién explicado para reemplazarlo por el símbolo \texttt{1} donde es necesario.
+            El algoritmo consiste en probar a cruzar primero a un explorador en solitario de cada uno de los grupos y después todas las combinaciones de dos exploradores. Siempre chequeando primero de qué lado se encuentra la linterna. Sin embargo, incluso antes de comenzar a realizar la búsqueda de caminos, se chequea que al momento de comenzar no haya más caníbales que arqueólogos ya que de ser el caso, se retorna $-1$ inmediatamente indicando que no hay caminos posibles para esa entrada.
 
-            % ¿MANDAMOS PSEUDOCÓDIGO? - NO, pero igual te quiero fran :) 
+
 
     % 3. Deducir una cota de complejidad temporal del algoritmo propuesto y justificar por qué el algoritmo cumple la cota dada. Utilizar el modelo uniforme.
     \subsection{Complejidad teórica}
