@@ -1,7 +1,7 @@
-#include <vector>
+#include <list>
 #include <utility>
 #include <iostream>
 #include <math.h>
 
-void arreglarBalanza(long p);
+pair<list< long >, list< long > > arreglarBalanza(long p);
 bool esPotencia(int n, int b);

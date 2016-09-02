@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 void Mochilero()
 {
 	vector<int> pesos;
@@ -36,3 +37,17 @@ void Mochilero()
 		break;
 	}
 }
+=======
+#include <vector>
+#include <utility>
+#include <iostream>
+
+void guardarElTesoro(){
+    vector<int> mochilas;
+    mochilas.push_back(3);
+    mochilas.push_back(4);
+    mochilas.push_back(5);
+    mochilas.push_back(0);
+
+}
+>>>>>>> 56003a69fa0228cd99ddb28d0e19dc9c562bd58f
