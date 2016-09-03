@@ -50,11 +50,13 @@ k = 0
 listaPromedio = []
 listaPesas = []
 while k < len(x):
-  subList = x[k:k+5000]
-  print(np.average(subList))
+  subList = x[k:k+1000]
   listaPromedio.append(promedio(subList))
   listaPesas.append(y[k])
-  k += 5000
+  k += 1000
+
+
+
 
 promedioNP = np.array(listaPromedio)
 pesasNP = np.array(listaPesas)
@@ -67,7 +69,7 @@ pesasNP = np.array(listaPesas)
 fig = plt.figure()
 fig.patch.set_facecolor('white')
 ax1 = fig.add_subplot(111)
-pylab.plot(promedioNP,listaPesas,'ro', label= 'Resultados Ejercicio 2')
+pylab.plot(listaPesas, promedioNP,'ro', label= 'Resultados Ejercicio 2')
 
 
 ax1.set_title("Pesas de potencias de 3")
