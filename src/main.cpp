@@ -108,13 +108,13 @@ int main(int argc, char *argv[]){
       cout << endl;
     }else{
       int p = 1;
-      for (int q = 0; q < 500; ++q){
-        for (int i = 0; i < 50; ++i){
+      for (int q = 0; q < 5000; ++q){
+        for (int i = 0; i < 5000; ++i){
           start_timer();
           arreglarBalanza(p);
           cout << stop_timer() << "    " << p << endl;
         }
-        p += 111;
+        p += 111111;
       }
     }
 
