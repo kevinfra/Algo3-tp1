@@ -5,66 +5,49 @@
 
 	\begin{figure}[ht]
 		\begin{center}
-			\includegraphics[width=0.5\columnwidth]{imagenes/genkidama.png}
-			\caption{Todos con la' palmas arriba}
+			\includegraphics[width=0.5\columnwidth]{imagenes/balanza.jpg}
+			\caption{Equilibro}
 		\end{center}
 	\end{figure}
 
-	El equipo logro cruzar el puente satisfactoriamente y ya se encuentra dentro de una fortaleza antigua. Al entrar, nuestro grupo de aventureros caminan por los pasillos hasta llegar a una habitación amplia
-con una puerta y algunos esqueletos tirados en el piso.
-Al tratar de abrir la puerta se dan cuenta que la puerta esta cerrada con llave.
-En el medio de la habitación hay una balanza de dos platillos, en el plato de la izquierda se encuentra
-la llave para abrir la siguiente puerta, el otro esta vacío.
-Al tomar la llave, la balanza cambia el equilibrio, se cierra la entrada a la habitación, las paredes se
-empiezan a mover y la llave no sirve para destrabar la puerta.
-Rapidamente observan que debajo de la balanza se encuentra un conjunto de pesas. Curiosamente
-todas tienen un escritas una potencia de 3 distinta que indican el peso de cada una.
-Entre los expedicionarios uno tiene una balanza digital para pesar la llave que retiraron. Quieren
-recomponer el equilibrio de la balanza utilizando las pesas encontradas.
-Ayudemoslo a reestablecer la balanza antes de que las paredes terminen aplastando a los integrantes
-de la expedición!
+	Luego de cruzar el puente, el equipo se encuentra en una habitación amplia con una puerta, la cual está cerrada. En el medio de la habitación hay una balanza de dos platillos, la cual contiene sobre su platillo izquierdo una llave que abre la puerta de la habitación. Al retirar la llave, se cambia el equilibro de la balanza, lo cual hace que se cierre la entrada de la habitación. La llave no sirve para abrir la puerta y lo único que puede realizar el equipo es recompener el equilibro de la balanza utilizando un conjunto de pesas de potencia de 3 distintas. Es decir, sólo disponen de una sóla pesa de cada potencia de 3. Los datos de entrada y de salida para el problema son los siguientes: 
 
 	~
 
-	\textbf{Formato de entrada}
+	\textbf{Formato de entrada:} El único dato de entrada es un entero $P$ que representa el peso de la llave.
 
 	\begin{tabular}{ll}
-		\texttt{3} & \texttt{2} \\
-		\texttt{4} & \texttt{0} \\
-		\texttt{3} & \texttt{3} \\
-		\texttt{1} & \texttt{6} \\
+		\texttt{P}
 	\end{tabular}
 
 	~
 
-	\textbf{Salida}
+	\textbf{Salida:} La salida consiste en dos enteros $S$ y $T$ que representan la cantidad de pesas que hay que colocar en el platillo izquierdo y el derecho respectivamente, seguidas de otra línea con los valores de las pesas que se deben colocar del platillo izquierdo ordenadas de menor a mayor y finalmente otra línea con los valores de las pesas del platillo derecho, también con el mismo orden.
 
 	\begin{tabular}{ll}
-		\texttt{2} & \\
-		\texttt{2} & \texttt{3} \\
+		\texttt{S} & \texttt{T} \\
+		\texttt{I1 ...} & \texttt{...IS} \\
+		\texttt{D1 ...} & \texttt{...DT} \\
 	\end{tabular}
 
 	~
 
-	Se puede observar que tenemos 3 oponentes ($N$), el rango de la
-	Genkidama es 2 ($T$) y se necesitaron 2 de ellas para vencerlos ($G$). En este caso, al
-	dispararle a 2 se estaba también destruyendo a 1, quedando fuera del alcance
-	y por ende destinado a ser exterminado aparte 3.
+	Se tiene como restricción que el peso $P$ está en el siguiente rango: 1$<=$ $P$ $<=$ $10^{15}$. La complejidad temporal debe ser a lo sumo $\ord(\sqrt{P})$. 
 
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
 
-	La idea propuesta para la resolución del problema consiste en buscar cómo obtener una representación del número p. Si se consigue una representación del mismo se puede equilibrar la balanza. Primero nos abtraemos de las restricciones del problema y pensamos que cualquier número a perteneciente a naturales admite un desarrollo en base d, utilizando sólo símbolos comprendidos en el rango de 0 a d-1. Como se dispone de sólo pesas que son potencias de 3, se decide utilizar la base 3 para representar el número. Si el problema no tuviera la restricción de que sólo se dispone de una pesa de cada potencia de 3, la resolución sería trivial ya que sólo consiste en obtener el desarrollo en base 3 del número p (que es un dato de entrada y que se asume que su desarrollo es en base 10) y poner tantas pesas de cada potencia de 3 (hasta 2 por potencia ya que en base 3, sólo se pueden utilizar los símbolos 0, 1 y 2) como indique el desarrollo, en el plato de la izquierda de la balanza para obtener el mismo peso p. Pero la restricción de que sólo se dispone de una sóla pesa de cada potencia de 3 hace que dicha solución no funcione. No obstante, teniendo en cuenta que en la balanza, las pesas que se colocan en el lado derecho 'restan' el peso colocado en el plato izquierdo se puede pensar en una solución en la cual cuando se tengan que utilizar dos pesas de la misma potencia, se puedan reemplazar por el uso de una pesa mayor colocada en el plato izquierdo (la cual se interpretaría como suma de dicha potencia de 3) y el uso de otra pesa colocada en el plato derecho (la cual se interpretaría como resta de dicha potencia de 3). Para lograr que la suma de dicha pesa menos la resta de la otra pesa, den como resultado el mismo valor que las dos pesas originales, se debe encontrar alguna relación entre las potencias de 3. La solución propuesta consiste en lo siguiente: 
+	La idea propuesta para la resolución del problema consiste en buscar cómo obtener una representación del número $p$. Si se consigue una representación del mismo se puede equilibrar la balanza. Primero nos abtraemos de las restricciones del problema y pensamos que cualquier número $a$ $\in$ \mathds{N} admite un desarrollo en base $d$, utilizando sólo símbolos comprendidos en el rango de 0 a $d-1$. Como se dispone de sólo pesas que son potencias de 3, se decide utilizar la base 3 para representar el número. Si el problema no tuviera la restricción de que sólo se dispone de una pesa de cada potencia de 3, la resolución sería trivial ya que sólo consiste en obtener el desarrollo en base 3 del número $p$ (que es un dato de entrada y que se asume que su desarrollo es en base 10) y poner tantas pesas de cada potencia de 3 (hasta 2 por potencia ya que en base 3, sólo se pueden utilizar los símbolos 0, 1 y 2) como indique el desarrollo, en el plato de la izquierda de la balanza para obtener el mismo peso $p$. Pero la restricción de que sólo se dispone de una sóla pesa de cada potencia de 3 hace que dicha solución no funcione. No obstante, teniendo en cuenta que en la balanza, las pesas que se colocan en el lado derecho 'restan' el peso colocado en el plato izquierdo se puede pensar en una solución en la cual cuando se tengan que utilizar dos pesas de la misma potencia, se puedan reemplazar por el uso de una pesa mayor colocada en el plato izquierdo (la cual se interpretaría como suma de dicha potencia de 3) y el uso de otra pesa colocada en el plato derecho (la cual se interpretaría como resta de dicha potencia de 3). Para lograr que la suma de dicha pesa menos la resta de la otra pesa, den como resultado el mismo valor que las dos pesas originales, se debe encontrar alguna relación entre las potencias de 3. La solución propuesta consiste en lo siguiente: 
 
 	\newline
 
      \textbf{Caso 1:} El desarrollo en base 3 del número $p$ no contiene el símbolo 2.
 
-    Este caso es trivial. Significa que a lo sumo se usa una vez cada potencia de 3 en el desarrollo del número. Por lo tanto, para obtener la solución al problema sólo bastar tomar las pesas correspondientes (las potencias de 3 que se utilizan en el desarrollo) y colocarlas en el plato izquierdo de la balanza para obtener el mismo peso original p y equilibrarla.
+    Este caso es trivial. Significa que a lo sumo se usa una vez cada potencia de 3 en el desarrollo del número. Por lo tanto, para obtener la solución al problema sólo bastar tomar las pesas correspondientes (las potencias de 3 que se utilizan en el desarrollo) y colocarlas en el plato izquierdo de la balanza para obtener el mismo peso original $p$ y equilibrarla.
 
 	\newline
 
-     \textbf{Caso 2:} El desarrollo en base 3 del número p contiene al menos un símbolo 2.
+     \textbf{Caso 2:} El desarrollo en base 3 del número $p$ contiene al menos un símbolo 2.
 
     Este es el caso interesante ya que no se dispone de dos pesas de la misma potencia. Sin embargo, se pueden reemplazar dos pesas de la misma potencia de la siguiente manera:
 
@@ -94,7 +77,7 @@ de la expedición!
     \newline
     \begin{center}
 
-    	p = 1.3^2 + 2.3^1 + 2.3^0
+    	$p$ = 1.3^2 + 2.3^1 + 2.3^0
     
     \end{center} 
 
@@ -107,7 +90,7 @@ de la expedición!
 
     \end{center}
 
-    Se realiza la demostración de la anterior fórmula usando inducción en n: 
+    Se realiza la demostración de la anterior fórmula usando inducción en $n$: 
 
    \newline
     \textbf{Caso base:} $n = 0$
@@ -127,7 +110,7 @@ de la expedición!
     \end{center} 
 
     \newline
-    \textbf{Paso inductivo:} Usamos como hipótesis inductiva (HI) que la fórmula vale para n y queremos probar que vale para n + 1.
+    \textbf{Paso inductivo:} Usamos como hipótesis inductiva (HI) que la fórmula vale para $n$ y queremos probar que vale para $n + 1$.
 
     \newline
     \begin{center}
@@ -153,38 +136,18 @@ de la expedición!
 
     \end{center} 
 
-    \newline
-    \begin{center}{\sum_{i=0}^{n}2.3^i + 2.3^{n+1} = 3^{n + 2} - 3^i}\end{center} 
+	\begin{flushright}
 
-    \newline
-    Por HI:
-    \begin{center}{3^{n+1} - 3^i + 2.3^{n+1} = 3^{n + 2} - 3^i} \end{center}
-
- 	\newline
-    \begin{center}{3.3^{n+1} - 3^i = 3^{n + 2} - 3^i}\end{center} 
-
-    \newline
-    \begin{center}{3.3.3^{n} - 3^i = 3^{2}.3^{n} - 3^i}\end{center}
-
-    \newline
-    \begin{center}{9.3^{n} - 3^i = 9.3^{n} - 3^i} \end{center} 
+	\Box
+	\end{flushright}
 
     Como conclusión se puede observar que cuando se tenga el caso de que no sea posible tomar una pesa de una potencia de 3 porque ya se usan dos pesas de dicha potencia y tampoco sea posible reemplazarla por la siguiente ya que también se usan dos pesas de dicha potencia (es decir, en el desarrollo del número hay varios símbolos 2 consecutivos) se debe buscar la primer potencia de 3 más grande de la cual no se tenga que utlizar dos pesas y reemplazar las pesas originales por la suma del valor de la potencia 3 de la pesa encontrada menos el valor de la potencia de 3 más chica de la cual se utilizan dos pesas. 
 
-	es tan sencillo, y aquí es donde se utilizan los dos enteros mencionados continuación
-	anterioridad. Uno de los enteros es $maxY = Y_{E_j} + T$, donde lo que se
-	almacena es la coordenada $Y$ de la última Genkidama lanzada más su alcance
-	$T$, necesaria para saber si mi adversario actual se encuentra bajo el
-	alcance de alguna Genkidama anterior. El otro es $xPendiente$ cuya función
-	es guardar el valor de la coordenada $X$ de un oponente que está en el
-	rango del que le sigue, quedando así pendiente a ser destruido por una
-	Genkidama lanzada a algún sucesor.
 
 	\subsubsection{Implementación}\label{ej2_imp}
 
 	Habiendo introducido la idea, se detalla el comportamiento del algoritmo para
-	una entrada con $N$ enemigos y rango de Genkidama $T$. Tanto $maxY$ como
-	$xPendiente$ son inicializados en 0.
+	una entrada con $P$.
 
 	Se presenta un pseudocódigo para tener de referencia al seguir la
 	explicación detallada a continuación:
