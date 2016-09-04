@@ -8,6 +8,7 @@
 #include <chrono>
 #include "ejercicio1.h"
 #include "ejercicio2.h"
+#include "ejercicio3.h"
 
 using namespace std;
 
@@ -121,16 +122,33 @@ int main(int argc, char *argv[]) {
 				p += 1000001;
 			}
 		}
+	}
+	else if (numeroDeEjercicio == 3) {
 
+		int cantMochilas = 3;
+		int cantTesoros = 3;
+		vector<int> capacidades { 3, 4, 5 };
+		vector<int> tesoroCant { 1, 1, 1 };
+		vector<int> tesoroPeso { 1, 3, 4 };
+		vector<int> tesoroValor { 10, 9, 4 };
 
-  	}
-  	else if (numeroDeEjercicio == 3) {
-  		//  cargarMochila();
-  	}
+		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroPeso, tesoroValor);
+		cout << "valorTotal = " << ej3.first << endl;
+		for (unsigned int i = 0; i < ej3.second.size(); ++i)
+		{	cout << endl;
+			cout << "mochila" << (i+1) << " capacidad = " << capacidades[i] << endl;
+			cout << "cantTesoros = " << ej3.second[i][0] << " | ";
+			for (unsigned int j = 1; j < ej3.second[i].size(); ++j)
+			{
+				cout << "tesoro nro " << ej3.second[i][j] << " (v,p) = (" << tesoroValor[ej3.second[i][j]-1] << "," << tesoroPeso[ej3.second[i][j]-1] << ")" << " | ";
+			}
+			cout << endl;
+		}
+	}
 	else {
 		cout << "numero de ejercicio no valido" << endl;
 		return -1;
-  	}
+	}
 	return 0;
 }
 
