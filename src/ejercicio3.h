@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <algorithm>
+#include <vector>
 
-typedef pair<int, int, int> tesoro;
-void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<tesoro> tesoros);
+using namespace std;
+
+void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<int> tesoroCant, vector<int> tesoroPeso, vector<int> tesoroValor);

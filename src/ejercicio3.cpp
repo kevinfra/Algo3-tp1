@@ -1,8 +1,11 @@
 #include "ejercicio3.h"
 
-void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<tesoro> tesoros) {
+using namespace std;
+
+void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<int> tesoroCant, vector<int> tesoroPeso, vector<int> tesoroValor) {
 	//capacidades.size() == cantMochilas
 	//tesoro = cantidad, peso, valor
+	//pair<int, pair<int, int>> tesoro;
 	//0 < cantMochilas <= 3
 	/*
 		SALIDA:
@@ -30,7 +33,7 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 	int cantTesorosMochila1 = 0;
 	int cantTesorosMochila2 = 0;
 
-	vector<vector<vector<int>>>> cuboMagico;
+	vector< vector< vector<int> > > cuboMagico;
 
 	//Dimensiono el cubo e inicializo cada valor en 0
 	cuboMagico.resize(cantTesoros + 1);
@@ -42,10 +45,10 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 	}
 
 	int iTesoro = 0;
-	for (int iTesoroPorTipo = 0; iTesoroPorTipo < tesoros.size(); ++iTesoroPorTipo) {
-		valorTesoro = get<2>(tesoros[iTesoroPorTipo]);
-		pesoTesoro = get<1>(tesoros[iTesoroPorTipo]);
-		cantidadPorTipoTesoro = get<0>(tesoros[iTesoroPorTipo]);
+	for (int iTesoroPorTipo = 0; iTesoroPorTipo < tesoroValor.size(); ++iTesoroPorTipo) {
+		valorTesoro = tesoroValor[iTesoroPorTipo];
+		pesoTesoro = tesoroPeso[iTesoroPorTipo];
+		cantidadPorTipoTesoro = tesoroCant[iTesoroPorTipo];
 
 		for (int iTipoTesoro = 0; iTipoTesoro < cantidadPorTipoTesoro; ++iTipoTesoro) {
 
@@ -95,10 +98,10 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 	iMochila2 = capacidades[1];
 
 	iTesoro = cantTesoros - 1;
-	for (int iTesoroPorTipo = tesoros.size(); iTesoroPorTipo > 0; --iTesoroPorTipo) {
-		valorTesoro = get<2>(tesoros[iTesoroPorTipo - 1]);
-		pesoTesoro = get<1>(tesoros[iTesoroPorTipo - 1]);
-		cantidadPorTipoTesoro = get<0>(tesoros[iTesoroPorTipo - 1]);
+	for (int iTesoroPorTipo = tesoroValor.size(); iTesoroPorTipo > 0; --iTesoroPorTipo) {
+		valorTesoro = tesoroValor[iTesoroPorTipo - 1];
+		pesoTesoro = tesoroPeso[iTesoroPorTipo - 1];
+		cantidadPorTipoTesoro = tesoroCant[iTesoroPorTipo - 1];
 
 		for (int iTipoTesoro = 0; iTipoTesoro < cantidadPorTipoTesoro; ++iTipoTesoro) {
 			
@@ -109,7 +112,7 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 
 				if (pesoTesoro <= iMochila1 && pesoTesoro <= iMochila2) {
 
-					if (cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2] => cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro]) {
+					if (cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2] >= cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro]) {
 						metoEnMochila1 = true;
 					}
 					else {
@@ -120,7 +123,7 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 				if (metoEnMochila1 || pesoTesoro <= iMochila1) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 1
 
-					mochila1.push_back(iTesoroPorTipo)
+					mochila1.push_back(iTesoroPorTipo);
 
 					cantTesorosMochila1++;
 					
@@ -128,7 +131,7 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 				}
 				else if (metoEnMochila2 || pesoTesoro <= iMochila2) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 2
-					mochila2.push_back(iTesoroPorTipo)
+					mochila2.push_back(iTesoroPorTipo);
 
 					cantTesorosMochila2++;
 					
