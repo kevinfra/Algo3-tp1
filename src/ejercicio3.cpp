@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<int> tesoroCant, vector<int> tesoroPeso, vector<int> tesoroValor) {
+salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vector<int> tesoroCant, vector<int> tesoroPeso, vector<int> tesoroValor) {
 	//capacidades.size() == cantMochilas
 	//tesoro = cantidad, peso, valor
 	//pair<int, pair<int, int>> tesoro;
@@ -18,34 +18,51 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 	int valorTesoro;
 	int pesoTesoro;
 	int cantidadPorTipoTesoro;
-	int tipoTesoro;
 	int valorMochila1;
 	int valorMochila2;
+	int valorMochila3;
 	int valorNingunaMochila;
 	int iMochila1;
 	int iMochila2;
+	int iMochila3;
 	bool metoEnMochila1;
 	bool metoEnMochila2;
+	bool metoEnMochila3;
+	
+	int valorAnterior1;
+	int valorAnterior2;
+	int valorAnterior3;
+	bool entraEnMochila1;
+	bool entraEnMochila2;
+	bool entraEnMochila3;
 
 	int valorTotal = 0;
 	vector<int> mochila1;
 	vector<int> mochila2;
+	vector<int> mochila3;
 	int cantTesorosMochila1 = 0;
 	int cantTesorosMochila2 = 0;
+	int cantTesorosMochila3 = 0;
+	salida salida1;
+	
+	vector< vector<int> > mochilas;
 
-	vector< vector< vector<int> > > cuboMagico;
+	vector< vector< vector< vector<int> > > > cuboMagico;
 
 	//Dimensiono el cubo e inicializo cada valor en 0
 	cuboMagico.resize(cantTesoros + 1);
 	for (int i = 0; i <= cantTesoros; ++i) {
 		cuboMagico[i].resize(capacidades[0] + 1);
 		for (int j = 0; j <= capacidades[0]; ++j) {
-			cuboMagico[i][j].resize(capacidades[1] + 1, 0);
+			cuboMagico[i][j].resize(capacidades[1] + 1);
+			for (int k = 0; k <= capacidades[1]; ++k) {
+				cuboMagico[i][j][k].resize(capacidades[2] + 1, 0);
+			}
 		}
 	}
 
 	int iTesoro = 0;
-	for (int iTesoroPorTipo = 0; iTesoroPorTipo < tesoroValor.size(); ++iTesoroPorTipo) {
+	for (unsigned int iTesoroPorTipo = 0; iTesoroPorTipo < tesoroValor.size(); ++iTesoroPorTipo) {
 		valorTesoro = tesoroValor[iTesoroPorTipo];
 		pesoTesoro = tesoroPeso[iTesoroPorTipo];
 		cantidadPorTipoTesoro = tesoroCant[iTesoroPorTipo];
@@ -56,49 +73,45 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 
 				for (iMochila2 = 0; iMochila2 <= capacidades[1]; ++iMochila2) {
 
-					valorMochila1 = 0;
-					valorMochila2 = 0;
-					valorNingunaMochila = 0;
+					for (iMochila3 = 0; iMochila3 <= capacidades[2]; ++iMochila3) {
 
-					if (pesoTesoro <= iMochila1 || pesoTesoro <= iMochila2) {
+						valorMochila1 = 0;
+						valorMochila2 = 0;
+						valorMochila3 = 0;
+						valorNingunaMochila = 0;
 
-						valorNingunaMochila = cuboMagico[iTesoro][iMochila1][iMochila2];
-						if (pesoTesoro <= iMochila1) {
-							valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2];
+						if (pesoTesoro <= iMochila1 || pesoTesoro <= iMochila2 || pesoTesoro <= iMochila3) {
+
+							valorNingunaMochila = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3];
+							if (pesoTesoro <= iMochila1) {
+								valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
+							}
+
+							if (pesoTesoro <= iMochila2) {
+								valorMochila2 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+							}
+
+							if (pesoTesoro <= iMochila3) {
+								valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+							}
 						}
 
-						if (pesoTesoro <= iMochila2) {
-							valorMochila2 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro];
-						}
+						cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = max(max(max(valorNingunaMochila, valorMochila1), valorMochila2), valorMochila3);
 					}
-
-					cuboMagico[iTesoro + 1][iMochila1][iMochila2] = max(max(valorNingunaMochila, valorMochila1), valorMochila2);
 				}
 			}
 			iTesoro++;
 		}
 	}
 
-	valorTotal = cuboMagico[cantTesoros - 1][capacidades[0]][capacidades[1]];
-
-	/*
-	vector<int> mochila1;
-	vector<int> mochila2;
-	int cantTesorosMochila1 = 0;
-	int cantTesorosMochila2 = 0;
-
-		SALIDA:
-		valorTotal con el valor total de los tesoros guardados
-
-		Y para la mochila i:
-		mochila_i con mochila_i[0] indicando la cantidad de tesoros que tiene, mochila_i[1..N] indicando los tipos
-	*/
+	valorTotal = cuboMagico[cantTesoros][capacidades[0]][capacidades[1]][capacidades[2]];
 
 	iMochila1 = capacidades[0];
 	iMochila2 = capacidades[1];
+	iMochila3 = capacidades[2];
 
 	iTesoro = cantTesoros - 1;
-	for (int iTesoroPorTipo = tesoroValor.size(); iTesoroPorTipo > 0; --iTesoroPorTipo) {
+	for (unsigned int iTesoroPorTipo = tesoroValor.size(); iTesoroPorTipo > 0; --iTesoroPorTipo) {
 		valorTesoro = tesoroValor[iTesoroPorTipo - 1];
 		pesoTesoro = tesoroPeso[iTesoroPorTipo - 1];
 		cantidadPorTipoTesoro = tesoroCant[iTesoroPorTipo - 1];
@@ -107,35 +120,60 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 			
 			metoEnMochila1 = false;
 			metoEnMochila2 = false;
+			metoEnMochila3 = false;
 
-			if (cuboMagico[iTesoro + 1][iMochila1][iMochila2] != cuboMagico[iTesoro][iMochila1][iMochila2]) {
+			if (cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] != cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3]) {
 
-				if (pesoTesoro <= iMochila1 && pesoTesoro <= iMochila2) {
+				entraEnMochila1 = pesoTesoro <= iMochila1;
+				entraEnMochila2 = pesoTesoro <= iMochila2;
+				entraEnMochila3 = pesoTesoro <= iMochila3;
 
-					if (cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2] >= cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro]) {
-						metoEnMochila1 = true;
+				valorAnterior1 = 0;
+				valorAnterior2 = 0;
+				valorAnterior3 = 0;
+
+				if (entraEnMochila1)
+					valorAnterior1 = cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
+				if (entraEnMochila2)
+					valorAnterior2 = cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+				if (entraEnMochila3)
+					valorAnterior3 = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+				
+				if (valorAnterior1 >= valorAnterior2 && valorAnterior1 >= valorAnterior3) {
+					metoEnMochila1 = true;
+				}
+				else {
+					if (valorAnterior2 >= valorAnterior3) {
+						metoEnMochila2 = true;	
 					}
 					else {
-						metoEnMochila2 = true;
+						metoEnMochila3 = true;	
 					}
 				}
 
-				if (metoEnMochila1 || pesoTesoro <= iMochila1) {
+				if (metoEnMochila1) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 1
-
 					mochila1.push_back(iTesoroPorTipo);
 
 					cantTesorosMochila1++;
 					
 					iMochila1 -= pesoTesoro;
 				}
-				else if (metoEnMochila2 || pesoTesoro <= iMochila2) {
+				else if (metoEnMochila2) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 2
 					mochila2.push_back(iTesoroPorTipo);
 
 					cantTesorosMochila2++;
 					
 					iMochila2 -= pesoTesoro;
+				}
+				else if (metoEnMochila3) {
+					//Meto el objeto (pesoTesoro, valor) en la mochila 3
+					mochila3.push_back(iTesoroPorTipo);
+
+					cantTesorosMochila3++;
+					
+					iMochila3 -= pesoTesoro;
 				}
 			}
 			iTesoro--;
@@ -144,4 +182,14 @@ void Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vecto
 
 	mochila1.insert(mochila1.begin(), cantTesorosMochila1);
 	mochila2.insert(mochila2.begin(), cantTesorosMochila2);
+	mochila3.insert(mochila3.begin(), cantTesorosMochila3);
+
+	mochilas.push_back(mochila1);
+	mochilas.push_back(mochila2);
+	mochilas.push_back(mochila3);
+
+	salida1.first = valorTotal;
+	salida1.second = mochilas;
+
+	return salida1;
 }
