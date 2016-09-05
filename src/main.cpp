@@ -125,12 +125,18 @@ int main(int argc, char *argv[]) {
 	}
 	else if (numeroDeEjercicio == 3) {
 
-		int cantMochilas = 2;
-		int cantTesoros = 3;
-		vector<int> capacidades { 3, 3, 0 };
+		int cantMochilas = 3;
+		
+		vector<int> capacidades { 4, 4, 5 };
 		vector<int> tesoroCant { 1, 1, 1 };
-		vector<int> tesoroPeso { 3, 3, 3 };
-		vector<int> tesoroValor { 10, 9, 4 };
+		vector<int> tesoroPeso { 5, 4, 4 };
+		vector<int> tesoroValor { 1000, 500, 1000 };
+
+		int cantTesoros = 0;
+		for (int i = 0; i < tesoroCant.size(); ++i)
+		{
+			cantTesoros += tesoroCant[i];
+		}
 
 		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroPeso, tesoroValor);
 		cout << "valorTotal = " << ej3.first << endl;

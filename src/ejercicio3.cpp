@@ -85,22 +85,22 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 							valorNingunaMochila = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3];
 							if (pesoTesoro <= iMochila1) {
 								valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
-								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 1 el objeto con peso " << pesoTesoro << endl;
+								////cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 1 el objeto con peso " << pesoTesoro << endl;
 							}
 
 							if (pesoTesoro <= iMochila2) {
 								valorMochila2 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
-								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 2 el objeto con peso " << pesoTesoro << endl;
+								////cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 2 el objeto con peso " << pesoTesoro << endl;
 							}
 
 							if (pesoTesoro <= iMochila3) {
 								valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
-								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 3 el objeto con peso " << pesoTesoro << endl;
+								////cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 3 el objeto con peso " << pesoTesoro << endl;
 							}
 						}
 
 						cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = max(max(max(valorNingunaMochila, valorMochila1), valorMochila2), valorMochila3);
-						cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] = " << cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] << ". Valor " << valorTesoro << endl;
+						//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] = " << cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] << ". Valor " << valorTesoro << endl;
 					}
 				}
 			}
@@ -127,10 +127,12 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 			metoEnMochila3 = false;
 
 			if (cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] != cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3]) {
-
-				entraEnMochila1 = pesoTesoro <= iMochila1;
-				entraEnMochila2 = pesoTesoro <= iMochila2;
-				entraEnMochila3 = pesoTesoro <= iMochila3;
+				entraEnMochila1 = (pesoTesoro <= iMochila1);
+				entraEnMochila2 = (pesoTesoro <= iMochila2);
+				entraEnMochila3 = (pesoTesoro <= iMochila3);
+				//cout << endl;
+				//cout << "entraEnMochila1 = " << entraEnMochila1 << endl;
+				//cout << "entraEnMochila2 = " << entraEnMochila2 << endl;
 
 				valorAnterior1 = 0;
 				valorAnterior2 = 0;
@@ -141,20 +143,32 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 				}
 				if (entraEnMochila2) {
 					valorAnterior2 = cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+					
+					//cout << "iMochila1 = " << iMochila1 << endl;
+					//cout << "iMochila2 = " << iMochila2 << endl;
+					//cout << "iMochila3 = " << iMochila3 << endl;
 				}
 				if (entraEnMochila3) {
 					valorAnterior3 = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
 				}
+				//cout << "valorAnterior1 = " << valorAnterior1 << endl;
+				//cout << "valorAnterior2 = " << valorAnterior2 << endl;
+				//cout << "valorAnterior3 = " << valorAnterior3 << endl;
+				//cout << "pesoTesoro = " << pesoTesoro << endl;
+				//cout << "valorTesoro = " << valorTesoro << endl;
 				
-				if (valorAnterior1 >= valorAnterior2 && valorAnterior1 >= valorAnterior3) {
+				if (entraEnMochila1 && valorAnterior1 >= valorAnterior2 && valorAnterior1 >= valorAnterior3) {
 					metoEnMochila1 = true;
 				}
-				else if (valorAnterior2 >= valorAnterior3) {
+				else if (entraEnMochila2 && valorAnterior2 >= valorAnterior3) {
 					metoEnMochila2 = true;	
 				}
 				else {
 					metoEnMochila3 = true;	
 				}
+				//cout << "metoEnMochila1 = " << metoEnMochila1 << endl;
+				//cout << "metoEnMochila2 = " << metoEnMochila2 << endl;
+				//cout << "metoEnMochila3 = " << metoEnMochila3 << endl;
 
 				if (metoEnMochila1) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 1
@@ -163,6 +177,7 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 					cantTesorosMochila1++;
 					
 					iMochila1 -= pesoTesoro;
+					//cout << "iMochila1 = " << iMochila1 << endl;
 				}
 				else if (metoEnMochila2) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 2
@@ -180,6 +195,10 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 					
 					iMochila3 -= pesoTesoro;
 				}
+			}
+			else
+			{
+				//cout << "No entra" << endl;
 			}
 			iTesoro--;
 		}

@@ -9,148 +9,102 @@
 			\end{center}
 		\end{figure}
 
-        Gokú se está enfrentando a $N$ androides y necesita destruirlos con la menor cantidad de kamehamehas posibles. Los enemigos de Gokú se encuentran en posiciones $(X_i , Y_i)$ y los kamehamehas recorren una semirrecta desde donde Gokú lo lance, en cualquier dirección que Gokú lo decida, destruyendo a todos los androides que encuentren a su paso.
-
-        Se desea escribir un algoritmo que tome la cantidad de androides $N$ y sus posiciones, y decida cuántos kamehameha debe lanzar Gokú y a qué enemigos destruye con cada uno de ellos. Si hay más de una solución óptima, se puede devolver cualquiera de ellas. Se debe utilizar la técnica de \emph{backtracking}, elaborando podas y estrategias para mejorar los tiempos de ejecución, y lograr una complejidad temporal $\ord(N^{N+2})$ o mejor.
-
-        La salida que del algoritmo debe comenzar con la cantidad de kamehamehas usados. A continuación se debe agregar una línea por cada kamehameha, que debe contener la cantidad de androides destruidos por el mismo, seguido por los índices de dichos androides.
+        Una vez equilibrada la balanza, las paredes vuelven a su lugar. Con la llave obtenida logran abrir la puerta que estaba trabada. \par
+		Al iluminar la habitación se encuentran con una sala de N tesoros. \par
+		Por cada tipo de tesoro i, hay $C_{i}$ cantidades, con un valor $V_{i}$ y un peso $P_{i}$. Si bien el objetivo principal de la expedición era otro, nunca viene mal armarse de algún recuerdo. 
+		Tienen M mochilas disponibles para llevarse los tesoros y cada una tiene una capacidad máxima de peso $K_{j}$ que puede llevar. \par
+		El objetivo es llevarse el mayor valor posible de tesoros. Para esto, se debe devolver como resultado el valor total de tesoros guardados y además, por cada mochila, la cantidad de tesoros llevados y de qué tipo son.
 
         Por ejemplo, para la siguiente entrada:
         
         \begin{verbatim}
-        5
-        0 0
-        0 1
-        0 2
-        1 2
-        2 2
+        M = 2
+        K = { 1, 3 }
+        
+        N = 3 
+        C = { 1, 2, 3 }
+        V = { 2, 4, 10 }
+        P = { 1, 2, 5 }
         \end{verbatim}
 
         Una posible salida válida sería:
 
         \begin{verbatim}
-        2
-        3 3 4 5
-        2 1 2
+        S = 6
+        M1 = { 1, 1 } 
+        M2 = { 1, 2 }
         \end{verbatim}
 
-        Observación: Los kamehamehas matan a los androides. Esto significa que si un androide esta muerto, por mas que un kamehameha vuelva a pasar por encima de él, no vuelve a morir. Es por eso que:
+        Es decir, para el caso en el que tenemos dos mochilas con capacidades 1 y 3, y nos encontramos con tres tesoros, el primero de peso 1 y valor 2, el segundo de peso 2 y valor 4, y el tercero de peso 5 y valor 10... \par Nos llevaremos en la primer mochila el primer tesoro y en la segunda el segundo tesoro. El tercer tesoro ya no nos entra. 
 
-        \begin{verbatim}
-        2
-        3 3 4 5
-        3 1 2 3
-        \end{verbatim}
-
-        no es una salida válida, ya que estaría matando por segunda vez al androide ubicado en la posicion (0,2).
-        
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
+    Para solucionar el problema planteado se usó la técnica algorítmica de \emph{Programación dinámica}. \par
+    La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y al valor de cada tesoro, en qué mochila nos conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). \par
+    Por lo tanto, el algoritmo propuesto consta de una matriz por tesoro, de tamaño $(N+1)*(M+1)*(K+1)$ (suponiendo que hay tres mochilas), siendo éstas las capacidades de las mochilas M1, M2 y M3 respectivamente. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
+    El objetivo de hacer esto, es tener en cuenta todos los casos y valores acumulados, de poner o no cada tesoro, y en qué mochila se pone. Utilizando en todo caso el mayor valor de tesoros acumulados. En los campos de la matriz ira el valor que queda de poner el tesoro o no, y las capacidades restantes de las mochilas. \par
+    El algoritmo se divide en dos partes, una parte es completar las matrices de tesoros, con el maximo valor posible que se puede acumular en cada mochila según el peso disponible. La segunda parte, consiste en definir, qué tesoros van en cada mochila, ubicando según el valor restante, de poner el tesoro en una mochila u otra.
 
-    Como toda solución planteada siguiendo la técnica de \emph{bracktracking}, la solución se basa en probar todas las combinaciones posibles de kamehamehas, guardando para cada una de ellas la manera en que los androides son destruidos, para luego retornar la lista correspondiende a una de las soluciones que utilice una cantidad de kamehamehas óptima. Esto se hace de manera recursiva, llamando a una función que se encarga de probar cada kamehameha posible y para cada uno ramificarse, buscando destruir a los que hayan sobrevivido.
+    Para esto, uno puede pensarlo como una matriz de tres dimensiones o un cubo por tesoro, además de un cubo nulo. Por cada tesoro que se analiza, los pasos son iguales. Si la capacidad de las mochilas, representado por el índice (i,j,k) que las recorre (i representa la capacidad de la M1, j de la M2 y K de la M3) es menor que el peso del tesoro, el valor obtenido es igual al acumulado en el tesoro anterior (salvo el primer caso, en donde el tesoro anterior es la matriz nula). Si entra en alguna mochila, uno debe fijarse, que valor restante se obtiene, de restarle a su índice, el peso del objeto. Y, en la posición de la matriz se deja el máximo de ponerlo en alguna mochila o no ponerlo.\par
 
-    Teniendo en cuenta que cualquier par de androides puede ser eliminado con un único kamehameha, en ningún caso (suponiendo $N \geq 2$) será conveniente realizar un disparo que no aniquile al menos a dos enemigos. Por lo tanto, se considerará que los kamehamehas que se pueden disparar están dados por los todos los pares de androides posibles. Lanzar un kamehameha consiste en tomar la recta que pasa por estos dos androides, y luego, recorrer todos los demás enemigos, determinando cuáles de ellos son destruidos por ese disparo. A continuación, se utiliza la recursión para encontrar la forma óptima de matar a los androides restantes.
+    Una vez explicado brevemente, pasaremos a detallar el algoritmo, dividiéndolo en dos secciones. La primera, completa las matrices de los tesoros, según el valor máximo posible por capacidad. Mientras que la segunda sección, recorre de atras para adelante las matrices, para ubicar los tesoros.\par
 
-    Los casos base de la recursión son triviales, y están planteados para $N = 0$ (no se realiza ningún disparo) y $N =1$ o $N = 2$ (se dispara un único kamehameha que mata a todos los androides). En los demás casos, por la naturaleza de la recursión, para cada posibilidad para el primer disparo se habrá obtenido la solución óptima para destruir a los enemigos restantes; por lo tanto basta con elegir, de entre estas opciones, aquella cuya solución recursiva utilice la cantidad de disparos mínima.
+    El siguiente pseudocodigo mostrara como se completan las matrices,
 
-    Si se analiza la forma en que se construye la solución, resulta claro que la respuesta del algoritmo planteado es efectivamente una solución correcta del problema. Por un lado, todos los enemigos son necesariamente destruidos en algún nivel de la recursión. Además, dado que al finalizar la ejecución se habrán recorrido todas las posibles combinaciones de disparos, es posible asegurar que se encontrará, efectivamente, aquella cuya cantidad de kamehamehas sea mínima. 
+    \begin{codesnippet}
+	\begin{verbatim}
+    cuboMagico = Inicializo un vector de matrices de Int
+    Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
+    //N, M y K capacidades de las mochilas.
+    for(iTesoroActual= 0...cuboMagico.size()) do
+        //Recorro todas las matrices de tesoros
+        iTesoro = El indice a la matriz del tesoro anterior.
+        valorTesoro = tesoroValor[iTesoroActual]
+        pesoTesoro = tesoroPeso[iTesoroActual]
+        valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
+        //Recorro todas las matrices de tesoros
+        for(iMochila1 = 0 .. N + 1) do
+            for(iMochila2 = 0 .. M + 1) do
+                for(iMochila3 = 0 .. N + 1) do
+                    if(pesoTesoro entra en alguna mochila) do
+                        if(pesoTesoro entra en mochila M_{1})
+                            valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
+                            //Valor de la matriz del tesoro anterior.
+                        endif
+                        if(pesoTesoro entra en mochila M_{2}) do
+                    	    valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+                    	    //Valor de la matriz del tesoro anterior.
+                        endif
+                        if(pesoTesoro entra en mochila M_{3}) do
+                            valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+                            //Valor de la matriz del tesoro anterior.
+                        endif
+                    cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
+                    //Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
+                    iTesoro ++ //Avanzo el indice al tesoro anterior.
+                end
+            end
+        end
 
-    \subsubsection{Podas y otras mejoras diseñadas}
+	\end{verbatim}
+	\end{codesnippet}
 
-    Desde luego, si bien se acaba de presentar una solución válida al problema, Gokú podría verse en apuros si debiera utilizarla para frenar una invasión inminente de androides, dado que el costo computacional de probar todos los kamehamehas posibles puede resultar excesivamente alto. Es por eso que se decidió implementar una serie de podas y otras metodologías que permitieran mejorar la eficiencia del algoritmo.
 
-    \begin{enumerate}
-        \item La primer estrategia que se incorporó consistió en evitar la repetición trivial de kamehamehas: resulta evidente que el kamehameha dado por el par de androides $(a_1, a_2)$ es el mismo que el dado por $(a_2, a_1)$. Por esta razón, se modificó la metodología utilizada para recorrer los enemigos, implementando dos ciclos, en donde el exterior (correspondiente a $a_1$) recorre todos los androides, y el interior (correspondiente a $a_2$) solo recorre los androides de $a_1$ en adelante.
 
-        \begin{codesnippet}
-        \begin{verbatim}
-para i entre 0 y cantidadDeAndroides - 1 hacer:
-    para j entre i + 1 y cantidadDeAndroides - 1 hacer:
-        lanzarKamehameha(i, j)
-    fin para
-fin para
-        \end{verbatim}
-        \end{codesnippet}
 
-        Dado que tras esta modificación aún se siguen intentado todos los disparos posibles, resulta claro que al agregarla no se altera la correctitud del algoritmo.
 
-        \item Si bien ya no se repiten pares de androides, aún pueden existir algunos kamehamehas superpuestos; este es el caso en el que se selecciona un par de andorides y aparece un tercero en la misma recta. Por ejemplo, el kamehameha que pasa por (0,0) y (1,1) es el mismo que pasa por (1,1) y (2,2). Estos kamehamehas redundantes también pueden omitirse, evitando llamadas recursivas innecesarias sin afectar en absoluto el resultado del algoritmo.
 
-        Para implementar esta estrategia, se decidió ir almacenando los disparos efectuados. Luego, al seleccionar un par de androides distintos, antes de realizar la llamada recursiva correspondiente, se verifica que el disparo no resulte redundante con uno que ya se haya realizado con anterioridad durante la misma rama de ejecución (podría usarse ese mismo kamehameha, pero en una rama diferente).
+	Para la segunda parte, se decide por cada tesoro, en qué mochila irá. Para esto, se recorre desde la última posición de la matriz del último tesoro. En esta posición, se encuentra el mejor valor acumulado posible. La decisión se toma de la siguiente manera
+		%Listita:
+		 A) En qué mochilas entra?
+		 B) Para cada mochila en la cual entra. Qué valor restante se encuentra en la posición de la matriz del del tesoro anterior en los pesos restantes, de ponerlo en cada una de las mochilas.
+		 C) En el caso que el valor restante sea igual, lo pongo en cualquiera de las dos
+		 D) En el caso que haya un máximo, ubico el tesoro en la mochila que obtiene el valor máximo restante.
+	Sigo este algoritmo por cada matriz, hasta no tener capacidad disponible en ninguna de las mochilas.
 
-        \begin{codesnippet}
-        \begin{verbatim}
-kamehameha = construirRecta(enemigoI, enemigoJ);
+	Si se analiza la forma en que se construye la solución, tanto en la primera como en la segunda etapa, se tienen en cuenta cuál es el valor máximo posible acumulado, de ubicar los tesoros. Es por esto que el resultado, siempre dará la suma máxima posible.
 
-bool repetido = falso;
-para i entre 0 y cantidadDeKamehamehasProbados
-    si kamehameha == kamehamehasProbados[i] entonces
-        repetido = verdadero;
-    fin si
-fin para
-
-si repetido entonces
-    kamehamehasProbados.agregar(kamehameha)
-    lanzarKamehameha(kamehameha)
-fin si
-        \end{verbatim}
-        \end{codesnippet}
-
-        \item La última poda diseñada se basa en la idea de que, en muchos casos, es posible determinar que una rama de la recursión no producirá una solución óptima sin necesidad de ejecutarla hasta el final. Esto puede hacerse almacenando la cantidad de kamehamehas usados por la mejor solución hallada hasta el momento, y pasando dicho valor por parámetro en cada llamada recursiva. Dicho valor funciona como un ``tope'' para la profundidad de la recursión: dado que cada nivel recursivo agrega un kamehameha a la solución, cuando una determinada rama de ejecución alcanza dicho tope de profundidad sin haber llegado a una solución válida, esto significa que la mencionada rama no podrá aportar una solución mejor que una que ya se obtuvo con anterioridad y, por lo tanto, puede descartarse sin problemas. En este caso se detiene la ejecución de la rama y se comunica al nivel superior de la recursión que no se obtuvo un resultado válido.
-
-        Es importante señalar que ninguna rama se descarta a menos que se tenga la seguridad de que no producirá un resultado correcto. Por lo tanto, nuevamente, la correctitud del algoritmo no se ve afectada.
-
-        Este es un pseudocódigo de la funcion principal, donde se hace foco unicamente en la poda:
-
-        \begin{codesnippet}
-        \begin{verbatim}
-bool resolverKamehamehaRecursivo(vector<int> enemigos, vector<vector<int>> solucion, limite)
-  
-    si enemigos.tamaño() == 0 entonces
-        devolver verdadero
-    sino si limite > 0 entonces
-      
-        ...
-        
-        para i entre 0 y cantidadDeKamehamehas
-          
-            subsolucion = enemigosDestruidosPorElKamehameha()
-          
-            si cantidadDeEnemigosRestantes > 0 entonces
-                vector<vector<int>> subsolucionRecursiva
-                si resolverKamehamehaRecursivo(enemigosRestantes,subsolucionRecursiva,limite-1)
-                    subsolucion.insertar(subsolucionRecursiva)
-                    mejorSubsolucion = subsolucion
-                    limite = subsolucion.size()
-                fin si
-            sino
-                mejorSubsolucion = subsolucion
-                limite = 1
-            fin si
-        fin para
-    fin si
-  
-    ...
-  
-    si haySubsolucionValida() entonces
-        solucion.insertar(mejorSubsolucion)
-        devolver verdadero
-    fin si
-  
-    devolver falso
-  
-fin resolverKamehamehaRecursivo
-        \end{verbatim}
-        \end{codesnippet}
-
-        Puede observarse que al comienzo del algoritmo en la condición se analiza si $\mathtt{limite} > 0$. Esto es lo que le da la capacidad de hacer efectiva la poda. 
-        Lo que \texttt{limite} representa es la cantidad de kamehamehas que faltan para llegar a la mejor solución encontrada, no la cantidad de kamehamehas de la mejor solución. Esto es importante ya que durante la ramificación del algoritmo, éste no conoce la cantidad de kamehamehas de la mejor solución, ni lo necesita; lo que sí necesita es saber cuántos kamehamehas puede disparar en la rama actual, para saber si debe descartarla o continuar.
-
-        Se le asigna el valor a este \texttt{limite} dentro de las estructuras de decisión, que como mencionamos previamente, es la cantidad de kamehamehas restantes hasta llegar a un tope en el cual continuar no lleva a ninguna mejor solución.
-
-        Si el llamado recursivo encuentra una subsolucion valida, es decir una rama que mejora las ramas hermanas, se establece como mejor rama, se actualiza \texttt{limite} y se continua en busqueda de mejores. Al finalizar devuelve si encontró una mejor rama, y de haberlo hecho la agrega a la solución.
-
-    \end{enumerate}
+   
 
     \subsubsection{Detalles implementativos}
     
