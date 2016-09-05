@@ -85,18 +85,22 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 							valorNingunaMochila = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3];
 							if (pesoTesoro <= iMochila1) {
 								valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
+								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 1 el objeto con peso " << pesoTesoro << endl;
 							}
 
 							if (pesoTesoro <= iMochila2) {
 								valorMochila2 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 2 el objeto con peso " << pesoTesoro << endl;
 							}
 
 							if (pesoTesoro <= iMochila3) {
 								valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+								//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 3 el objeto con peso " << pesoTesoro << endl;
 							}
 						}
 
 						cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = max(max(max(valorNingunaMochila, valorMochila1), valorMochila2), valorMochila3);
+						cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] = " << cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] << ". Valor " << valorTesoro << endl;
 					}
 				}
 			}
@@ -132,23 +136,24 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 				valorAnterior2 = 0;
 				valorAnterior3 = 0;
 
-				if (entraEnMochila1)
+				if (entraEnMochila1) {
 					valorAnterior1 = cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
-				if (entraEnMochila2)
+				}
+				if (entraEnMochila2) {
 					valorAnterior2 = cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
-				if (entraEnMochila3)
+				}
+				if (entraEnMochila3) {
 					valorAnterior3 = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+				}
 				
 				if (valorAnterior1 >= valorAnterior2 && valorAnterior1 >= valorAnterior3) {
 					metoEnMochila1 = true;
 				}
+				else if (valorAnterior2 >= valorAnterior3) {
+					metoEnMochila2 = true;	
+				}
 				else {
-					if (valorAnterior2 >= valorAnterior3) {
-						metoEnMochila2 = true;	
-					}
-					else {
-						metoEnMochila3 = true;	
-					}
+					metoEnMochila3 = true;	
 				}
 
 				if (metoEnMochila1) {
