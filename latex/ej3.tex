@@ -11,38 +11,37 @@
 
         Una vez equilibrada la balanza, las paredes vuelven a su lugar. Con la llave obtenida logran abrir la puerta que estaba trabada. \par
 		Al iluminar la habitación se encuentran con una sala de N tesoros. \par
-		Por cada tesoro, hay $C_{i}$ cantidades de cada tipo, cada uno tiene un valor $V_{i}$ y un peso $P_{i}$. Si bien el objetivo principal de la expedición era otro, nunca viene mal armarse de algún recuerdo. 
-		Tienen M mochilas disponibles para llevarse los tesoros y cada una tiene un máximo de peso $K_{i}$ que puede llevar. \par
-		El objetivo es, llevarse el mayor valor posible de tesoros. Para esto, se debe devolver como resultado el valor total de tesoros guardados y además, por cada mochila se debe aclarar, la cantidad de tesoros llevados y de qué tipo son.
+		Por cada tipo de tesoro i, hay $C_{i}$ cantidades, con un valor $V_{i}$ y un peso $P_{i}$. Si bien el objetivo principal de la expedición era otro, nunca viene mal armarse de algún recuerdo. 
+		Tienen M mochilas disponibles para llevarse los tesoros y cada una tiene una capacidad máxima de peso $K_{j}$ que puede llevar. \par
+		El objetivo es llevarse el mayor valor posible de tesoros. Para esto, se debe devolver como resultado el valor total de tesoros guardados y además, por cada mochila, la cantidad de tesoros llevados y de qué tipo son.
 
         Por ejemplo, para la siguiente entrada:
         
         \begin{verbatim}
-        2 3
-        1 3
-        2 3 1
-        4 1 2
-        10 4 5
+        M = 2
+        K = { 1, 3 }
+        
+        N = 3 
+        C = { 1, 2, 3 }
+        V = { 2, 4, 10 }
+        P = { 1, 2, 5 }
         \end{verbatim}
 
         Una posible salida válida sería:
 
         \begin{verbatim}
-        8
-        4 1 2
+        S = 6
+        M1 = { 1, 1 } 
+        M2 = { 1, 2 }
         \end{verbatim}
 
-        \begin{verbatim}
-        3
-        1 3 1
-        1 1 2
-        \end{verbatim}
+        Es decir, para el caso en el que tenemos dos mochilas con capacidades 1 y 3, y nos encontramos con tres tesoros, el primero de peso 1 y valor 2, el segundo de peso 2 y valor 4, y el tercero de peso 5 y valor 10... \par Nos llevaremos en la primer mochila el primer tesoro y en la segunda el segundo tesoro. El tercer tesoro ya no nos entra. 
 
-        no es una salida válida, ya que se busca el máximo valor posible.
-        
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
-    Para el problema planteado se uso la técnica algorítmica de \emph{Programacion dinámica}. El algoritmo propuesto consta de una matriz por tesoro, de tamaño $(N+1)*(M+1)*(K+1)$ (suponiendo que hay tres mochilas), siendo estas, las capacidades de las mochilas M1, M2 y M3 respectivamente, además de una matriz nula que servirá para el caso, en donde no hayan objetos. \par
+    Para solucionar el problema planteado se usó la técnica algorítmica de \emph{Programación dinámica}. \par
+    La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y al valor de cada tesoro, en qué mochila nos conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). \par
+    Por lo tanto, el algoritmo propuesto consta de una matriz por tesoro, de tamaño $(N+1)*(M+1)*(K+1)$ (suponiendo que hay tres mochilas), siendo éstas las capacidades de las mochilas M1, M2 y M3 respectivamente. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
     El objetivo de hacer esto, es tener en cuenta todos los casos y valores acumulados, de poner o no cada tesoro, y en qué mochila se pone. Utilizando en todo caso el mayor valor de tesoros acumulados. En los campos de la matriz ira el valor que queda de poner el tesoro o no, y las capacidades restantes de las mochilas. \par
     El algoritmo se divide en dos partes, una parte es completar las matrices de tesoros, con el maximo valor posible que se puede acumular en cada mochila según el peso disponible. La segunda parte, consiste en definir, qué tesoros van en cada mochila, ubicando según el valor restante, de poner el tesoro en una mochila u otra.
 
@@ -51,42 +50,47 @@
     Una vez explicado brevemente, pasaremos a detallar el algoritmo, dividiéndolo en dos secciones. La primera, completa las matrices de los tesoros, según el valor máximo posible por capacidad. Mientras que la segunda sección, recorre de atras para adelante las matrices, para ubicar los tesoros.\par
 
     El siguiente pseudocodigo mostrara como se completan las matrices,
-    %FALTA QUE EL PSEUDOCODIGO SE VEA LINDO
-	%  cuboMagico = Inicializo un vector de matrices de Int
 
-	%  Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
-	%  //N, M y K capacidades de las mochilas.
-	 
-	% for(iTesoroActual= 0...cuboMagico.size()) do
-	% 	//Recorro todas las matrices de tesoros
-	%  	iTesoro = El indice a la matriz del tesoro anterior.
-	%  	valorTesoro = tesoroValor[iTesoroActual]
-	%  	pesoTesoro = tesoroPeso[iTesoroActual]
-	%  	valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
-	 	
-	%  	for(iMochila1 = 0 .. N + 1) do
-	% 		for(iMochila2 = 0 .. M + 1) do
-	%  			for(iMochila3 = 0 .. N + 1) do
-	 	
-	%  				if(pesoTesoro entra en alguna mochila) do
-	%  					if(pesoTesoro entra en mochila M_{1})
-	%  						valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
-	%  						//Valor de la matriz del tesoro anterior.
-	%  					endif
-	%  					if(pesoTesoro entra en mochila M_{2})
-	%  						valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
-	%  						//Valor de la matriz del tesoro anterior.
-	%  					endif
-	%  					if(pesoTesoro entra en mochila M_{3})
-	%  						valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
-	%  						//Valor de la matriz del tesoro anterior.
-	%  					endif
-	%  				cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
-	%  				//Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
-	%  				iTesoro ++ //Avanzo el indice al tesoro anterior.
-	%  			end
-	%  		end
-	%  	end
+    \begin{codesnippet}
+	\begin{verbatim}
+    cuboMagico = Inicializo un vector de matrices de Int
+    Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
+    //N, M y K capacidades de las mochilas.
+    for(iTesoroActual= 0...cuboMagico.size()) do
+        //Recorro todas las matrices de tesoros
+        iTesoro = El indice a la matriz del tesoro anterior.
+        valorTesoro = tesoroValor[iTesoroActual]
+        pesoTesoro = tesoroPeso[iTesoroActual]
+        valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
+        //Recorro todas las matrices de tesoros
+        for(iMochila1 = 0 .. N + 1) do
+            for(iMochila2 = 0 .. M + 1) do
+                for(iMochila3 = 0 .. N + 1) do
+                    if(pesoTesoro entra en alguna mochila) do
+                        if(pesoTesoro entra en mochila M_{1})
+                            valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
+                            //Valor de la matriz del tesoro anterior.
+                        endif
+                        if(pesoTesoro entra en mochila M_{2}) do
+                    	    valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+                    	    //Valor de la matriz del tesoro anterior.
+                        endif
+                        if(pesoTesoro entra en mochila M_{3}) do
+                            valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+                            //Valor de la matriz del tesoro anterior.
+                        endif
+                    cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
+                    //Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
+                    iTesoro ++ //Avanzo el indice al tesoro anterior.
+                end
+            end
+        end
+
+	\end{verbatim}
+	\end{codesnippet}
+
+
+
 
 
 
