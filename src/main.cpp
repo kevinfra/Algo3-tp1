@@ -8,6 +8,7 @@
 #include <chrono>
 #include "ejercicio1.h"
 #include "ejercicio2.h"
+#include "ejercicio3.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ void start_timer() {
 
 double stop_timer() {
 	chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-	return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
+	return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
 }
 
 
@@ -71,19 +72,20 @@ int main(int argc, char *argv[]) {
 			start_timer();
 			int tiempo = cruzarPuente(velocidadesCanibales, velocidadesArq);
 			cout << tiempo << endl;
-			cout << "tiempo que tarda en nanosegundos: " << stop_timer() << endl;
+			cout << "tiempo que tarda en microsegundos: " << stop_timer() << endl;
 
 		}
 		else {
 			vector<int> canibales;
 			vector<int> arqueologos;
-			for (int q = 0; q < 4; ++q){
-				for (int k = 0; k < 4; ++k){
+			for (int q = 0; q <= 5; ++q){
+				for (int k = 0; k <= 4; ++k){
 					arqueologos.push_back(k);
-					for (int times = 0; times < 30; ++times){
+					for (int times = 0; times < 500; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
-						cout << stop_timer() << "    " << canibales.size() + arqueologos.size() << endl;
+						cout << stop_timer() << "    " << "(" << canibales.size() << "," << arqueologos.size() << ") " << canibales.size() + arqueologos.size() << endl;
+
 					}
 				}
 				arqueologos.clear();
@@ -121,16 +123,40 @@ int main(int argc, char *argv[]) {
 				p += 1000001;
 			}
 		}
+	}
+	else if (numeroDeEjercicio == 3) {
 
+		int cantMochilas = 3;
+		
+		vector<int> capacidades { 4, 4, 5 };
+		vector<int> tesoroCant { 1, 1, 1 };
+		vector<int> tesoroPeso { 5, 4, 4 };
+		vector<int> tesoroValor { 1000, 500, 1000 };
 
-  	}
-  	else if (numeroDeEjercicio == 3) {
-  		//  cargarMochila();
-  	}
+		int cantTesoros = 0;
+		for (uint i = 0; i < tesoroCant.size(); ++i)
+		{
+			cantTesoros += tesoroCant[i];
+		}
+
+		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroPeso, tesoroValor);
+		cout << "valorTotal = " << ej3.first << endl;
+		for (unsigned int i = 0; i < ej3.second.size(); ++i)
+		{	
+			cout << endl;
+			cout << "mochila" << (i+1) << " capacidad = " << capacidades[i] << endl;
+			cout << "cantTesoros = " << ej3.second[i][0] << " | ";
+			for (unsigned int j = 1; j < ej3.second[i].size(); ++j)
+			{
+				cout << "tesoro nro " << ej3.second[i][j] << " (v,p) = (" << tesoroValor[ej3.second[i][j]-1] << "," << tesoroPeso[ej3.second[i][j]-1] << ")" << " | ";
+			}
+			cout << endl;
+		}
+	}
 	else {
 		cout << "numero de ejercicio no valido" << endl;
 		return -1;
-  	}
+	}
 	return 0;
 }
 
