@@ -10,7 +10,7 @@ int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
   vector<Estado> estados;
   estados.push_back(primerEstado);
   int resultado = -1;
-  if(canibales.size() <= arqueologos.size()){
+  if(canibales.size() <= arqueologos.size() || arqueologos.size() == 0){
     BTCruzarPuente(canibales, arqueologos, caniDer, arqDer, false, estados, 0, resultados);
     resultado = minimo(resultados);
   }
@@ -31,6 +31,7 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
   bool esSolucion = canibalesIzq.size() + arqueologosIzq.size() == 0;
 
   if (esSolucion){
+
     soluciones.push_back(tiempo);
 
   }else{
@@ -53,7 +54,11 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     //2 canibales o 0 arqueologos
     for (int mandarCanibales = 0; mandarCanibales <= 2; mandarCanibales++){
       for (int mandarArqueologos = mandarCanibales == 0 ? 1 : 0; mandarArqueologos <= 2 - mandarCanibales; mandarArqueologos++){
-        if (estadoValido(cantCanibalesOrigen - mandarCanibales, cantArqueologosOrigen - mandarArqueologos, cantCanibalesDestino + mandarCanibales, cantArqueologosDestino + mandarArqueologos, linternaDer, estadosAnteriores)){
+        if (estadoValido(cantCanibalesOrigen - mandarCanibales,
+                         cantArqueologosOrigen - mandarArqueologos,
+                         cantCanibalesDestino + mandarCanibales,
+                         cantArqueologosDestino + mandarArqueologos,
+                         linternaDer, estadosAnteriores)){
 
           //Hago una copia de las listas (para no modificar otras listas)
           nuevoCanibalesOrigen = canibalesOrigen;
@@ -89,9 +94,9 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
 
           int arqueologosDerNuevoEstado = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
           int arqueologosIzqNuevoEstado = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
-          int canibalesDerNuevoEstado = canibalesDer.size() + (linternaDer ? -1 : 1) * mandarCanibales;
-          int canibalesIzqNuevoEstado = canibalesIzq.size() + (linternaDer ? 1 : -1) * mandarCanibales;
-          bool linternaDerNuevoEstado = nuevaLinternaDer;
+          int canibalesDerNuevoEstado   = canibalesDer.size()   + (linternaDer ? -1 : 1) * mandarCanibales;
+          int canibalesIzqNuevoEstado   = canibalesIzq.size()   + (linternaDer ? 1 : -1) * mandarCanibales;
+          bool linternaDerNuevoEstado   = nuevaLinternaDer;
 
           nuevoEstado.set_estado(arqueologosIzqNuevoEstado, canibalesIzqNuevoEstado, arqueologosDerNuevoEstado, canibalesDerNuevoEstado, linternaDerNuevoEstado);
 
