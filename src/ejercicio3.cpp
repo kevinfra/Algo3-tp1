@@ -130,9 +130,6 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 				entraEnMochila1 = (pesoTesoro <= iMochila1);
 				entraEnMochila2 = (pesoTesoro <= iMochila2);
 				entraEnMochila3 = (pesoTesoro <= iMochila3);
-				//cout << endl;
-				//cout << "entraEnMochila1 = " << entraEnMochila1 << endl;
-				//cout << "entraEnMochila2 = " << entraEnMochila2 << endl;
 
 				valorAnterior1 = 0;
 				valorAnterior2 = 0;
@@ -143,19 +140,10 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 				}
 				if (entraEnMochila2) {
 					valorAnterior2 = cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
-					
-					//cout << "iMochila1 = " << iMochila1 << endl;
-					//cout << "iMochila2 = " << iMochila2 << endl;
-					//cout << "iMochila3 = " << iMochila3 << endl;
 				}
 				if (entraEnMochila3) {
 					valorAnterior3 = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
 				}
-				//cout << "valorAnterior1 = " << valorAnterior1 << endl;
-				//cout << "valorAnterior2 = " << valorAnterior2 << endl;
-				//cout << "valorAnterior3 = " << valorAnterior3 << endl;
-				//cout << "pesoTesoro = " << pesoTesoro << endl;
-				//cout << "valorTesoro = " << valorTesoro << endl;
 				
 				if (entraEnMochila1 && valorAnterior1 >= valorAnterior2 && valorAnterior1 >= valorAnterior3) {
 					metoEnMochila1 = true;
@@ -166,9 +154,6 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 				else {
 					metoEnMochila3 = true;	
 				}
-				//cout << "metoEnMochila1 = " << metoEnMochila1 << endl;
-				//cout << "metoEnMochila2 = " << metoEnMochila2 << endl;
-				//cout << "metoEnMochila3 = " << metoEnMochila3 << endl;
 
 				if (metoEnMochila1) {
 					//Meto el objeto (pesoTesoro, valor) en la mochila 1
@@ -196,10 +181,7 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 					iMochila3 -= pesoTesoro;
 				}
 			}
-			else
-			{
-				//cout << "No entra" << endl;
-			}
+
 			iTesoro--;
 		}
 	}
