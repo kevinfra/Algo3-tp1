@@ -58,14 +58,7 @@ pair<list< long >, list< long > > arreglarBalanza(long p){
 			izquierda = true;
 		}
 		else if(resto == 1) {
-      if(izquierda)
-			{
-				izquierdas.push_back(pow(3,divisiones));
-			}
-			else
-			{
-				derechas.push_back(pow(3,divisiones));
-			}
+      		izquierda ? izquierdas.push_back(pow(3,divisiones)) : derechas.push_back(pow(3,divisiones));			
 		}
 		else {
 			if(izquierda) derechas.push_back(pow(3,divisiones));
