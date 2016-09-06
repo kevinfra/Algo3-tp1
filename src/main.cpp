@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
 		vector<int> tesoroValor { 1000, 500, 1000 };
 
 		int cantTesoros = 0;
-		for (int i = 0; i < tesoroCant.size(); ++i)
+		for (uint i = 0; i < tesoroCant.size(); ++i)
 		{
 			cantTesoros += tesoroCant[i];
 		}
