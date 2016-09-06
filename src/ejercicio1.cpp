@@ -11,6 +11,8 @@ int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
   estados.push_back(primerEstado);
   int resultado = -1;
   if(canibales.size() <= arqueologos.size() || arqueologos.size() == 0){
+    sort(arqueologos);
+    sort(canibales);
     BTCruzarPuente(canibales, arqueologos, caniDer, arqDer, false, estados, 0, resultados);
     resultado = minimo(resultados);
   }
@@ -22,11 +24,6 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
   vector<int> canibalesIzq = linternaDer ? canibalesDestino : canibalesOrigen;
   vector<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
   vector<int> arqueologosIzq = linternaDer ? arqueologosDestino : arqueologosOrigen;
-
-  sort(canibalesOrigen);
-  sort(arqueologosOrigen);
-  sort(canibalesDestino);
-  sort(arqueologosDestino);
 
   bool esSolucion = canibalesIzq.size() + arqueologosIzq.size() == 0;
 
