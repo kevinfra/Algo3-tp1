@@ -122,7 +122,7 @@ bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCa
     (0 < arqueologosIzq && arqueologosIzq < canibalesIzq))
     return false;
 
-  for (int i = 0; i < estadosAnteriores.size(); i++)
+  for (uint i = 0; i < estadosAnteriores.size(); i++)
   {
     Estado estadoAnterior = estadosAnteriores[i];
     if (estadoAnterior.arqueologosDer == arqueologosDer &&
