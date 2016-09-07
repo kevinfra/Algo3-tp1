@@ -76,3 +76,33 @@ pair<list< long >, list< long > > arreglarBalanza(long p){
 	Ahora se hace desde Main
 */
 }
+
+pair<list< long >, list< long > > arreglarBalanzaParaTest(int p[], int size){
+    bool izquierda = true;
+	int divisiones = 0;
+	list<long> izquierdas;
+	list<long> derechas;
+	while(size!=0){
+		if(p[size -1] == 0){
+			if(!izquierda) izquierdas.push_back(pow(3,divisiones));
+			izquierda = true;
+		}
+		else if(p[size -1] == 1) {
+      		izquierda ? izquierdas.push_back(pow(3,divisiones)) : derechas.push_back(pow(3,divisiones));			
+		}
+		else {
+			if(izquierda) derechas.push_back(pow(3,divisiones));
+			izquierda = false;
+		}
+		size--;
+	  	divisiones++;
+	}
+	if(!izquierda) izquierdas.push_back(pow(3,divisiones));
+
+	pair<list< long >, list< long > > res (izquierdas, derechas);
+	return res;
+/*
+  // Mostrar en pantalla los resultados
+	Ahora se hace desde Main
+*/
+}
