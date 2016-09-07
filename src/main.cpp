@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 					for (int times = 0; times < 500; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
-						cout << stop_timer() << "    " << "(" << canibales.size() << "," << arqueologos.size() << ") " << canibales.size() + arqueologos.size() << endl;
+						cout << stop_timer() << " " << "(" << canibales.size() << "," << arqueologos.size() << ") " << canibales.size() + arqueologos.size() << endl;
 
 					}
 				}

@@ -21,13 +21,13 @@
 
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
-        La solución de este problema fue lograda considerando todos las formas de cruzar el puente suponiendo que de esa forma se pueda llegar a un final válido. Dado que el fin es cruzar de la forma más rápida, dejamos de lado quién va a cruzar el puente y nos enfocamos en a qué grupo pertenece. Siguiendo esta idea, siempre cruzarán los más rápidos de los que tengan la posibilidad de cruzar. Nos aseguramos de no perder casos en los que el cruce de alguien que no sea el más rápido nos lleve a una mejor solución basandonos en la idea de que todos deben cruzar el puente al menos una vez y el tiempo que les toma cruzar cada vez que pasan dos personas es la del más lento. Entonces, en el caso de que deba cruzar una sola persona, si hay dos del mismo grupo, será mejor que cruce el más rápido primero, ya que en caso de tener que regresar, tendrá menos posibilidades de retrasar al acompañante. En el caso de que dos personas deban cruzar, podemos tomar la misma idea y cuando alguno deba volver a cruzar, deberá regresar el más rápido nuevamente para consumir la menor cantidad posible de tiempo (siempre y cuando cruce el del grupo que corresponda).
+        La solución de este problema fue lograda considerando todos las formas de cruzar el puente suponiendo que de esa forma se pueda llegar a un final válido. Dado que el fin es cruzar de la forma más rápida, dejamos de lado quién va a cruzar el puente y nos enfocamos en a qué grupo pertenece. Siguiendo esta idea, siempre cruzarán los más rápidos de los que tengan la posibilidad de cruzar. Nos aseguramos de no perder casos en los que el cruce de alguien que no sea el más rápido nos lleve a una mejor solución basandonos el principio de optimalidad y en la idea de que todos deben cruzar el puente al menos una vez. El tiempo que les toma cruzar cada vez que pasan dos personas es la del más lento. Entonces, en el caso de que deba cruzar una sola persona, si hay dos del mismo grupo, será mejor que cruce el más rápido primero ya que en caso de tener que regresar, tendrá menos posibilidades de retrasar al acompañante. En el caso de que dos personas deban cruzar, podemos tomar la misma idea y cuando alguno deba volver a cruzar, deberá regresar el más rápido nuevamente para consumir la menor cantidad posible de tiempo (siempre y cuando cruce el del grupo que corresponda).
 
         Solamente van a tener la chance de cruzar quienes estén del lado en que está en la linterna y que su cruce no lleve a un \emph{estado inválido}. Un estado válido es aquél en el que no se estuvo anteriormente (es decir, que sea una situación que no haya ocurrido con anterioridad) y que no deje a más caníbales que arqueólogos de alguno de los dos lados. Si bien lo mejor es que crucen siempre los más rápidos, esto no siempre será posible. Es por esto, que los que crucen el puente serán los más rápidos de todas las combinaciones posibles entre los dos grupos siendo un cruce de 1 o 2 personas. Luego, los posibles cruces serán 2 personas del mismo grupo, 1 de un grupo y 1 de otro, o 1 sola de alguno de los dos grupos. Aquí es donde entra la importancia del estado inválido. La forma de corroborar que el movimiento lleve a un estádo válido es observando la cantidad de personas pertenecientes a cada uno de los grupos en cada lado del puente, sin importar su velocidad.
 
         La razón de esto es que es lo mismo si los que están en algún lado del puente son los que poseen velocidad $a_1$ o $a_2$ ya que simplemente sería una permutación de éstos. A pesar de que esto puede impactar en el tiempo total del cruce del puente, el objetivo de probar con todos los caminos y obtener todos las \emph{soluciones válidas} hace que luego no sea importante quién está de cada lado.
 
-        Para que una solución al problema sea válida, el tiempo que tome cruzar el puente debe ser mayor o igual a la suma de las velocidades de los todos los exploradores (caníbales y arqueólogos) y además en ninǵún momento del recorrido deben haber estados inválidos. Además, se pide que la solución final sea el menor tiempo posible que tome cruzar el puente. Este mismo será el mínimo entre todas las soluciones válidas.
+        Para que una solución al problema sea válida, el tiempo que tome cruzar el puente debe ser mayor o igual a la suma de las velocidades de los todos los exploradores (caníbales y arqueólogos) y además en ningún momento del recorrido deben haber estados inválidos. Además, se pide que la solución final sea el menor tiempo posible que tome cruzar el puente. Este mismo será el mínimo entre todas las soluciones válidas.
 
         Teniendo en cuenta lo planteado en este informe sobre el problema, podemos marcar que el algoritmo realizado, fue construido en base a la técnica de \emph{backtracking} que al igual que en este caso, consiste en probar todas las posibilidades descartando la mayor cantidad de soluciones incorrectas posibles al mismo tiempo y dejando como resultado una lista con las soluciones válidas. Así, se prueban todos los caminos posibles para cruzar el puente y al final se obtiene una lista con todas los tiempos que puede tomar cruzar el puente.
 
@@ -109,8 +109,8 @@ fin para
     \subsection{Complejidad teórica}
 
       El algoritmo comienza tomando $2$ vectores, siendo uno para los arqueólogos y otro para los caníbales. En cada posición de cada uno se encontrará una velocidad correspondiente a algún arqueólogo o caníbal. El tamaño de cada vector será igual a la cantidad de arqueólogos/caníbales que se tomaron como entrada. Llamaremos $n$ a la cantidad de arqueólogos. Además, dada la lógica del algoritmo, si hay más caníbales que arqueólogos al comenzar, la ejecución termina sin llamar a la función principal y devuelve $-1$ inmediatamente, ya que no hay forma de que al comienzo haya más aqrueólogos que caníbales en el lado izquierdo. En cambio, si hay $0$ aqrueólogos o más arqueólogos que caníbales, sí se llama a la función que realiza \emph{Backtracking}.
-      En ella, se utilizan $2$ vectores más para poder distinguir el lado del que se encuentra cada arqueólogo y cada caníbal. La inserción y eliminación de cada elemento en cada vector será de $O(1)$ amortizado ya que en caso de que el vector deba redimencionarse, se copian todos los elementos del vector a uno más grande.
-      En cada llamada a la función principal del algoritmo, se prueban $5$ casos: que cruce un arqueólogo solo, un canibal solo, dos arqueólogos, dos caníbales o un caníbal y un arqueólogo. Luego, cada nodo del árbol tendrá 5 hijos. Cada uno de ellos, será un posible estado válido y si lo es, se realizarán las operaciones necesarias para decidir quién cruzará el puente, las cuales consisten en los movimientos de personas entre vectores (que toma complejidad $O(n)$), previamente habiendo ordenado cada vector (en $O(n^2)$) y luego llamar recursivamente a la función principal, lo que da una complejidad de $O(n^2)$ para las operaciones que no son la llamada recursiva. Dado que se quieren probar todos los estados válidos, podemos decir que la complejidad temporal será el tiempo que tome recorrer cada uno de estos estados, que a la vez equivalen a los nodos del árbol de ejecución. Sabemos que la altura del árbol está acotada por la cantidad total de estados válidos. Este número se calcula de la siguiente manera:
+      En ella, se utilizandolizan $2$ vectores más para poder distinguir el lado del que se encuentra cada arqueólogo y cada caníbal. La inserción y eliminación de cada elemento en cada vector será de $O(1)$ amortizado ya que en caso de que el vector deba redimencionarse, se copian todos los elementos del vector a uno más grande dejando como complejidad $O(n)$.
+      En cada llamada a la función principal del algoritmo, se prueban $5$ casos: que cruce un arqueólogo solo, un canibal solo, dos arqueólogos, dos caníbales o un caníbal y un arqueólogo. Luego, cada nodo del árbol tendrá 5 hijos. Cada uno de ellos, será un posible estado válido y si lo es, se realizarán las operaciones necesarias para decidir quién cruzará el puente, las cuales consisten en los movimientos de personas entre vectores (que toma complejidad $O(n)$), previamente habiendo ordenado cada vector (en $O(n $log$ n)$) y luego llamar recursivamente a la función principal, lo que da una complejidad de $O(n $log$ n)$ para las operaciones que no son la llamada recursiva. Dado que se quieren probar todos los estados válidos, podemos decir que la complejidad temporal será el tiempo que tome recorrer cada uno de estos estados, que a la vez equivalen a los nodos del árbol de ejecución. Sabemos que la altura del árbol está acotada por la cantidad total de estados válidos. Este número se calcula de la siguiente manera:
 
       Dado que la cantidad de caníbales está acotada por la cantidad de arqueólogos, la cantidad de formas válidas que hay para repartir a todas las personas en ambos lados del puente manteniendo el invariante de que no haya más caníbales que arqueólogos de ninguno de los dos lados se calcula utilizando combinatoria. La cantidad de caníbales posibles en cada lado del puente es menor o igual a la cantidad de arqueólogos de ese lado (o sea entre $0$ y $n$), pero en caso de que no haya arqueólogos en alguno de los lados, la cantidad de caníbales posibles es igual a la cantidad total de arqueólogos, salvo que no haya ninguno y en ese caso $n$ pasará a ser el número de caníbales totales.
 
@@ -137,7 +137,7 @@ fin para
       \]
 
       Entonces, la altura del árbol va a estar acotada por $O(n^2)$.
-      Retomando, llegamos a que la complejidad de encontrar las soluciones está acotada por $O(b^h)$ donde $b$ es la cantidad de ramas que se abren en cada nodo, $h$ es la altura del árbol y todo esto es el tamaño del árbol. Como mencionamos anteriormente, $b$ es exactamente $5$ y la altura del árbol está acotada por $O(n^2)$. Luego, la complejidad temporal para encontrar las soluciones sería $O(5^{n^2})$. Pero hasta aquí no tenemos en cuenta que cada nodo cuesta $O(n)$. Incorporando esto a la complejidad anterior en la cual suponíamos que cada nodo tenía costo $O(1)$, nos queda que la complejidad temporal es $O((5n)^{n^2})$, que es igual a $O((n^2) * 5^{n^2})$.
+      Retomando, llegamos a que la complejidad de encontrar las soluciones está acotada por $O(b^h)$ donde $b$ es la cantidad de ramas que se abren en cada nodo, $h$ es la altura del árbol y todo esto es el tamaño del árbol. Como mencionamos anteriormente, $b$ es exactamente $5$ y la altura del árbol está acotada por $O(n^2)$. Luego, la complejidad temporal para encontrar las soluciones sería $O(5^{n^2})$. Pero hasta aquí no tenemos en cuenta que cada nodo cuesta $O(n $log$ n)$. Incorporando esto a la complejidad anterior en la cual suponíamos que cada nodo tenía costo $O(1)$, nos queda que la complejidad temporal en peor caso es $O((n$ log $n) * 5^{n^2})$.
 
       En cuanto a la complejidad espacial, se utiliza un historial de estados anteriores en los que se van guardando los estados válidos por los que se pasó hasta cierto punto en cada nodo del árbol. Se usa como si fuera una pila y cada vez que se accede a un nivel inferior en el árbol de ejecución, se guarda el estado actual de los caníbales, los arqueólogos y la linterna; mientras que cuando se sube en el árbol, se elimina el último estado actual. Debido a esto, la complejidad espacial en es $O(n^2)$ ya que la pila tendrá a lo sumo el mismo tamaño que la cantidad de estados en la rama más larga, y como probamos antes, este valor está acotado por esa complejidad. Además, lo que se guarda en cada estado son 4 valores enteros que indican la cantidad de arqueólogos y caníbales de cada lado, y un booleano (representado con 1 o 0) que indica de qué lado está la linterna.
 
@@ -147,20 +147,50 @@ fin para
     % 5. Realizar una experimentación computacional para medir la performance del programa implementado. Usar un conjunto de casos de test en función de los parámetros de entrada, con instancias aleatorias e instancias particulares (de peor/mejor caso en tiempo de ejecución, por ejemplo). Presentar en forma gráfica una comparación entre los tiempos medidos y la complejidad teórica calculada y extraer conclusiones.
     \subsection{Experimentación}
 
-	A la hora de medir el rendimiento del algoritmo y confirmar la complejidad
-	teórica se tuvieron que considerar varios aspectos tales que los
-	resultados de la experimentación reflejaran lo mejor posible su
-	comportamiento.
+	Para poder acercarnos lo más posible a la cota propuesta en la complejidad temporal, realizamos experimentos con la mayor cantidad posible de personas sin que se extienda demasiado el tiempo de solución. Los casos de prueba pueden observarse en la siguiente tabla:
 
-	Dado que el problema consiste en una única entrada, los casos de prueba
-	posibles se reducen al conjunto de los números enteros positivos. Como la
-	complejidad temporal del algoritmo es $\theta(Nlog(N))$, no hay un peor
-	y mejor escenario, por lo tanto no es necesario establecer condiciones sobre
-	la entrada.
+  %CORRER ./TP1 1 -EXP
+  %LUEGO GRAFICAR, Y SUBIR EL CSV A http://www.tablesgenerator.com/latex_tables#
 
-	El experimento consiste en la medición de los tiempos de ejecución para
-	entradas cada vez más grandes. A continuación se describen las condiciones aplicadas
-	para el mismo:
+  \begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{llll}
+\hline
+\multicolumn{1}{|l|}{\textbf{Tiempo en ms}} & \multicolumn{1}{l|}{\textbf{\#canibales}} & \multicolumn{1}{l|}{\textbf{\#arqueologos}} & \multicolumn{1}{l|}{\textbf{\#personas}} \\ \hline
+11                                          & 0                                         & 1                                           & 1                                        \\
+10                                          & 0                                         & 2                                           & 2                                        \\
+20                                          & 0                                         & 3                                           & 3                                        \\
+29                                          & 0                                         & 4                                           & 4                                        \\
+41                                          & 0                                         & 5                                           & 5                                        \\
+14                                          & 1                                         & 1                                           & 1                                        \\
+62                                          & 1                                         & 2                                           & 2                                        \\
+280                                         & 1                                         & 3                                           & 3                                        \\
+1170                                        & 1                                         & 4                                           & 4                                        \\
+4256                                        & 1                                         & 5                                           & 5                                        \\
+0                                           & 2                                         & 1                                           & 1                                        \\
+83                                          & 2                                         & 2                                           & 2                                        \\
+431                                         & 2                                         & 3                                           & 3                                        \\
+5510                                        & 2                                         & 4                                           & 4                                        \\
+102579                                      & 2                                         & 5                                           & 5                                        \\
+0                                           & 3                                         & 1                                           & 1                                        \\
+0                                           & 3                                         & 2                                           & 2                                        \\
+159                                         & 3                                         & 3                                           & 3                                        \\
+1659                                        & 3                                         & 4                                           & 4                                        \\
+116050                                      & 3                                         & 5                                           & 5                                        \\
+0                                           & 4                                         & 1                                           & 1                                        \\
+0                                           & 4                                         & 2                                           & 2                                        \\
+0                                           & 4                                         & 3                                           & 3                                        \\
+100                                         & 4                                         & 4                                           & 4                                        \\
+2280                                        & 4                                         & 5                                           & 5                                        \\
+0                                           & 5                                         & 1                                           & 1                                        \\
+0                                           & 5                                         & 2                                           & 2                                        \\
+0                                           & 5                                         & 3                                           & 3                                        \\
+0                                           & 5                                         & 4                                           & 4                                        \\
+128                                         & 5                                         & 5                                           & 5                                        \\ \hline
+\end{tabular}
+\end{table}
 
 	\begin{itemize}
 		\item{Como entrada se utilizó $N = k$ con $200 < k < 100000$}

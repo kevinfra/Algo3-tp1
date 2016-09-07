@@ -18,6 +18,7 @@
 \usepackage{booktabs}
 \usepackage{makeidx}
 \usepackage{float}
+\usepackage{array}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{amsfonts}
 \usepackage{sectsty}
@@ -28,6 +29,8 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{listingsutf8}
+\usepackage{pgfplotstable}
+\usepackage{colortbl}
 \usepackage[spanish,es-nodecimaldot]{babel}
 
 \linespread{factor}
@@ -46,6 +49,11 @@
 	morecomment=[l][\color{magenta}]{\#},
 	numbers=left,
 	numberstyle=\color{mygray}
+}
+\pgfplotstableset{% global config, for example in the preamble
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  fixed,precision=2,
 }
 
 \input{codesnippet}
