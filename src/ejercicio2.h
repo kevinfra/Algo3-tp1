@@ -4,4 +4,4 @@
 #include <math.h>
 
 pair<list< long >, list< long > > arreglarBalanza(long p);
-bool esPotencia(int n, int b);
+pair<list< long >, list< long > > arreglarBalanzaParaTest(int p[], int size);

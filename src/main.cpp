@@ -29,6 +29,10 @@ int main(int argc, char *argv[]) {
 	bool experimentos = false;
 	if (argc == 2) {
 		numeroDeEjercicio = atoi(argv[1]);
+		string exp = argv[2];
+		if (exp == "-exp") {
+			experimentos = true;
+		}
 	}
 	else if (argc == 3) {
 		numeroDeEjercicio = atoi(argv[1]);
@@ -114,13 +118,15 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			for (int q = 0; q < 5000; ++q) {
-				int p = 1;
+				int p[q];
+				for(int j= 0;j<q;j++){
+				   p[q] = 1;
+				}
 				for (int i = 0; i < 1000; ++i){
 					start_timer();
-					arreglarBalanza(p);
-					cout << stop_timer() << "    " << p << endl;
+					arreglarBalanzaParaTest(p,q);
+					cout << stop_timer() << "    " << q << endl;
 				}
-				p += 1000001;
 			}
 		}
 	}
