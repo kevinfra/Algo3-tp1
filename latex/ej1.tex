@@ -25,7 +25,7 @@
 
         Solamente van a tener la chance de cruzar quienes estén del lado en que está en la linterna y que su cruce no lleve a un \emph{estado inválido}. Un estado válido es aquél en el que no se estuvo anteriormente (es decir, que sea una situación que no haya ocurrido con anterioridad) y que no deje a más caníbales que arqueólogos de alguno de los dos lados. Si bien lo mejor es que crucen siempre los más rápidos, esto no siempre será posible. Es por esto, que los que crucen el puente serán los más rápidos de todas las combinaciones posibles entre los dos grupos siendo un cruce de 1 o 2 personas. Luego, los posibles cruces serán 2 personas del mismo grupo, 1 de un grupo y 1 de otro, o 1 sola de alguno de los dos grupos. Aquí es donde entra la importancia del estado inválido. La forma de corroborar que el movimiento lleve a un estádo válido es observando la cantidad de personas pertenecientes a cada uno de los grupos en cada lado del puente, sin importar su velocidad.
 
-        La razón de esto es que da igual si los que están en algún lado del puente son tienen velocidad $a_1$ o $a_2$ ya que simplemente sería una permutación de éstos. A pesar de que esto puede impactar en el tiempo total del cruce del puente, el objetivo de probar con todos los caminos y obtener todos las \emph{soluciones válidas} hace que luego no sea importante quién está de cada lado.
+        La razón de esto es que es lo mismo si los que están en algún lado del puente son los que poseen velocidad $a_1$ o $a_2$ ya que simplemente sería una permutación de éstos. A pesar de que esto puede impactar en el tiempo total del cruce del puente, el objetivo de probar con todos los caminos y obtener todos las \emph{soluciones válidas} hace que luego no sea importante quién está de cada lado.
 
         Para que una solución al problema sea válida, el tiempo que tome cruzar el puente debe ser mayor o igual a la suma de las velocidades de los todos los exploradores (caníbales y arqueólogos) y además en ninǵún momento del recorrido deben haber estados inválidos. Además, se pide que la solución final sea el menor tiempo posible que tome cruzar el puente. Este mismo será el mínimo entre todas las soluciones válidas.
 
@@ -54,10 +54,10 @@ si no
   lado de destino = lado derecho
 linternaEnDeracha = !linternaEnDerecha
 
-ordenarVelocudades canibalesEnOrigen
-ordenarVelocudades canibalesEnDestino
-ordenarVelocudades arqueologosEnOrigen
-ordenarVelocudades arqeuologosEnDestino
+ordenarVelocidades canibalesEnOrigen
+ordenarVelocidades canibalesEnDestino
+ordenarVelocidades arqueologosEnOrigen
+ordenarVelocidades arqeuologosEnDestino
 
 para #CanibalesQueCruzan entre 0 y minimo(2, #canibales del lado de origen):
     para #ArqueologosQueCruzan entre 0 y (2 - #CanibalesQueCruzan):
