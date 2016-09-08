@@ -29,10 +29,6 @@ int main(int argc, char *argv[]) {
 	bool experimentos = false;
 	if (argc == 2) {
 		numeroDeEjercicio = atoi(argv[1]);
-		string exp = argv[2];
-		if (exp == "-exp") {
-			experimentos = true;
-		}
 	}
 	else if (argc == 3) {
 		numeroDeEjercicio = atoi(argv[1]);
