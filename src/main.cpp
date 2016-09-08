@@ -20,7 +20,7 @@ void start_timer() {
 
 double stop_timer() {
 	chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-	return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
+	return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
 }
 
 
