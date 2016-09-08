@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 			vector<int> arqueologos;
 			for (int q = 0; q <= 5; ++q){
 				for (int k = 0; k <= 4; ++k){
-					canibales.push_back(q);
+					canibales.push_back(k);
 					for (int times = 0; times < 500; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 					}
 				}
 				canibales.clear();
-				arqueologos.push_back(k);
+				arqueologos.push_back(q);
 			}
 		}
 	}
