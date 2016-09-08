@@ -1,25 +1,44 @@
 \section{Apéndice}\label{sec:codigo}
 
-\subsection{Funciones principales de Kaioken}
-\begin{lstlisting}
-vector< vector<int>> generarPeleas(int n){
-  int cantidadPeleas = ceil(log(n)/log(2));
-  vector<vector<int>> peleas = 
-  vector<vector<int>>(cantidadPeleas, vector<int>(n, 2));
-  int saltos = 1;
-  for(int i = 0; i < cantidadPeleas; i++){
-  for(int j = 0; j < n; j += 2*saltos){
-    for(int k = 0; k < saltos; k++){
-    if(j + k < n){
-      peleas[i][j + k] = 1;
-    }
-    }
-  }
-  saltos *= 2;
-  }
-  return peleas;
-}
-\end{lstlisting}
+\subsection{Tabla de tiempos del Ejercicio 1}
+
+\begin{table}[H]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{llll}
+\hline
+\multicolumn{1}{|l|}{\textbf{Tiempo en ns}} & \multicolumn{1}{l|}{\textbf{Nro Arqs}} & \multicolumn{1}{l|}{\textbf{Nro Cani}} & \multicolumn{1}{l|}{\textbf{Total personas}} \\ \hline
+60283                                       & 1                                      & 1                                      & 1                                            \\
+72174                                       & 2                                      & 1                                      & 1                                            \\
+73101                                       & 2                                      & 2                                      & 2                                            \\
+244089                                      & 3                                      & 1                                      & 1                                            \\
+376942                                      & 3                                      & 2                                      & 2                                            \\
+140744                                      & 3                                      & 3                                      & 3                                            \\
+1015891                                     & 4                                      & 1                                      & 1                                            \\
+4779930                                     & 4                                      & 2                                      & 2                                            \\
+1451661                                     & 4                                      & 3                                      & 3                                            \\
+90518                                       & 4                                      & 4                                      & 4                                            \\
+3699654                                     & 5                                      & 1                                      & 1                                            \\
+89181072                                    & 5                                      & 2                                      & 2                                            \\
+100932180                                   & 5                                      & 3                                      & 3                                            \\
+1998558                                     & 5                                      & 4                                      & 4                                            \\
+115257                                      & 5                                      & 5                                      & 5                                            \\
+12750260                                    & 6                                      & 1                                      & 1                                            \\
+1380760800                                  & 6                                      & 2                                      & 2                                            \\
+12017366000                                 & 6                                      & 3                                      & 3                                            \\
+1024082800                                  & 6                                      & 4                                      & 4                                            \\
+2600562                                     & 6                                      & 5                                      & 5                                            \\
+135313                                      & 6                                      & 6                                      & 6                                            \\
+66468300                                    & 7                                      & 1                                      & 1                                            \\
+31612728000                                 & 7                                      & 2                                      & 2                                            \\
+1054921400000                               & 7                                      & 3                                      & 3                                            \\
+971867840000                                & 7                                      & 4                                      & 4                                            \\
+15451590000                                 & 7                                      & 5                                      & 5                                            \\
+5464967                                     & 7                                      & 6                                      & 6                                            \\
+270902                                      & 7                                      & 7                                      & 7                                           
+\end{tabular}
+\end{table}
 
 \subsection{Funciones principales de Genkidama}
 \begin{lstlisting}

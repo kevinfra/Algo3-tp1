@@ -147,162 +147,28 @@ fin para
     % 5. Realizar una experimentación computacional para medir la performance del programa implementado. Usar un conjunto de casos de test en función de los parámetros de entrada, con instancias aleatorias e instancias particulares (de peor/mejor caso en tiempo de ejecución, por ejemplo). Presentar en forma gráfica una comparación entre los tiempos medidos y la complejidad teórica calculada y extraer conclusiones.
     \subsection{Experimentación}
 
-	Para poder mostrar que la cota propuesta en la complejidad temporal funciona para el algoritmo que resuelve este problema, realizamos experimentos con distintas cantidades de personas pero siempre con más arqueólogos que caníbales. Los casos de prueba pueden observarse en la siguiente tabla:
+	Para poder mostrar que la cota propuesta en la complejidad temporal funciona para el algoritmo que resuelve este problema, realizamos experimentos con cantidades de personas entre 1 y 7 pero siempre con mayor o igual número de arqueólogos que de caníbales. Los casos de prueba pueden observarse en la tabla que se encuentra en el anexo de este informe.
 
-  %CORRER ./TP1 1 -EXP
-  %LUEGO GRAFICAR, Y SUBIR EL CSV A http://www.tablesgenerator.com/latex_tables#
+  Los resultados obtenidos fueron plasmados en el siguiente gráfico. El mismo es la representación del tiempo en funcion de la cantidad de arqueólogos. También se muestra la funcion propuesta como cota de complejidad temporal.
 
-  \begin{table}[]
-\centering
-\caption{My caption}
-\label{my-label}
-\begin{tabular}{llll}
-\hline
-\multicolumn{1}{|l|}{\textbf{Tiempo en ms}} & \multicolumn{1}{l|}{\textbf{\#canibales}} & \multicolumn{1}{l|}{\textbf{\#arqueologos}} & \multicolumn{1}{l|}{\textbf{\#personas}} \\ \hline
-11                                          & 0                                         & 1                                           & 1                                        \\
-10                                          & 0                                         & 2                                           & 2                                        \\
-20                                          & 0                                         & 3                                           & 3                                        \\
-29                                          & 0                                         & 4                                           & 4                                        \\
-41                                          & 0                                         & 5                                           & 5                                        \\
-14                                          & 1                                         & 1                                           & 1                                        \\
-62                                          & 1                                         & 2                                           & 2                                        \\
-280                                         & 1                                         & 3                                           & 3                                        \\
-1170                                        & 1                                         & 4                                           & 4                                        \\
-4256                                        & 1                                         & 5                                           & 5                                        \\
-0                                           & 2                                         & 1                                           & 1                                        \\
-83                                          & 2                                         & 2                                           & 2                                        \\
-431                                         & 2                                         & 3                                           & 3                                        \\
-5510                                        & 2                                         & 4                                           & 4                                        \\
-102579                                      & 2                                         & 5                                           & 5                                        \\
-0                                           & 3                                         & 1                                           & 1                                        \\
-0                                           & 3                                         & 2                                           & 2                                        \\
-159                                         & 3                                         & 3                                           & 3                                        \\
-1659                                        & 3                                         & 4                                           & 4                                        \\
-116050                                      & 3                                         & 5                                           & 5                                        \\
-0                                           & 4                                         & 1                                           & 1                                        \\
-0                                           & 4                                         & 2                                           & 2                                        \\
-0                                           & 4                                         & 3                                           & 3                                        \\
-100                                         & 4                                         & 4                                           & 4                                        \\
-2280                                        & 4                                         & 5                                           & 5                                        \\
-0                                           & 5                                         & 1                                           & 1                                        \\
-0                                           & 5                                         & 2                                           & 2                                        \\
-0                                           & 5                                         & 3                                           & 3                                        \\
-0                                           & 5                                         & 4                                           & 4                                        \\
-128                                         & 5                                         & 5                                           & 5                                        \\ \hline
-\end{tabular}
-\end{table}
+  \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.7\columnwidth]{imagenes/exp1Ej1-1a7.jpeg}
+        \caption{}
+      \end{center}
+  \end{figure}
 
-	\begin{itemize}
-		\item{Como entrada se utilizó $N = k$ con $200 < k < 100000$}
-		\item{Por cada $N$, se repitió 40 veces la medición y se calculó un
-			promedio.}
-	\end{itemize}
+  Para cada valor en $x$ puede observarse que a medida que crece, hay más puntos en $y$ para el mismo $x$. Esto es porque si bien el eje X es la cantidad de arqueólogos, también varía la cantidad de caníbales por lo que el tiempo que toma cada ejecución del programa también depende de este valor, pero como se aclaró en la sección de complejidad, el número de caníbales va de 0 a la cantidad de arqueólogos (porque en caso contrario el programa termina en seguida a menos que no haya arqueólogos, caso que se verá más adelante) lo cual implica que nuestro tamaño de entrada $n$ (la cantidad de arqueólogos) es en realidad a lo sumo $2n$, pero en términos de complejidad el $2$ es una constante que podemos sacar.
+  De acuerdo a la tabla proporcionada, los pares (arqueólogo, caníbal) que toman más tiempo son \texttt{(1,1), (2,2), (3,2), (4,2), (5,3), (6,3), (7,3)}. Sin embargo, podemos notar como la cota de complejidad cumple, aunque no de manera ajustada, su función para estos experimentos.
 
-	De estos puntos, cabe destacar la elección de comenzar con $N = 200$. Esta
-	decisión surge del hecho de que en valores pequeños las mediciones de tiempo
-	son más sensibles a perturbaciones del sistema en el que están corriendo.
-	Por lo tanto, en base a las pruebas realizadas, se optó por ignorar los
-	primeros valores dado que no aportaban información pertinente al experimento.
 
-	Los resultados obtenidos fueron los siguientes. En los gráficos, $T$ representa el
-    tiempo de ejecución obtenido en las mediciones.
+  Para el caso en que no haya arqueólogos y solo haya caníbales, esperábamos que la resolución del problema sea más rápida que en los casos que hay más arqueólogos que caníbales. Probamos con cantidades de caníbales entre 1 y 200 y en el próximo grafico se ilustran los resultados de tiempo en función del número de personas.
 
-	\newcommand\constante{3}
-	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:exp1:tiempo_base}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($N$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=south east,
-					legend cell align=left,
-					xmin=1
-				]
-				\addplot[color=black] table[x index=0,y index=1]{../exp/kaioKenOutput};
-				\addplot[color=red] table[x index=0, y expr={x*ln(x)*\constante}]{../exp/kaioKenOutput};
-				\legend{$T$, $c*N*log(N)$}
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
+  \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.7\columnwidth]{imagenes/exp2Ej1.jpeg}
+        \caption{}
+      \end{center}
+  \end{figure}
 
-	En la Figura \ref{fig:exp1:tiempo_base} se puede observar como la curva generada por el
-	tiempo de ejecución puede ser acotada para un $c$ fijo por una función
-	$c*N*log(N)$. Para ratificar esta observación se procede dividiendo cada $T$
-	por su respectivo $N$ con la intención de generar una curva de forma
-	logarítmica.
-
-	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:tiempo_sobre_n}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($N$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					ymax=100,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=south east,
-					legend cell align=left,
-					xmin=1
-				]
-				\addplot[color=black] table[x index=0,y index=2]{../exp/kaioKenOutput};
-				\addplot[color=red] table[x index=0, y expr={ln(x)*\constante}]{../exp/kaioKenOutput};
-				\legend{$\frac{T}{N}$, $c*log(N)$}
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
-
-	Con la Figura \ref{fig:tiempo_sobre_n} se corrobora lo previsto, ya que
-	efectivamente se puede apreciar cómo con la misma constante $c$ se puede
-	acotar por una función $c*log(N)$.
-
-	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:tiempo_sobre_n_log_n}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($N$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					ymin=0,
-					ymax=5,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=south east,
-					legend cell align=left,
-					xmin=1
-				]
-				\addplot[color=black] table[x index=0,y index=3]{../exp/kaioKenOutput};
-				\addplot[color=red] table[x index=0, y expr={\constante}]{../exp/kaioKenOutput};
-				\legend{$\frac{T}{N*log(N)}$, $c$}
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
-
-	Finalmente, en la Figura \ref{fig:tiempo_sobre_n_log_n} se tiene que
-	$\frac{T}{N*log(N)}$ converge a una constante que puede ser acotada por $c =
-	\constante$. Este $c$ es el mismo que es utilizado en las figuras
-	anteriores.
-
-	Es así como se llega a la conclusión de que efectivamente la complejidad
-	temporal de la solución desarrollada coincide con la complejidad teórica estipulada.
-
-	Para reproducir los datos utilizados basta con ejecutar \texttt{KaioKenSolver
-	-p}.
+  Notamos como el tiempo que toma a mayor cantidad de caníbales sin arqueólogos crece mucho más lento que para los casos con arqueólogos. Esto se debe a que por un lado, las ramas en que cruzan arqueologos no se prueban, sino que solo se intenta que crucen 1 o 2 caníbales. Luego, la cantidad de estados posibles se reduce a 2 veces la cantidad de formas que se pueden distribuir los caníbales en ambos lados del puente (una por cada lado de la linterna), que es igual a $2*(n^2)$; reducimos la cota de complejidad a $O(n $log$ n*2^{n^2})$. El cambio no es muy grande debido a que las cotas no están totalmente ajustadas, pero funcionan para dar una idea del peor caso acotado por arriba.

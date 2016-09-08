@@ -72,19 +72,30 @@ int main(int argc, char *argv[]) {
 			start_timer();
 			int tiempo = cruzarPuente(velocidadesCanibales, velocidadesArq);
 			cout << tiempo << endl;
-			cout << "tiempo que tarda en microsegundos: " << stop_timer() << endl;
+			cout << "tiempo que tarda en nanosegundos: " << stop_timer() << endl;
 
 		}
 		else {
 			vector<int> canibales;
 			vector<int> arqueologos;
-			for (int q = 0; q <= 5; ++q){
-				for (int k = 0; k <= 4; ++k){
+			for (int i = 0; i < 200; ++i)
+			{
+				canibales.push_back(i);
+				for (int veces = 0; veces < 50; ++veces)
+				{
+					start_timer();
+					cruzarPuente(canibales, arqueologos);
+					cout << stop_timer() << "    " << canibales.size() << endl;
+				}
+			}
+			canibales.clear()
+			for (int q = 0; q <= 7; ++q){
+				for (int k = 4; k <= q; ++k){
 					canibales.push_back(k);
-					for (int times = 0; times < 500; ++times){
+					for (int times = 0; times < 15; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
-						cout << stop_timer() << "    " << arqueologos.size() << "   " << canibales.size() << "    " << canibales.size() + arqueologos.size() << endl;
+						cout << stop_timer() << "    " << arqueologos.size() << "    " << canibales.size() << "    " << canibales.size() + arqueologos.size() << endl;
 
 					}
 				}
