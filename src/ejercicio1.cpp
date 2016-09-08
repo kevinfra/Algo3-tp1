@@ -43,10 +43,10 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     int cantArqueologosDestino = arqueologosDestino.size();
     bool nuevaLinternaDer = !linternaDer;
 
-    sort(canibalesOrigen);
-    sort(canibalesDestino);
-    sort(arqueologosOrigen);
-    sort(arqueologosDestino);
+    if (canibalesOrigen.size() > 0) { sort(canibalesOrigen.begin(), canibalesOrigen.end()); }
+    if (canibalesDestino.size() > 0) { sort(canibalesDestino.begin(), canibalesDestino.end()); }
+    if (arqueologosOrigen.size() > 0) { sort(arqueologosOrigen.begin(), arqueologosOrigen.end()); }
+    if (arqueologosDestino.size() > 0) { sort(arqueologosDestino.begin(), arqueologosDestino.end()); }
 
     //Mando 0 canibales y 1 arqueologo, o
     //0 canibales y 2 arqueologos, o
@@ -171,21 +171,4 @@ int minimo(vector<int> lista){
     if (res > lista[k]) res = lista[k];
   }
   return res;
-}
-
-void sort(vector<int> &lista){
-  int size = lista.size();
-  for (int i = 1; i < size; ++i){
-    for (int q = 0; q < i-1; ++q){
-      if(lista[q] >  lista[q+1]){
-        swap(lista, q, q+1);
-      }
-    }
-  }
-}
-
-void swap(vector<int> &lista, int i, int q){
-  int temp = lista[i];
-  lista[i] = lista[q];
-  lista[q] = temp;
 }

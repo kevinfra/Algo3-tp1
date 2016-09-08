@@ -20,7 +20,7 @@ void start_timer() {
 
 double stop_timer() {
 	chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-	return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
+	return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
 }
 
 
@@ -29,10 +29,6 @@ int main(int argc, char *argv[]) {
 	bool experimentos = false;
 	if (argc == 2) {
 		numeroDeEjercicio = atoi(argv[1]);
-		string exp = argv[2];
-		if (exp == "-exp") {
-			experimentos = true;
-		}
 	}
 	else if (argc == 3) {
 		numeroDeEjercicio = atoi(argv[1]);
@@ -84,16 +80,16 @@ int main(int argc, char *argv[]) {
 			vector<int> arqueologos;
 			for (int q = 0; q <= 5; ++q){
 				for (int k = 0; k <= 4; ++k){
-					arqueologos.push_back(k);
+					canibales.push_back(k);
 					for (int times = 0; times < 500; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
-						cout << stop_timer() << "    " << "(" << canibales.size() << "," << arqueologos.size() << ") " << canibales.size() + arqueologos.size() << endl;
+						cout << stop_timer() << "    " << arqueologos.size() << "   " << canibales.size() << "    " << canibales.size() + arqueologos.size() << endl;
 
 					}
 				}
-				arqueologos.clear();
-				canibales.push_back(q);
+				canibales.clear();
+				arqueologos.push_back(q);
 			}
 		}
 	}
