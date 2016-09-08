@@ -69,17 +69,17 @@ pesasNP = np.array(listaPesas)
 fig = plt.figure()
 fig.patch.set_facecolor('white')
 ax1 = fig.add_subplot(111)
-pylab.plot(listaPesas, promedioNP,'ro', label= 'Resultados Ejercicio 2')
+pylab.plot(listaPesas, promedioNP,'r', label= 'Resultados Ejercicio 2')
 
 
 ax1.set_title("Pesas de potencias de 3")
-ax1.set_xlabel('Tiempo de procesamiento en ns')
+ax1.set_xlabel('Peso de la llave')
 ax1.set_xscale('linear')
-ax1.set_ylabel('Peso de la llave')
-ax1.set_yscale('linear')
+ax1.set_ylabel('Tiempo de procesamiento en ns')
+ax1.set_yscale('log', basey=3)
 
 leg = ax1.legend()
 
-leg = plt.legend( loc = 'upper right')
+leg = plt.legend( loc = 'lower right')
 
 plt.show()

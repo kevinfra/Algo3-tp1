@@ -84,16 +84,16 @@ int main(int argc, char *argv[]) {
 			vector<int> arqueologos;
 			for (int q = 0; q <= 5; ++q){
 				for (int k = 0; k <= 4; ++k){
-					arqueologos.push_back(k);
+					canibales.push_back(q);
 					for (int times = 0; times < 500; ++times){
 						start_timer();
 						cruzarPuente(canibales, arqueologos);
-						cout << stop_timer() << " " << "(" << canibales.size() << "," << arqueologos.size() << ") " << canibales.size() + arqueologos.size() << endl;
+						cout << stop_timer() << "    " << arqueologos.size() << "   " << canibales.size() << "    " << canibales.size() + arqueologos.size() << endl;
 
 					}
 				}
-				arqueologos.clear();
-				canibales.push_back(q);
+				canibales.clear();
+				arqueologos.push_back(k);
 			}
 		}
 	}
