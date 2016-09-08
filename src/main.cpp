@@ -128,12 +128,39 @@ int main(int argc, char *argv[]) {
 	}
 	else if (numeroDeEjercicio == 3) {
 
-		int cantMochilas = 3;
+		int cantMochilas;
+		int tiposDeTesoros;
+		vector<int> capacidades;
+		vector<int> tesoroCant;
+		vector<int> tesoroPeso;
+		vector<int> tesoroValor;
+
+
+		cout << "Cantidad de mochilas y de tipos de tesoros:" << endl;
+		cin >> cantMochilas >> tiposDeTesoros;
+		int tamanoMochila;
 		
-		vector<int> capacidades { 4, 4, 5 };
-		vector<int> tesoroCant { 1, 1, 1 };
-		vector<int> tesoroPeso { 5, 4, 4 };
-		vector<int> tesoroValor { 1000, 500, 1000 };
+		cout << "capacidades de las " << cantMochilas << " mochilas" << endl;
+		while(cantMochilas > 0 && (cin >> tamanoMochila)) {
+				capacidades.push_back(tamanoMochila);
+				cantMochilas--;
+	  }
+
+	  int totalInfoTesoros = tiposDeTesoros*3;
+	  int unaInfoTesoro;
+	  cout << "ingresar C P V de cada tipo de tesoro" << endl;
+	  while(totalInfoTesoros > 0 && (cin >> unaInfoTesoro)) {
+				if (totalInfoTesoros % 3 == 0){
+					tesoroCant.push_back(unaInfoTesoro);
+				}
+				else if (totalInfoTesoros % 3 == 1){
+					tesoroPeso.push_back(unaInfoTesoro);
+				}
+				else if (totalInfoTesoros % 3 == 2){
+					tesoroValor.push_back(unaInfoTesoro);
+				}
+				totalInfoTesoros--;
+	  }
 
 		int cantTesoros = 0;
 		for (uint i = 0; i < tesoroCant.size(); ++i)
@@ -141,7 +168,7 @@ int main(int argc, char *argv[]) {
 			cantTesoros += tesoroCant[i];
 		}
 
-		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroPeso, tesoroValor);
+		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
 		cout << "valorTotal = " << ej3.first << endl;
 		for (unsigned int i = 0; i < ej3.second.size(); ++i)
 		{	
