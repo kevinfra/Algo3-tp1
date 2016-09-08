@@ -270,46 +270,40 @@
 
 	Se realizaron pruebas experimentales para verificar que el tiempo de
 	ejecución del algoritmo cumpliera con la cota asintótica de $\ord(log(n))$,
-	demostrada teóricamente. Se realizaron las siguientes pruebas:
-        
-        \begin{itemize}
-            \item Pruebas con instancias con donde con una Genkidama se
-				destruyen a todos los enemigos.
-            \item Pruebas con instancias donde se requieren $N$ Genkidamas para
-				eliminar a todos.
-            \item Pruebas con instancias generadas aleatoriamente, para obtener una aproximación al comportamiento del algoritmo en el caso promedio.
-            \item Pruebas fijando un $N$ y variando el $T$.
-        \end{itemize}
+	demostrada teóricamente. Para ello fue necesario modificar el algoritmo propuesto, ya que como la complejidad está definida por la cantidad de símbolos necesarios para la representación del número en base 3 y se explicó que la misma era $log_3$ del número más uno, no se observan grandes diferencias en el tiempo de ejecución para números 'razonables', es decir números que puedan ser representados de una forma práctica y eficiente en C++. Por ejemplo para el caso de un número muy grande como $3^{30}$, la cantidad de iteraciones que va a realizar el ciclo es sólo 31, que no es muy diferente a la cantidad de iteraciones necesarias para el número $3^{3}$ (4 iteraciones) que es mucho menor. Los tiempos de ejecución de estas instancias son muy similares y dado a que hay muchas variables en cuestión cuando se corren (otros procesos que interfieren, atención de interrupciones y scheduling del S.O, etc) puede hasta darse el caso de que tarde más una instancia menor que una mayor. Se presenta la siguiente modificación del algoritmo para realizar las pruebas:
 
-        \subsubsection{Instancias particulares}
+	\begin{codesnippet}
+	\begin{verbatim}
+	izquierda = verdadero
+	divisiones = 0
+	izquierdas = []
+	derechas = []
+	Mientras v.size != 0
+	    Si v[size -1] = 0
+	      Si no lo puse en izquierda al anterior
+	        Agrego a izquierdas la pesa con valor (3 ^ divisiones)
+	      izquierda = verdadero
+	    Si v[size -1] = 1
+	      Si anterior lo puse en izquierda
+	        Agrego a izquierdas la pesa con valor (3 ^ divisiones)
+	      Si no
+	        Agrego a derechas la pesa con valor (3 ^ divisiones)
+	    Si v[size -1] = 2
+	      Si anterio lo puse en izquierda
+	        Agrego a derechas la pesa con valor (3 ^ divisiones)
+	      izquierda = falso
+	    v.size -= 1
+	    divisiones += 1
+	Fin Mientras
+	Si el último no lo puse en la izquierda
+	   Agrego a izquierdas la pesa con valor (3 ^ divisiones)
+	\end{verbatim}
+	\end{codesnippet}
 
-            Todas las instancias utilizadas para estas pruebas se generaron de manera aleatoria, pero restringiendo los resultados obtenidos para cumplir con determinadas características. A continuación se enumeran los criterios tenidos en cuenta para la generación de los escenarios de prueba.
+	Este algoritmo a diferencia del original, recibe como parámetros un arreglo de enteros (v) que representa el desarrollo en base 3 de un número y un entero que es el tamaño del arreglo. El arreglo de enteros puede contener por lo tanto en cada posición un entero entre 0 y 2 inclusive. El arreglo se interpreta como que en la posición 0 está el dígito más significativo y en la última el menos significativo.
+	Con esta idea se puede realizar un mejor análisis del rendimiento del algoritmo ya que se pueden simular números mucho más grandes. Se puede tomar un arreglo de 5000 posiciones, lo cual representaría un número muy grande en base 3 que no se puede representar directamente. La idea es que este algoritmo realiza en el fondo lo mismo que el anterior, ya que lo que se hace es recorrer el arreglo (ciclo principal) y después tomar las mismas decisiones que en el original en base a los valores contenidos en cada posición del arreglo. Es decir lo que determina la complejidad en este caso es el tamaño del arreglo, pero el mismo por lo expuesto anteriormente es igual al logaritmo en base 3 de un número P cualquiera, el cual sería el resultante de realizar la descomposición del desarrollo.
 
-            \begin{itemize}
-                \item \textbf{Una Genkidama:} Para el caso donde una
-					Genkidama mata a todos los enemigos, se generaron
-					coordenadas dentro del rango $T$ de un enemigo en
-					particular. Se denomina $T_1$ al tiempo transcurrido en dicho caso.
-
-                \item \textbf{$N$ Genkidamas:} Para el caso donde hay que matar
-					a cada enemigo con una Genkidama distinta, se generaron coordenadas a
-					una distancia mayor a $T$ con respecto a las coordenadas $X$ e
-					$Y$ de sus vecinos. Se denomina $T_2$ al tiempo para este
-					escenario.
-
-				\item \textbf{Coordenadas aleatorias:} Se generaron coordenadas
-				$X$ e $Y$ al azar y luego se ordenaron para que cumplan con la
-			descripción del problema. Se denomina $T_3$ al tiempo que toma en dicho caso.
-
-				\item \textbf{$T$ con un $N$ fijo:} Para ver que $T$ no	afecta
-					la complejidad del algoritmo, se fijo un número de enemigos
-					($N = 10000$) y se hizo variar el valor de $T$. Se llamara $T_4$
-					al tiempo transcurrido para estas instancias.
-            \end{itemize}
-
-		En cada experimento se graficaron los resultados para entradas de valor
-		mayor o igual a 500 con el propósito de ignorar los valores pequeños sensibles al ruido
-		del sistema en el que se realizaron las pruebas.
+	Para las pruebas lo que se realizó es probar con arreglos de tamaño 1 hasta 4600. Para estandarizar y que no haya constantes diferentes para cada arreglo (ya que lo que se hace depende del valor de cada posición) en todos los casos se completaron todas las posiciones de los arreglos con el valor 1, para que el tiempo esté determinado sólo por el tamaño del arreglo. Además cada uno de los arreglos es testeado 5000 veces para disminuir los outliers. Lo esperable es que haya una relación lineal entre el tiempo de corrida y el tamaño del arreglo, pero el mismo se debe interpretar como que la relación es logarítmica entre el número que representa el arreglo y el tiempo.Se utilizó para que esto se visualice mejor la escala logarítica, como se puede observar en el siguiente gráfico:  
 
 
     \renewcommand\constante{5}
@@ -342,92 +336,7 @@
 			\end{axis}
 		\end{tikzpicture}
 	\end{figure}
-	En la Figura \ref{fig:exp2:part_tiempo_base} se puede ver :
 
-	     \begin{itemize} 
-            \item El caso $T_3$ es el que peor constante tiene, ya que cae más
-				seguido al condicional más costoso del algoritmo que es el que
-				en caso de no estar cubierto por una Genkidama anterior pero si
-				tener un sucesor que lo alcance, debe verificar que este también
-				llegue a cubrir enemigos pendientes.
-            \item El caso $T_2$ tiene una constante mayor que $T_1$ ya que al
-				siempre tener que agregar un genkidama, para llegar a esa
-				decisión antes debe verifcar que el anterior y el siguiente no lo cubren.
-             \item Se puede ver que el caso $T_1$ tiene una constante más
-				 pequeña que el resto, esto se debe a que como solo basta un
-				 genkidama para matar a todos los enemigos, después de tirar ese
-				 genkidama los siguiente puntos únicamente verifican que
-				 efectivamente los cubre una Genkidama anterior.
-            \item Los tres escenarios son acotados por $c*N$ con $c = 11.5$ lo
-				cual demuestra que están acotados por una función lineal.
-        \end{itemize}
-
-	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:exp2:part_tiempo_sobre_n}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($N$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					ymin=0,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=north east,
-					legend cell align=left,
-					xmin=1
-				]
-
-				\addplot[color=red] table[x index=0,y expr={\thisrowno{1} / x} ]{../exp/genkidama_caso_intermedio_output};
-				\addplot[color=black] table[x index=0,y expr={\thisrowno{1} / x} ]{../exp/genkidama_mejor_caso_output};
-				\addplot[color=blue] table[x index=0,y expr={\thisrowno{1} / x} ]{../exp/genkidama_peor_caso_output}; 
-				\addplot[color=green] table[x index=0, y expr={\constante}]{../exp/genkidama_caso_intermedio_output};
-				\legend{$\frac{T_1}{N}$, $\frac{T_2}{N}$, $\frac{T_3}{N}$ , $c$}
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
-
-	En la Figura \ref{fig:exp2:part_tiempo_sobre_n} se ve que al dividir los
-	resultados de los experimentos anteriores por $N$, estos convergen a una
-	constante que puede acotarse por el mismo $c$ de la Figura
-	\ref{fig:exp2:part_tiempo_base}.
-
-
-	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:exp2:part_tiempo_base_var_T}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($T$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					ymin=18000,
-					ymax=28000,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=south east,
-					legend cell align=left,
-					xmin=1
-				]
-				\addplot[color=black] table[x index=0,y index=1 ]{../exp/genkidama_variar_T_output};
-				\legend{$T_4$}
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
-
-	En la Figura \ref{fig:exp2:part_tiempo_base_var_T} se observa cómo $T_4$
-	converge a una constanste, corroborando así que su valor no afecta la
-	complejidad temporal del algoritmo.
-
-	 El análisis expuesto de los datos recopilados presenta evidencia empírica
-	 sobre la cota de complejidad demostrada teóricamente. Además se logra ver
-	 que la complejidad depende estrictamente de la cantidad de enemigos que
-	 hay que eliminar y no del tamaño de $T$ .
+El análisis expuesto de los datos recopilados presenta evidencia empírica sobre la cota de complejidad
+demostrada teóricamente. Además se logra ver que la complejidad depende estrictamente de la cantidad
+de símbolos que hay que utilizar para el desarrollo del número en base 3.
