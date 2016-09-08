@@ -309,33 +309,11 @@
     \renewcommand\constante{5}
 
 	\begin{figure}[H]
-		\centering
-		\caption{}
-		\label{fig:exp2:part_tiempo_base}
-		\begin{tikzpicture}
-			\begin{axis}[
-					title={},
-					xlabel={Tamaño de entrada ($N$)},
-					ylabel={Tiempo de ejecución (nanosegundos)},
-					scaled x ticks=false,
-					scaled y ticks=false,
-					ymin=0,
-					enlargelimits=0.05,
-					width=0.5\textwidth,
-					height=0.5\textwidth,
-					legend pos=north west,
-					legend cell align=left,
-					xmin=1
-				]
-
-				\addplot[color=black] table[x index=0,y index=1 ]{../exp/genkidama_mejor_caso_output};
-				\addplot[color=blue] table[x index=0,y index=1 ]{../exp/genkidama_peor_caso_output}; 
-				\addplot[color=red] table[x index=0,y index=1 ]{../exp/genkidama_caso_intermedio_output};
-				\addplot[color=green] table[x index=0,y expr={x*\constante}]{../exp/genkidama_caso_intermedio_output};
-				\legend{$T_1$, $T_2$ , $T_3$, $c*N$ }
-			\end{axis}
-		\end{tikzpicture}
-	\end{figure}
+      \begin{center}
+        \includegraphics[width=0.7\columnwidth]{imagenes/ejercicio2.jpg}
+        \caption{}
+      \end{center}
+  \end{figure}
 
 El análisis expuesto de los datos recopilados presenta evidencia empírica sobre la cota de complejidad
 demostrada teóricamente. Además se logra ver que la complejidad depende estrictamente de la cantidad
