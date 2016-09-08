@@ -73,10 +73,10 @@ pylab.plot(listaPesas, promedioNP,'r', label= 'Resultados Ejercicio 2')
 
 
 ax1.set_title("Pesas de potencias de 3")
-ax1.set_xlabel('Peso de la llave')
+ax1.set_xlabel('Longitud de arreglo (desarrollo en base 3 de un numero)')
 ax1.set_xscale('linear')
-ax1.set_ylabel('Tiempo de procesamiento en ns')
-ax1.set_yscale('log', basey=3)
+ax1.set_ylabel('Tiempo de procesamiento en microsegundos')
+ax1.set_yscale('log')
 
 leg = ax1.legend()
 
