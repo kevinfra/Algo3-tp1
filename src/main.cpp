@@ -6,6 +6,7 @@
 #include <list>
 #include <string>
 #include <chrono>
+#include <random>
 #include "ejercicio1.h"
 #include "ejercicio2.h"
 #include "ejercicio3.h"
@@ -145,52 +146,74 @@ int main(int argc, char *argv[]) {
 		vector<int> tesoroCant;
 		vector<int> tesoroPeso;
 		vector<int> tesoroValor;
-
-
-		cout << "Cantidad de mochilas y de tipos de tesoros:" << endl;
-		cin >> cantMochilas >> tiposDeTesoros;
-		int tamanoMochila;
-		
-		cout << "capacidades de las " << cantMochilas << " mochilas" << endl;
-		while(cantMochilas > 0 && (cin >> tamanoMochila)) {
-				capacidades.push_back(tamanoMochila);
-				cantMochilas--;
-	  }
-
-	  int totalInfoTesoros = tiposDeTesoros*3;
-	  int unaInfoTesoro;
-	  cout << "ingresar C P V de cada tipo de tesoro" << endl;
-	  while(totalInfoTesoros > 0 && (cin >> unaInfoTesoro)) {
-				if (totalInfoTesoros % 3 == 0){
-					tesoroCant.push_back(unaInfoTesoro);
-				}
-				else if (totalInfoTesoros % 3 == 1){
-					tesoroPeso.push_back(unaInfoTesoro);
-				}
-				else if (totalInfoTesoros % 3 == 2){
-					tesoroValor.push_back(unaInfoTesoro);
-				}
-				totalInfoTesoros--;
-	  }
-
 		int cantTesoros = 0;
-		for (uint i = 0; i < tesoroCant.size(); ++i)
-		{
-			cantTesoros += tesoroCant[i];
-		}
 
-		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
-		cout << "valorTotal = " << ej3.first << endl;
-		for (unsigned int i = 0; i < ej3.second.size(); ++i)
-		{
-			cout << endl;
-			cout << "mochila" << (i+1) << " capacidad = " << capacidades[i] << endl;
-			cout << "cantTesoros = " << ej3.second[i][0] << " | ";
-			for (unsigned int j = 1; j < ej3.second[i].size(); ++j)
+		if (!experimentos){
+
+			cout << "Cantidad de mochilas y de tipos de tesoros:" << endl;
+			cin >> cantMochilas >> tiposDeTesoros;
+			int tamanoMochila;
+
+			cout << "capacidades de las " << cantMochilas << " mochilas" << endl;
+			while(cantMochilas > 0 && (cin >> tamanoMochila)) {
+					capacidades.push_back(tamanoMochila);
+					cantMochilas--;
+		  }
+
+		  int totalInfoTesoros = tiposDeTesoros*3;
+		  int unaInfoTesoro;
+		  cout << "ingresar C P V de cada tipo de tesoro" << endl;
+		  while(totalInfoTesoros > 0 && (cin >> unaInfoTesoro)) {
+					if (totalInfoTesoros % 3 == 0){
+						tesoroCant.push_back(unaInfoTesoro);
+					}
+					else if (totalInfoTesoros % 3 == 1){
+						tesoroPeso.push_back(unaInfoTesoro);
+					}
+					else if (totalInfoTesoros % 3 == 2){
+						tesoroValor.push_back(unaInfoTesoro);
+					}
+					totalInfoTesoros--;
+		  }
+
+			for (uint i = 0; i < tesoroCant.size(); ++i)
 			{
-				cout << "tesoro nro " << ej3.second[i][j] << " (p,v) = (" << tesoroPeso[ej3.second[i][j]-1] << "," << tesoroValor[ej3.second[i][j]-1] << ")" << " | ";
+				cantTesoros += tesoroCant[i];
 			}
-			cout << endl;
+
+			salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
+			cout << "valorTotal = " << ej3.first << endl;
+			for (unsigned int i = 0; i < ej3.second.size(); ++i)
+			{
+				cout << endl;
+				cout << "mochila" << (i+1) << " capacidad = " << capacidades[i] << endl;
+				cout << "cantTesoros = " << ej3.second[i][0] << " | ";
+				for (unsigned int j = 1; j < ej3.second[i].size(); ++j)
+				{
+					cout << "tesoro nro " << ej3.second[i][j] << " (p,v) = (" << tesoroValor[ej3.second[i][j]-1] << "," << tesoroPeso[ej3.second[i][j]-1] << ")" << " | ";
+				}
+				cout << endl;
+			}
+		}else{
+			for (int ks = 1; ks <= 30; ++ks){
+				capacidades.clear();
+				for (int mochilas = 1; mochilas <= 3; ++mochilas){
+					default_random_engine generator;
+  				uniform_int_distribution <int> dameRandom(0,ks);
+					capacidades.push_back(ks);
+					cantTesoros += ks;
+					tesoroCant.push_back(ks);
+					int valorTesoroActual = dameRandom(generator);
+					tesoroValor.push_back(valorTesoroActual);
+					int pesoTesoroActual = dameRandom(generator);
+					tesoroPeso.push_back(pesoTesoroActual);
+					for (int veces = 0; veces < 500; ++veces){
+						start_timer();
+						Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
+						cout << stop_timer() << "    " << ks << "	   " << cantTesoros << "    " << mochilas << endl;
+					}
+				}
+			}
 		}
 	}
 	else {
@@ -201,5 +224,5 @@ int main(int argc, char *argv[]) {
 }
 
 
-//second es max 3 (cantidad de mochilas)
-//dentro de second está: 
+
+
