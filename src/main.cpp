@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 					cout << stop_timer() << "    " << canibales.size() << endl;
 				}
 			}
-			canibales.clear()
+			canibales.clear();
 			for (int q = 0; q <= 7; ++q){
 				for (int k = 4; k <= q; ++k){
 					canibales.push_back(k);
@@ -182,13 +182,13 @@ int main(int argc, char *argv[]) {
 		salida ej3 = Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
 		cout << "valorTotal = " << ej3.first << endl;
 		for (unsigned int i = 0; i < ej3.second.size(); ++i)
-		{	
+		{
 			cout << endl;
 			cout << "mochila" << (i+1) << " capacidad = " << capacidades[i] << endl;
 			cout << "cantTesoros = " << ej3.second[i][0] << " | ";
 			for (unsigned int j = 1; j < ej3.second[i].size(); ++j)
 			{
-				cout << "tesoro nro " << ej3.second[i][j] << " (v,p) = (" << tesoroValor[ej3.second[i][j]-1] << "," << tesoroPeso[ej3.second[i][j]-1] << ")" << " | ";
+				cout << "tesoro nro " << ej3.second[i][j] << " (p,v) = (" << tesoroPeso[ej3.second[i][j]-1] << "," << tesoroValor[ej3.second[i][j]-1] << ")" << " | ";
 			}
 			cout << endl;
 		}
@@ -201,4 +201,5 @@ int main(int argc, char *argv[]) {
 }
 
 
-
+//second es max 3 (cantidad de mochilas)
+//dentro de second está: 
