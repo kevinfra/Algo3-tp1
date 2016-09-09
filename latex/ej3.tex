@@ -41,44 +41,54 @@
     \subsection{Solución propuesta}
     Para solucionar el problema planteado se usó la técnica algorítmica de \emph{Programación dinámica}. \par
     La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y al valor y peso de cada tesoro, en qué mochila conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). \par
-    Por lo tanto, el algoritmo propuesto consta de una matriz para cada tesoro, de tamaño $(N+1)*(M+1)$ (suponiendo que hay dos mochilas), siendo éstas las capacidades de las mochilas $M_{1}$, $M_{2}$ respectivamente. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
+    Por lo tanto, el algoritmo propuesto consta de una matriz para cada tesoro, de tamaño $\[\prod_{i=0}^{3}C_{i} + 1$, siendo $C_{i}$ las capacidades de las \textbf{M} mochilas, donde $M \leq 3$. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
     El algoritmo funciona de la siguiente manera:
-    1) Se crea una matriz de $M_{1}$ * $M_{2}$ para cada tesoro, y una extra inicial con los valores de todas las posiciones inicializados en 0.
+    1) Se crea una matriz de $\[\prod_{i=0}^{M}C_{i} + 1$ para cada tesoro, y una extra inicial con los valores de todas las posiciones inicializados en 0.
 
     \begin{codesnippet}
     \begin{verbatim}
     for i = 1 .. cantTesoros + 1
         for j = 1 .. capacidadMochila1 + 1
-            for k = 1 .. capacidadMochila2 + 1
-                matriz[i][j][k] <-- 0
+            for k = 1 .. capacidadMochila2 + 1  
+                for l = 1 .. capacidadMochila2 + 1  
+                    matriz[i][j][k][l] <-- 0
+                end
             end
         end
     end
     \end{verbatim}
     \end{codesnippet}
 
-    2) Para cada posición (i, j) de la matriz del tesoro t, siendo i y j la capacidad \emph{restante} de la mochila 1 y 2, se pregunta si t entra en alguna de las dos mochilas.
-    Si entra en la mochila 1, se obtiene valor(t) sumado al valor de la matriz del tesoro t-1 (recordar que el primer tesoro tiene una matriz predecesora con todos sus valores nulos) en la posición correspondiente según la capacidad restante de esa mochila (i - peso(t), j).
+
+    2) En el caso donde $M < 3$, el programa se encarga de fijar las capacidades de las $3 - M$ mochilas en 0.
+    Para cada posición (i, j, k) de la matriz del tesoro t, siendo i, j y k la capacidad \emph{restante} de las mochilas 1, 2 y 3, se pregunta si t entra en alguna de las tres mochilas.
+    Si entra en la mochila 1, se obtiene valor(t) sumado al valor de la matriz del tesoro t-1 (recordar que el primer tesoro tiene una matriz predecesora con todos sus valores nulos) en la posición correspondiente según la capacidad restante de esa mochila (i - peso(t), j, k).
     Se repite este procedimiento para cada mochila. 
-    Y además se obtiene el valor de la posición (i, j) de la matriz del tesoro t-1 para incluir el caso en el que no se mete el objeto en la mochila.
-    Luego se obtiene el resultado mayor de cada suma, y se guarda en la matriz del tesoro t, en la posición (i, j)..
+    Y además se obtiene el valor de la posición (i, j, k) de la matriz del tesoro t-1 para incluir el caso en el que no se mete el objeto en la mochila.
+    Luego se obtiene el resultado mayor de cada suma, y se guarda en la matriz del tesoro t, en la posición (i, j, k)..
 
     \begin{codesnippet}
     \begin{verbatim}
 
     valorMochila1 = 0
     valorMochila2 = 0
-    valorNingunaMochila = matriz[t-1][i][j]
+    valorMochila3 = 0
+
+    valorNingunaMochila = matriz[t-1][i][j][k]
 
     if pesoTesoro <= i then
-        valorMochila1 <-- valor(t) + matriz[t-1][i - pesoTesoro][j]
+        valorMochila1 <-- valor(t) + matriz[t-1][i - pesoTesoro][j][k]
     endif
 
     if pesoTesoro <= j then
-        valorMochila2 <-- valor(t) + matriz[t-1][i][j - pesoTesoro]
+        valorMochila2 <-- valor(t) + matriz[t-1][i][j - pesoTesoro][k]
     endif
 
-    matriz[t][i][j] <-- max(valorMochila1, valorMochila2)
+    if pesoTesoro <= k then
+        valorMochila3 <-- valor(t) + matriz[t-1][i][j][k - pesoTesoro]
+    endif
+
+    matriz[t][i][j][k] <-- max(valorMochila1, valorMochila2, valorMochila3, valor(t-1))
 
     \end{verbatim}
     \end{codesnippet}
@@ -86,38 +96,47 @@
     Se repite este procedimiento para cada tesoro, hasta completar todas las posiciones de cada matriz.
     El último valor obtenido de la matriz del último tesoro, será el valor máximo que se puede acumular en las mochilas con los tesoros.
 
-    3) Luego, empezando desde la matriz del último tesoro, desde la última posición (i, j), se pregunta si entra ese tesoro en alguna mochila. 
+    3) Luego, empezando desde la matriz del último tesoro, desde la última posición (i, j, k), se pregunta si entra ese tesoro en alguna mochila. 
     Si no entra, se repite el procedimiento para el tesoro anterior.
     Si entra, se pregunta en cuáles de las mochilas entra ese tesoro. Para eso se guarda la capacidad disponible de cada mochila (inicialmente con su capacidad total) y se pregunta si el tesoro tiene peso menor o igual a cada capacidad.
-    En caso de que entre en más de una mochila, se compara el valor resultante de ponerlo en cada una. Por ejemplo, para la mochila 1, se obtiene el valor de la posición (i - peso(t), j) de la matriz del tesoro t-1.
-    Una vez obtenido en qué mochila es conveniente poner a ese tesoro, se almacena en cada vector de salida (hay uno por mochila) los tipos de tesoro que guardo en cada mochila. Se incrementa el contador de tesoros de esa mochila, y luego el indice pasa a ser aquella posición donde estaba el valor máximo. Por ejemplo, si la mejor opción es guardar ese tesoro en la mochila 1, (i, j) pasa a ser (i - peso(t), j), t pasa a ser t-1, y se le resta peso(t) a la capacidad restante de esa mochila.
+    En caso de que entre en más de una mochila, se compara el valor resultante de ponerlo en cada una. Por ejemplo, para la mochila 1, se obtiene el valor de la posición (i - peso(t), j, k) de la matriz del tesoro t-1.
+    Una vez obtenido en qué mochila es conveniente poner a ese tesoro, se almacena en cada vector de salida (hay uno por mochila) los tipos de tesoro que guardo en cada mochila. Se incrementa el contador de tesoros de esa mochila, y luego el indice pasa a ser aquella posición donde estaba el valor máximo. Por ejemplo, si la mejor opción es guardar ese tesoro en la mochila 1, (i, j, k) pasa a ser (i - peso(t), j, k), t pasa a ser t-1, y se le resta peso(t) a la capacidad restante de esa mochila.
 
     \begin{codesnippet}
     \begin{verbatim}
 
-    entraEnAlgunaMochila <-- matriz[t+1][i][j] != matriz[t][i][j]
+    entraEnAlgunaMochila <-- matriz[t+1][i][j][k] != matriz[t][i][j][k]
 
     if entraEnAlgunaMochila then
     	valorAnterior1 <-- 0
     	valorAnterior2 <-- 0
+        valorAnterior3 <-- 0
 	    entraEnMochila1 <-- (pesoTesoro <= i);
 		entraEnMochila2 <-- (pesoTesoro <= j);
+        entraEnMochila3 <-- (pesoTesoro <= k);
 
 		if entraEnMochila1 then
-			valorAnterior1 <-- matriz[t][i - pesoTesoro][j]
+			valorAnterior1 <-- matriz[t][i - pesoTesoro][j][k]
 		endif
 		if entraEnMochila2 then
-			valorAnterior2 <-- matriz[t][i][j - pesoTesoro]
+			valorAnterior2 <-- matriz[t][i][j - pesoTesoro][k]
 		endif
+        if entraEnMochila2 then
+            valorAnterior3 <-- matriz[t][i][j][k - pesoTesoro]
 
-		if entraEnMochila1 && valorAnterior1 >= valorAnterior2 then
+		if entraEnMochila1 && valorAnterior1 >= valorAnterior2  && valorAnterior1 >= valorAnterior3
+        then
 			add(mochila1, tipo(t))
 			cantTesorosMochila1++
 			i -= peso(t)
-		else
+		else if entraEnMochila2 && valorAnterior2 >= valorAnterior3 
 			add(mochila2, tipo(t))
 			cantTesorosMochila2++
 			j -= peso(t)
+        else
+            add(mochila3, tipo(t))
+            cantTesorosMochila3++
+            k -= peso(t)
 		endif
 
 	endif
@@ -127,9 +146,9 @@
 
     Se repite este procedimiento para cada tesoro.
 
-    4) Una vez finalizados los primeros tres pasos, se copia en una tupla el valor obtenido entre todos los tesoros guardados en las mochilas, y un vector mochilas que contiene un vector por mochila Cada uno de estos vectores guarda la cantidad de tesoros y los tipos de tesoro que hay en esa mochila.
+    4) Una vez finalizados los primeros tres pasos, se copia en una tupla el valor obtenido entre todos los tesoros guardados en las mochilas, y un vector mochilas que contiene un vector por mochila. Cada uno de estos vectores guarda la cantidad de tesoros y los tipos de tesoro que hay en esa mochila.
 
-    Para incluir una tercera mochila, se extendió la matriz a 3 dimensiones (4 para ser correctos, ya que una primera dimensión es para agrupar en un mismo vector la matriz de cada tesoro). Y cada vez que se realiza una comparación de valores máximos, se compara también con los valores de la tercer mochila.
+    % Para incluir una tercera mochila, se extendió la matriz a 3 dimensiones (4 para ser correctos, ya que una primera dimensión es para agrupar en un mismo vector la matriz de cada tesoro). Y cada vez que se realiza una comparación de valores máximos, se compara también con los valores de la tercer mochila.
 
 
 
