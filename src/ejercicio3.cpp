@@ -47,9 +47,21 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 	
 	vector< vector<int> > mochilas;
 
+
+	//Dimensiono el cubo e inicializo cada valor en 0
+
+	// Arreglo de 4 dimensiones
+	// primer vector (dimension 1) = cantidad de tesoros
+	// segundo vector (dimesion 2) = mochila 1
+	// tercer vector (dimesion 3) = mochila 2
+	// cuarto vector (dimesion 4) = mochila 3
 	vector< vector< vector< vector<int> > > > cuboMagico;
 
 	//Dimensiono el cubo e inicializo cada valor en 0
+	// Primero se establece el tamano del primer vector en cant de tesoros mas uno
+	// Despues se establece el tamano de los vectores de dimension 2 en las capacidades de la mochila 1
+	// Despues se establece el tamano de los vectores de dimension 3 en las capacidades de la mochila 2
+	// Despues se establece el tamano de los vectores de dimension 4 en las capacidades de la mochila 3 
 	cuboMagico.resize(cantTesoros + 1);
 	for (int i = 0; i <= cantTesoros; ++i) {
 		cuboMagico[i].resize(capacidades[0] + 1);
@@ -61,12 +73,17 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 		}
 	}
 
+    // indice de la posicion en el vector de primera dimension (para recorrer todos los tesoros)
 	int iTesoro = 0;
+
+	// iteracion por todos los tesoros de distinto tipo
 	for (unsigned int iTesoroPorTipo = 0; iTesoroPorTipo < tesoroValor.size(); ++iTesoroPorTipo) {
 		valorTesoro = tesoroValor[iTesoroPorTipo];
 		pesoTesoro = tesoroPeso[iTesoroPorTipo];
 		cantidadPorTipoTesoro = tesoroCant[iTesoroPorTipo];
 
+
+		// iteracion por la cantidad de tesoros de este tipo 
 		for (int iTipoTesoro = 0; iTipoTesoro < cantidadPorTipoTesoro; ++iTipoTesoro) {
 
 			for (iMochila1 = 0; iMochila1 <= capacidades[0]; ++iMochila1) {
@@ -82,6 +99,7 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 
 						if (pesoTesoro <= iMochila1 || pesoTesoro <= iMochila2 || pesoTesoro <= iMochila3) {
 
+							// Se interpreta como que no se puede poner tesoro
 							valorNingunaMochila = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3];
 							if (pesoTesoro <= iMochila1) {
 								valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1 - pesoTesoro][iMochila2][iMochila3];
@@ -97,9 +115,14 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 								valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
 								////cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] Entra en la mochila 3 el objeto con peso " << pesoTesoro << endl;
 							}
-						}
 
-						cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = max(max(max(valorNingunaMochila, valorMochila1), valorMochila2), valorMochila3);
+							cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = max(max(max(valorNingunaMochila, valorMochila1), valorMochila2), valorMochila3);
+						}
+						else
+						{
+							cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] = cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3];
+						}
+						
 						//cout << "[" << iMochila1 << "][" << iMochila2 << "][" << iMochila3 << "] = " << cuboMagico[iTesoro + 1][iMochila1][iMochila2][iMochila3] << ". Valor " << valorTesoro << endl;
 					}
 				}
