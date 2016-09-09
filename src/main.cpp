@@ -195,22 +195,22 @@ int main(int argc, char *argv[]) {
 				cout << endl;
 			}
 		}else{
-			for (int ks = 1; ks <= 30; ++ks){
+			for (int ks = 1; ks <= 50; ++ks){
 				capacidades.clear();
+				default_random_engine generator;
+				uniform_int_distribution <int> dameRandom(0,ks);
+				cantTesoros += 1;
+				tesoroCant.push_back(1);
+				int valorTesoroActual = dameRandom(generator);
+				tesoroValor.push_back(valorTesoroActual);
+				int pesoTesoroActual = dameRandom(generator);
+				tesoroPeso.push_back(pesoTesoroActual);
 				for (int mochilas = 1; mochilas <= 3; ++mochilas){
-					default_random_engine generator;
-  				uniform_int_distribution <int> dameRandom(0,ks);
 					capacidades.push_back(ks);
-					cantTesoros += ks;
-					tesoroCant.push_back(ks);
-					int valorTesoroActual = dameRandom(generator);
-					tesoroValor.push_back(valorTesoroActual);
-					int pesoTesoroActual = dameRandom(generator);
-					tesoroPeso.push_back(pesoTesoroActual);
 					for (int veces = 0; veces < 500; ++veces){
 						start_timer();
 						Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
-						cout << stop_timer() << "    " << ks << "	   " << cantTesoros << "    " << mochilas << endl;
+						cout << stop_timer() << "    " << ks << "    " << cantTesoros << "    " << mochilas << endl;
 					}
 				}
 			}
