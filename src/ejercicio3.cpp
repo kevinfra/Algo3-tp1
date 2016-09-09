@@ -15,6 +15,10 @@ salida Mochilero(int cantMochilas, int cantTesoros, vector<int> capacidades, vec
 		mochila_i con mochila_i[0] indicando la cantidad de tesoros que tiene, mochila_i[1..N] indicando los tipos
 	*/
 
+	while(capacidades.size() < 3){
+		capacidades.push_back(0);	
+	} 
+
 	int valorTesoro;
 	int pesoTesoro;
 	int cantidadPorTipoTesoro;

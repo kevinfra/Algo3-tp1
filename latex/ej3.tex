@@ -40,20 +40,17 @@
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
     Para solucionar el problema planteado se usó la técnica algorítmica de \emph{Programación dinámica}. \par
-<<<<<<< HEAD
-    La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y al valor y peso de cada tesoro, en qué mochila conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). \par
-    Por lo tanto, el algoritmo propuesto consta de una matriz para cada tesoro, de tamaño $\[\prod_{i=0}^{3}C_{i} + 1$, siendo $C_{i}$ las capacidades de las \textbf{M} mochilas, donde $M \leq 3$. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
-=======
-    La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y al valor y peso de cada tesoro, en qué mochila conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). Más formalmente el subproblema es: si ya resolvimos el beneficio máximo para los tesoros menores a i, cómo se calcula el beneficio máximo teniendo en cuenta al tesoro i. Entonces la idea es la siguiente: si tenemos un solo tesoro (caso base) el máximo beneficio que se puede obtener es el valor del tesoro en caso de que entre en alguna mochila. Para el tesoro siguiente (recursión) el máximo beneficio que se puede obtener es el máximo entre: el valor del tesoro actual más el valor máximo que se podía llevar con el tesoro anterior con el peso restante de la mochila 1 al colocar este tesoro si entra (a esto lo llamaremos ValorMochila1), el mismo valor pero para la mochila2 (ValorMochila2), el mismo valor pero para la mochila3 (ValorMochila3), y así sucesivamente para las n mochilas y el valor que se obtiene si no se coloca, que sería el valor que se puede obtener para el tesoro anterior. Es decir la idea intuitiva es que en cada paso se compara el benficio de poner el tesoro en algunas de las mochilas con el beneficio de no ponerlo, en base al beneficio anterior. Podría verse como que se van comparando de a pares el beneficio de un tesoro y otro y nos quedamos con el mejor, siempre viendo todas las posilibidades de ponerlo en todas las mochilas, y despues de quedarse con la mejor opcion, se repite el procedimiento pero para el beneficio máximo calculado entre esos dos tesoros y uno que sigue. Se puede observar que el orden en el cual se recorren los tesoros no es importante. La solución que se obtiene luego de comparar con el último tesoro es óptima ya que en cada paso se está obteniendo el mayor beneficio,comparando todas posibilidades. Se propone una función de recursión, la cual está definida en el rango 1..n, siendo n la cantidad de tesoros total y f(i) indicando el beneficio máximo que se puede obtener considerando los primeros i tesoros: \par
 
-    f(1) = valor $v$ del primer tesoro si éste entra en alguna de las mochilas
+    La idea es separar el problema principal en subproblemas. En este caso, el subproblema es, en base a la capacidad restante de cada mochila y, al valor y peso de cada tesoro, en qué mochila conviene meter cada uno (incluyendo la opción de no meterlo en ninguna). Más formalmente el subproblema es: si ya resolvimos el beneficio máximo para los tesoros $T_{j}$, $j < i$, cómo se calcula el beneficio máximo teniendo en cuenta al $T_{i}$. Entonces la idea es la siguiente: si tenemos un solo tesoro (caso base) el máximo beneficio que se puede obtener es el valor del tesoro en caso de que entre en alguna mochila. Para el tesoro siguiente (recursión) el máximo beneficio que se puede obtener es el máximo entre: el valor del tesoro actual más el valor máximo que se podía llevar con el tesoro anterior con el peso restante de la mochila 1 al colocar este tesoro si entra, a esto lo llamaremos \textbf{ValorMochila1}, el mismo valor pero para la mochila 2 o \textbf{ValorMochila2}, el mismo valor pero para la mochila 3 o \textbf{ValorMochila3} , y así sucesivamente para las n mochilas y el valor que se obtiene si no se coloca, que sería el valor que se puede obtener para el tesoro anterior. Es decir la idea intuitiva es que en cada paso se compara el benficio de poner el tesoro en algunas de las mochilas con el beneficio de no ponerlo, en base al beneficio anterior. Podría verse como que se van comparando de a pares el beneficio de un tesoro y otro y nos quedamos con el mejor, siempre viendo todas las posilibidades de ponerlo en todas las mochilas, y despues de quedarse con la mejor opcion, se repite el procedimiento pero para el beneficio máximo calculado entre esos dos tesoros y uno que sigue. Se puede observar que el orden en el cual se recorren los tesoros no es importante. La solución que se obtiene luego de comparar con el último tesoro es óptima ya que en cada paso se está obteniendo el mayor beneficio,comparando todas las posibilidades. Se propone una función de recursión, la cual está definida en el rango 1..n, siendo n la cantidad de tesoros total y $\digamma(i)$ indicando el beneficio máximo que se puede obtener considerando los primeros i tesoros: \par
 
-    f(i) = max(valorMochila1,valorMochila2,valorMochila3,f(i-1))
+    $\digamma(1)$ = valor $v$ del primer tesoro si éste entra en alguna de las mochilas
+
+    $\digamma(i)$ = max(valorMochila1,valorMochila2,valorMochila3, $\digamma(i-1)$)
 
     Lo que falta aclarar en esta función es que para cada tesoro se debe calcular el beneficio máximo que se puede obtener para cada peso posible de cada mochila, es decir se calculan los beneficios máximos para todos los posibles pesos de una mochila, desde uno hasta el peso P de la mochila, para que sea posible conocer cuál es el beneficio total que se puede obtener con el próximo tesoro, ya que se necesitaba para eso el beneficio que se puede obtener con el peso restante al poner un tesoro. 
 
-    Por lo tanto, el algoritmo propuesto consta de una matriz para cada tesoro, de tamaño $(N+1)*(M+1)$ (suponiendo que hay dos mochilas), siendo éstas las capacidades de las mochilas $M_{1}$, $M_{2}$ respectivamente. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
->>>>>>> f85c9383254e2f8e8dcc63bcfdf1cd28f049a546
+    Por lo tanto, el algoritmo propuesto consta de una matriz para cada tesoro, de tamaño $\[\prod_{i=0}^{3}C_{i} + 1$, siendo $C_{i}$ las capacidades de las \textbf{M} mochilas, donde $M \leq 3$. Y además una matriz nula de igual dimensión que servirá para el caso en donde no hayan tesoros. \par
+
     El algoritmo funciona de la siguiente manera:
     1) Se crea una matriz de $\[\prod_{i=0}^{M}C_{i} + 1$ para cada tesoro, y una extra inicial con los valores de todas las posiciones inicializados en 0.
 
@@ -62,7 +59,7 @@
     for i = 1 .. cantTesoros + 1
         for j = 1 .. capacidadMochila1 + 1
             for k = 1 .. capacidadMochila2 + 1  
-                for l = 1 .. capacidadMochila2 + 1  
+                for l = 1 .. capacidadMochila3 + 1  
                     matriz[i][j][k][l] <-- 0
                 end
             end
@@ -88,19 +85,27 @@
 
     valorNingunaMochila = matriz[t-1][i][j][k]
 
-    if pesoTesoro <= i then
-        valorMochila1 <-- valor(t) + matriz[t-1][i - pesoTesoro][j][k]
-    endif
 
-    if pesoTesoro <= j then
-        valorMochila2 <-- valor(t) + matriz[t-1][i][j - pesoTesoro][k]
-    endif
+    if (pesoTesoro <= i ||pesoTesoro <= j || pesoTesoro <= k)
 
-    if pesoTesoro <= k then
-        valorMochila3 <-- valor(t) + matriz[t-1][i][j][k - pesoTesoro]
-    endif
+        if pesoTesoro <= i then
+            valorMochila1 <-- valor(t) + matriz[t-1][i - pesoTesoro][j][k]
+        endif
 
-    matriz[t][i][j][k] <-- max(valorMochila1, valorMochila2, valorMochila3, valor(t-1))
+        if pesoTesoro <= j then
+            valorMochila2 <-- valor(t) + matriz[t-1][i][j - pesoTesoro][k]
+        endif
+
+        if pesoTesoro <= k then
+            valorMochila3 <-- valor(t) + matriz[t-1][i][j][k - pesoTesoro]
+        endif
+    
+        matriz[t][i][j][k] <-- max(valorMochila1, valorMochila2, valorMochila3, valor(t-1))
+    else
+        matriz[t][i][j][k] < -- valor(t-1)
+
+
+    
 
     \end{verbatim}
     \end{codesnippet}
@@ -164,81 +169,79 @@
 
 
 
-    JULI:
-    El objetivo de hacer esto, es tener en cuenta todos los casos y valores acumulados, de poner o no cada tesoro, y en qué mochila se pone. Utilizando en todo caso el mayor valor de tesoros acumulados. En los campos de la matriz ira el valor que queda de poner el tesoro o no, y las capacidades restantes de las mochilas. \par
-    El algoritmo se divide en dos partes, una parte es completar las matrices de tesoros, con el maximo valor posible que se puede acumular en cada mochila según el peso disponible. La segunda parte, consiste en definir, qué tesoros van en cada mochila, ubicando según el valor restante, de poner el tesoro en una mochila u otra.
+ %    JULI:
+ %    El objetivo de hacer esto, es tener en cuenta todos los casos y valores acumulados, de poner o no cada tesoro, y en qué mochila se pone. Utilizando en todo caso el mayor valor de tesoros acumulados. En los campos de la matriz ira el valor que queda de poner el tesoro o no, y las capacidades restantes de las mochilas. \par
+ %    El algoritmo se divide en dos partes, una parte es completar las matrices de tesoros, con el maximo valor posible que se puede acumular en cada mochila según el peso disponible. La segunda parte, consiste en definir, qué tesoros van en cada mochila, ubicando según el valor restante, de poner el tesoro en una mochila u otra.
 
-    Para esto, uno puede pensarlo como una matriz de tres dimensiones o un cubo por tesoro, además de un cubo nulo. Por cada tesoro que se analiza, los pasos son iguales. Si la capacidad de las mochilas, representado por el índice (i,j,k) que las recorre (i representa la capacidad de la M1, j de la M2 y K de la M3) es menor que el peso del tesoro, el valor obtenido es igual al acumulado en el tesoro anterior (salvo el primer caso, en donde el tesoro anterior es la matriz nula). Si entra en alguna mochila, uno debe fijarse, que valor restante se obtiene, de restarle a su índice, el peso del objeto. Y, en la posición de la matriz se deja el máximo de ponerlo en alguna mochila o no ponerlo.\par
+ %    Para esto, uno puede pensarlo como una matriz de tres dimensiones o un cubo por tesoro, además de un cubo nulo. Por cada tesoro que se analiza, los pasos son iguales. Si la capacidad de las mochilas, representado por el índice (i,j,k) que las recorre (i representa la capacidad de la M1, j de la M2 y K de la M3) es menor que el peso del tesoro, el valor obtenido es igual al acumulado en el tesoro anterior (salvo el primer caso, en donde el tesoro anterior es la matriz nula). Si entra en alguna mochila, uno debe fijarse, que valor restante se obtiene, de restarle a su índice, el peso del objeto. Y, en la posición de la matriz se deja el máximo de ponerlo en alguna mochila o no ponerlo.\par
 
-    Una vez explicado brevemente, pasaremos a detallar el algoritmo, dividiéndolo en dos secciones. La primera, completa las matrices de los tesoros, según el valor máximo posible por capacidad. Mientras que la segunda sección, recorre de atras para adelante las matrices, para ubicar los tesoros.\par
+ %    Una vez explicado brevemente, pasaremos a detallar el algoritmo, dividiéndolo en dos secciones. La primera, completa las matrices de los tesoros, según el valor máximo posible por capacidad. Mientras que la segunda sección, recorre de atras para adelante las matrices, para ubicar los tesoros.\par
 
-    El siguiente pseudocodigo mostrara como se completan las matrices,
+ %    El siguiente pseudocodigo mostrara como se completan las matrices,
 
-    \begin{codesnippet}
-	\begin{verbatim}
-    cuboMagico = Inicializo un vector de matrices de Int
-    Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
-    //N, M y K capacidades de las mochilas.
-    for(iTesoroActual= 0...cuboMagico.size()) do
-        //Recorro todas las matrices de tesoros
-        iTesoro = El indice a la matriz del tesoro anterior.
-        valorTesoro = tesoroValor[iTesoroActual]
-        pesoTesoro = tesoroPeso[iTesoroActual]
-        valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
-        //Recorro todas las matrices de tesoros
-        for(iMochila1 = 0 .. N + 1) do
-            for(iMochila2 = 0 .. M + 1) do
-                for(iMochila3 = 0 .. N + 1) do
-                    if(pesoTesoro entra en alguna mochila) do
-                        if(pesoTesoro entra en mochila M_{1})
-                            valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
-                            //Valor de la matriz del tesoro anterior.
-                        endif
-                        if(pesoTesoro entra en mochila M_{2}) do
-                    	    valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
-                    	    //Valor de la matriz del tesoro anterior.
-                        endif
-                        if(pesoTesoro entra en mochila M_{3}) do
-                            valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
-                            //Valor de la matriz del tesoro anterior.
-                        endif
-                    cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
-                    //Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
-                    iTesoro ++ //Avanzo el indice al tesoro anterior.
-                end
-            end
-        end
+ %    \begin{codesnippet}
+	% \begin{verbatim}
+ %    cuboMagico = Inicializo un vector de matrices de Int
+ %    Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
+ %    //N, M y K capacidades de las mochilas.
+ %    for(iTesoroActual= 0...cuboMagico.size()) do
+ %        //Recorro todas las matrices de tesoros
+ %        iTesoro = El indice a la matriz del tesoro anterior.
+ %        valorTesoro = tesoroValor[iTesoroActual]
+ %        pesoTesoro = tesoroPeso[iTesoroActual]
+ %        valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
+ %        //Recorro todas las matrices de tesoros
+ %        for(iMochila1 = 0 .. N + 1) do
+ %            for(iMochila2 = 0 .. M + 1) do
+ %                for(iMochila3 = 0 .. N + 1) do
+ %                    if(pesoTesoro entra en alguna mochila) do
+ %                        if(pesoTesoro entra en mochila M_{1})
+ %                            valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
+ %                            //Valor de la matriz del tesoro anterior.
+ %                        endif
+ %                        if(pesoTesoro entra en mochila M_{2}) do
+ %                    	    valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
+ %                    	    //Valor de la matriz del tesoro anterior.
+ %                        endif
+ %                        if(pesoTesoro entra en mochila M_{3}) do
+ %                            valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
+ %                            //Valor de la matriz del tesoro anterior.
+ %                        endif
+ %                    cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
+ %                    //Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
+ %                    iTesoro ++ //Avanzo el indice al tesoro anterior.
+ %                end
+ %            end
+ %        end
 
-	\end{verbatim}
-	\end{codesnippet}
-
-
+	% \end{verbatim}
+	% \end{codesnippet}
 
 
 
 
-	Para la segunda parte, se decide por cada tesoro, en qué mochila irá. Para esto, se recorre desde la última posición de la matriz del último tesoro. En esta posición, se encuentra el mejor valor acumulado posible. La decisión se toma de la siguiente manera
-		%Listita:
-		 A) En qué mochilas entra?
-		 B) Para cada mochila en la cual entra. Qué valor restante se encuentra en la posición de la matriz del del tesoro anterior en los pesos restantes, de ponerlo en cada una de las mochilas.
-		 C) En el caso que el valor restante sea igual, lo pongo en cualquiera de las dos
-		 D) En el caso que haya un máximo, ubico el tesoro en la mochila que obtiene el valor máximo restante.
-	Sigo este algoritmo por cada matriz, hasta no tener capacidad disponible en ninguna de las mochilas.
 
-	Si se analiza la forma en que se construye la solución, tanto en la primera como en la segunda etapa, se tienen en cuenta cuál es el valor máximo posible acumulado, de ubicar los tesoros. Es por esto que el resultado, siempre dará la suma máxima posible.
-	FIN JULI
+
+	% Para la segunda parte, se decide por cada tesoro, en qué mochila irá. Para esto, se recorre desde la última posición de la matriz del último tesoro. En esta posición, se encuentra el mejor valor acumulado posible. La decisión se toma de la siguiente manera
+	% 	%Listita:
+	% 	 A) En qué mochilas entra?
+	% 	 B) Para cada mochila en la cual entra. Qué valor restante se encuentra en la posición de la matriz del del tesoro anterior en los pesos restantes, de ponerlo en cada una de las mochilas.
+	% 	 C) En el caso que el valor restante sea igual, lo pongo en cualquiera de las dos
+	% 	 D) En el caso que haya un máximo, ubico el tesoro en la mochila que obtiene el valor máximo restante.
+	% Sigo este algoritmo por cada matriz, hasta no tener capacidad disponible en ninguna de las mochilas.
+
+	% Si se analiza la forma en que se construye la solución, tanto en la primera como en la segunda etapa, se tienen en cuenta cuál es el valor máximo posible acumulado, de ubicar los tesoros. Es por esto que el resultado, siempre dará la suma máxima posible.
+	% FIN JULI
 
    
 
     \subsubsection{Detalles implementativos}
     
-    El algoritmo fue implementado en lenguaje C++. Para almacenar la solución, se recurre a la clase \texttt{vector}, proporcionada por la librería estándar del lenguaje.
-
-    Durante la ejecución del algoritmo se utilizan dos variables globales; un entero para almacenar la cantidad de enemigos y un vector que contiene la ubicación de cada uno de ellos. La ejecución consiste principalmente de una función recursiva, que presenta las siguientes características:
+    El algoritmo fue implementado en lenguaje C++. Para almacenar la solución, se recurre a la clase \texttt{vector}, proporcionada por la librería estándar del lenguaje. Es decir, hay un vector donde se almacenará la solución, de vectores de enteros, uno por cada mochila. Además de una variable de tipo entero, para la cantidad de tesoros por mochila y una variable más que será el valor total acumulado. 
 
     \begin{itemize}
-        \item Se prueban todos los pares de enemigos posibles mediante dos ciclos anidados, de la forma que se describe en el primer punto de la sección anterior.
-        \item Dentro del ciclo interior se revisa a qué enemigos destruye el kamehameha descripto por el par de enemigos elegido y se destruyen esos enemigos para luego agregarlos a la solución.
+        \item Se inicializa una matriz de tesoros, como un vector de vectores.
+        \item Luego se completan
         \item Destruir los enemigos consiste en eliminarlos de un vector que contiene a los enemigos restantes. Este vector es una copia del vector de enemigos restantes; el original debe conservarse porque, para cada kamehameha distinto, el algoritmo se bifurca con diferentes enemigos restantes.
         \item Agregarlos a la solución consiste en añadir un vector que contiene a dichos enemigos a un vector de vectores, que representa la solución parcial construida hasta el momento: cada posición del vector corresponde a un kamehameha distinto y contiene a los enemigos que el mismo destruye.
         \item Sus casos base son las llamadas donde la cantidad de enemigos restantes es igual o menor que 2. Estos casos no necesitan realizar llamadas recursivas, y simplemente devuelven un vector cuyo único enemigo es el vector de los enemigos a destruir, ya que estos pueden ser liquidados con un único kamehameha.
