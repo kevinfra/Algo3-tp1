@@ -11,6 +11,12 @@ x = [row[0] for row in arr]
 y = [row[1] for row in arr]
 
 
+def graph(formula, x_range):
+    x = np.array(x_range)
+    y = eval(formula)
+    return y
+
+
 def promedio(list):
    return sum(list)/len(list)
 
@@ -61,6 +67,11 @@ while k < len(x):
 promedioNP = np.array(listaPromedio)
 pesasNP = np.array(listaPesas)
 
+cota = 'np.log10(x)*1e3'
+grafCota = graph(cota, range(1,4629))
+deAUno = range(1,4629)
+deAUno = np.array(deAUno)
+
 
 
 # medianaX  = mediana(x)
@@ -69,7 +80,8 @@ pesasNP = np.array(listaPesas)
 fig = plt.figure()
 fig.patch.set_facecolor('white')
 ax1 = fig.add_subplot(111)
-pylab.plot(listaPesas, promedioNP,'r', label= 'Resultados Ejercicio 2')
+pylab.plot(listaPesas, promedioNP, 'r', label= 'Resultados Ejercicio 2')
+pylab.plot(deAUno, grafCota,'black', label= 'Cota de Complejidad')
 
 
 ax1.set_title("Pesas de potencias de 3")
