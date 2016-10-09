@@ -8,8 +8,8 @@ import sys
 
 arr = np.genfromtxt("ej1Res.txt")
 x = [row[0] for row in arr] #tiempo en MS
-y = [row[1] for row in arr] #arq (arq,cani)
-# z = [row[2] for row in arr] #cani (arq,cani)
+# y = [row[1] for row in arr] #arq (arq,cani)
+y = [row[2] for row in arr] #cani (arq,cani)
 # total = [row[2] for row in arr] #total (arq,cani)
 
 
@@ -36,14 +36,25 @@ while k < len(x):
 # print(listaPares)
 # np.savetxt("mydata.csv", listaPromedio, fmt='%1u' )
 
-cota = '(x*((np.log10(x)/np.log10(2))))*(5**(x**2))'
+cota = '2*(5**(x**2))'
 grafCota = graph(cota, range(1,6))
 
-
-
-promedioNP = np.array(listaPromedio)
-arqsNP = np.array(listaPares)
+promedio1NP = np.array(listaPromedio[0:1]) # 1arq
+promedio2NP = np.array(listaPromedio[1:3]) # 2arq
+promedio3NP = np.array(listaPromedio[3:6]) # 3arq
+promedio4NP = np.array(listaPromedio[6:10]) # 4arq
+promedio5NP = np.array(listaPromedio[10:15]) # 5arq
+promedio6NP = np.array(listaPromedio[15:21]) # 6arq
+promedio7NP = np.array(listaPromedio[21:28]) # 7arq
+arqs1NP = np.array(listaPares[0:1])
+arqs2NP = np.array(listaPares[1:3])
+arqs3NP = np.array(listaPares[3:6])
+arqs4NP = np.array(listaPares[6:10])
+arqs5NP = np.array(listaPares[10:15])
+arqs6NP = np.array(listaPares[15:21])
+arqs7NP = np.array(listaPares[21:28])
 # PersNP = np.array(listaPers)
+print(listaPromedio[2])
 
 deAUno = [1,2,3,4,5]
 
@@ -55,12 +66,18 @@ deAUno = np.array(deAUno)
 fig = plt.figure()
 fig.patch.set_facecolor('white')
 ax1 = fig.add_subplot(111)
-pylab.plot(arqsNP, promedioNP,'ro', label= 'Resultados Ejercicio 1')
-pylab.plot(deAUno, grafCota,'b', label= 'Cota de Complejidad')
+pylab.plot(arqs1NP, promedio1NP, color='red', marker='o', label= '1 Arqueologo')
+pylab.plot(arqs2NP, promedio2NP, color='blue', marker='o', label= '2 Arqueologos')
+pylab.plot(arqs3NP, promedio3NP, color='green', marker='o', label= '3 Arqueologos')
+pylab.plot(arqs4NP, promedio4NP, color='yellow', marker='o', label= '4 Arqueologos')
+pylab.plot(arqs5NP, promedio5NP, color='purple', marker='o', label= '5 Arqueologos')
+pylab.plot(arqs6NP, promedio6NP, color='orange', marker='o', label= '6 Arqueologos')
+pylab.plot(arqs7NP, promedio7NP, color='brown', marker='o', label= '7 Arqueologos')
+pylab.plot(deAUno, grafCota,'black', label= 'Cota de Complejidad')
 
 
-ax1.set_title("Tiempo sobre cantidad de arqueologos (y canibales)")
-ax1.set_xlabel('Cantidad de arqueólogos')
+ax1.set_title("Tiempo sobre cantidad de canibales (y arqueologos)")
+ax1.set_xlabel('Cantidad de canibales')
 ax1.set_xscale('linear')
 ax1.set_ylabel('Tiempo de procesamiento en ns')
 ax1.set_yscale('log', basey=2)
