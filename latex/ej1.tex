@@ -21,7 +21,14 @@
 
     % 2. Explicar de forma clara, sencilla, estructurada y concisa, las ideas desarrolladas para la resolución del problema. Utilizar pseudocódigo y lenguaje coloquial (no código fuente). Justificar por qué el procedimiento resuelve efectivamente el problema.
     \subsection{Solución propuesta}
-        La solución de este problema fue lograda considerando todos las formas de cruzar el puente suponiendo que de esa forma se pueda llegar a un final válido. Dado que el fin es cruzar de la forma más rápida, dejamos de lado quién va a cruzar el puente y nos enfocamos en a qué grupo pertenece. Siguiendo esta idea, siempre cruzarán los más rápidos de los que tengan la posibilidad de cruzar. Nos aseguramos de no perder casos en los que el cruce de alguien que no sea el más rápido nos lleve a una mejor solución basandonos el principio de optimalidad y en la idea de que todos deben cruzar el puente al menos una vez. El tiempo que les toma cruzar cada vez que pasan dos personas es la del más lento. Entonces, en el caso de que deba cruzar una sola persona, si hay dos del mismo grupo, será mejor que cruce el más rápido primero ya que en caso de tener que regresar, tendrá menos posibilidades de retrasar al acompañante. En el caso de que dos personas deban cruzar, podemos tomar la misma idea y cuando alguno deba volver a cruzar, deberá regresar el más rápido nuevamente para consumir la menor cantidad posible de tiempo (siempre y cuando cruce el del grupo que corresponda).
+        La solución de este problema fue lograda considerando todos las formas de cruzar el puente suponiendo que de esa forma se pueda llegar a un final válido. Dado que el fin es cruzar de la forma más rápida, dejamos de lado quién va a cruzar el puente y nos enfocamos de qué grupo pertenece. Siguiendo esta idea, siempre cruzarán los más rápidos de los que tengan la posibilidad de cruzar. Nos aseguramos de no perder casos en los que el cruce de alguien que no sea el más rápido nos lleve a una mejor solución basandonos el principio de optimalidad y en la idea de que todos deben cruzar el puente al menos una vez.
+
+        Luego, sean C $={c1,c2,c3}$, conjunto de caníbales. Y sea A $={a1,a2,a3}$. Cada uno con su respectiva velocidad.
+        Sean $x,y\in$C$\cup$A. Entonces, supongo que el pasaje es válido.
+        La velocidad de pasar x e y, sea V esta función. V(x,y) = min(V(x),V(y)). 
+
+        
+        Entonces, en el caso de que deba cruzar una sola persona, si hay dos del mismo grupo, será mejor que cruce el más rápido primero ya que en caso de tener que regresar, tendrá menos posibilidades de retrasar al acompañante. En el caso de que dos personas deban cruzar, podemos tomar la misma idea y cuando alguno deba volver a cruzar, deberá regresar el más rápido nuevamente para consumir la menor cantidad posible de tiempo (siempre y cuando cruce el del grupo que corresponda).
 
         Solamente van a tener la chance de cruzar quienes estén del lado en que está en la linterna y que su cruce no lleve a un \emph{estado inválido}. Un estado válido es aquél en el que no se estuvo anteriormente (es decir, que sea una situación que no haya ocurrido con anterioridad) y que no deje a más caníbales que arqueólogos de alguno de los dos lados. Si bien lo mejor es que crucen siempre los más rápidos, esto no siempre será posible. Es por esto, que los que crucen el puente serán los más rápidos de todas las combinaciones posibles entre los dos grupos siendo un cruce de 1 o 2 personas. Luego, los posibles cruces serán 2 personas del mismo grupo, 1 de un grupo y 1 de otro, o 1 sola de alguno de los dos grupos. Aquí es donde entra la importancia del estado inválido. La forma de corroborar que el movimiento lleve a un estádo válido es observando la cantidad de personas pertenecientes a cada uno de los grupos en cada lado del puente, sin importar su velocidad.
 
@@ -38,7 +45,7 @@
         \subsubsection{Detalles implementativos}
             El algoritmo fue implementado en lenguaje C++. Para almacenar la solución, se recurre a la clase \texttt{vector}, proporcionada por la librería estándar del lenguaje.
 
-            Para manejar los estados en el árbol de ejecución, se van almacenando los nuevos estados en un vector de \texttt{Estados} antes de entrar en una recursión y se quita al retornar de la misma. Esto es para que en la misma altura del arbol haya la misma cantidad de estados y para que no haya estados inválidos de una rama de desiciones en otra en la que se tomaron otros caminos.
+            Para manejar los estados en el árbol de ejecución, se van almacenando los nuevos estados en un vector de \texttt{Estados} antes de entrar en una recursión y se quita al retornar de la misma. Esto es para que, si del estado $S_{i}$, se agrega un estado y se llega al $S_{i+1}$, si este es inválido, pueda regresar nuevamente a $S_{i}$, e intentar con otros estados.
 
             Un \texttt{Estado} es una clase la cual consiste de 4 \texttt{Int}, 2 para la cantidad de arqueólogos y 2 para la cantidad de caníbales de cada uno de los lados en ese momento, y de un \texttt{Bool} para indicar si la linterna se encuentra a la derecha o no.
 
@@ -48,54 +55,56 @@
 
         \begin{codesnippet}
         \begin{verbatim}
-si estadoActual tiene linterna a la derecha
-  lado de origen  = lado derecho
-  lado de destino = lado izquierdo
-si no
-  lado de origen  = lado izquierdo
-  lado de destino = lado derecho
-linternaEnDeracha = !linternaEnDerecha
 
-ordenarVelocidades canibalesEnOrigen
-ordenarVelocidades canibalesEnDestino
-ordenarVelocidades arqueologosEnOrigen
-ordenarVelocidades arqeuologosEnDestino
-
-para #CanibalesQueCruzan entre 0 y minimo(2, #canibales del lado de origen):
-    para #ArqueologosQueCruzan entre 0 y (2 - #CanibalesQueCruzan):
-        si esEstadoValido(#CanibalesEnOrigen - #canibalesQueCruzan,
-                          #ArqueologosEnOrigen - #arqueologosQueCruzan,
-                          #CanibalesEnDestino + #CanibalesQueCruzan,
-                          #ArqueologosEnDestino + #ArqueologosQueCruzan,
-                          linternaEnDerecha, estadosAnteriores):
-
-            canibalesQueCruzan = canibalesEnOrigen[0 hasta #CanibalesQueCruzan]
-            agregar canibalesQueCruzan a CanibalesEnDestino
-            eliminar canibalesQueCruzan de CanibalesEnOrigen
-
-            arqueologosQueCruzan = arqueologosEnOrigen[0 hasta #ArqeueologosQueCruzan]
-            agregar arqueologosQueCruzan a ArqueologosEnDestino
-            eliminar arqueologosQueCruzan de ArqueologosEnOrigen
-
-            nuevoEstado = (tamaño(ArqueologosEnOrigen),
-                          tamaño(ArqueologosEnDestino),
-                          tamaño(CanibalesEnOrigen),
-                          tamaño(CanibalesEnDestino),
-                          linternaEnDerecha)
-
-            nuevoTiempo = tiempoActual + max(si mandarArqueologos > 0
-                                               entonces maximo(arqueologosMasRapidos)
-                                               sino 0,
-                                             si mandarCanibales > 0
-                                               entonces maximo(canibalesMasRapidos)
-                                               sino 0)
-
-            agregar nuevoEstado a EstadosAnteriores
-            recursiónCruzarPuente(estadosAnteriores, nuevoTiempo, soluciones)
-            eliminar nuevoEstado de EstadosAnteriores
-        fin si
-    fin para
-fin para
+    BTCruzarPuentes(Parámetros)
+        si estadoActual tiene linterna a la derecha
+          lado de origen  = lado derecho
+          lado de destino = lado izquierdo
+        si no
+          lado de origen  = lado izquierdo
+          lado de destino = lado derecho
+        linternaEnDeracha = !linternaEnDerecha
+        
+        ordenarVelocidades canibalesEnOrigen
+        ordenarVelocidades canibalesEnDestino
+        ordenarVelocidades arqueologosEnOrigen
+        ordenarVelocidades arqeuologosEnDestino
+        
+        para #CanibalesQueCruzan entre 0 y minimo(2, #canibales del lado de origen):
+            para #ArqueologosQueCruzan entre 0 y (2 - #CanibalesQueCruzan):
+                si esEstadoValido(#CanibalesEnOrigen - #canibalesQueCruzan,
+                                  #ArqueologosEnOrigen - #arqueologosQueCruzan,
+                                  #CanibalesEnDestino + #CanibalesQueCruzan,
+                                  #ArqueologosEnDestino + #ArqueologosQueCruzan,
+                                  linternaEnDerecha, estadosAnteriores):
+        
+                    canibalesQueCruzan = canibalesEnOrigen[0 hasta #CanibalesQueCruzan]
+                    agregar canibalesQueCruzan a CanibalesEnDestino
+                    eliminar canibalesQueCruzan de CanibalesEnOrigen
+        
+                    arqueologosQueCruzan = arqueologosEnOrigen[0 hasta #ArqeueologosQueCruzan]
+                    agregar arqueologosQueCruzan a ArqueologosEnDestino
+                    eliminar arqueologosQueCruzan de ArqueologosEnOrigen
+        
+                    nuevoEstado = (tamaño(ArqueologosEnOrigen),
+                                  tamaño(ArqueologosEnDestino),
+                                  tamaño(CanibalesEnOrigen),
+                                  tamaño(CanibalesEnDestino),
+                                  linternaEnDerecha)
+        
+                    nuevoTiempo = tiempoActual + max(si mandarArqueologos > 0
+                                            entonces maximo(arqueologosMasRapidos)
+                                            sino 0,
+                                            Si mandarCanibales > 0
+                                                entonces maximo(canibalesMasRapidos)
+                                            sino 0)
+        
+                    agregar nuevoEstado a EstadosAnteriores
+                    recursiónCruzarPuente(estadosAnteriores, nuevoTiempo, soluciones)
+                    eliminar nuevoEstado de EstadosAnteriores
+                fin si
+            fin para
+        fin para
         \end{verbatim}
         \end{codesnippet}
 
