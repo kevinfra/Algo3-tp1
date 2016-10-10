@@ -188,29 +188,50 @@
 
 
         Por lo visto anteriormente, el algoritmo tiene complejidad temporal de\par
-         $\ord(M) + \ord(T) + \ord((\prod_{i = 0}^{M-1} K_{i})*T) =$\par 
-         $\ord(M + (\prod_{i = 0}^{M-1} K_{i})*T) =$\par
-         $\ord((\prod_{i = 0}^{M-1} K_{i})*T) =$ \par
-         $\ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i} + 1)) =$\par
-         Luego, la complejidad final de nuestro algoritmo es\par
-                  $\ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i}))$
+        \[
+            \ord(M) + \ord(T) + \ord((\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord(M + (\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i} + 1)) =
+        \]
+        Luego, la complejidad final de nuestro algoritmo es\par
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i}))
+        \]
 
-         Dado que nuestra cota máxima por enunciado era $\ord((\sum_{i = 0}^{M-1} K_{i})^{M}*(\sum_{i = 0}^{N-1} C_{i}))$ resta demostrar que. \par
-         $\prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}$ \par
-         Para esto, podemos desarrollar la productoria y la sumatoria como,\par
-         $\prod_{i = 0}^{M-1} K_{i} = K_{0} * K_{1} * \dots * K_{M-1} $ \par
-         $(\sum_{i = 0}^{M-1} K_{i})^{M} = (K_{0} + K_{1} + \dots + K_{M-1})^{M}$\par
-         Resta probar que, \par
-         $K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{0} + K_{1} + \dots + K_{M-1})^{M}$\par
-         Sea $K_{j}$ la mayor capacidad de todas, entonces \par
-         $K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{j})^{M}$\par
-         Luego por propiedad de polinomios, seguro $(K_{j})^{M}$ pertenece a algún coeficiente de elevar a la M\par
-         $(K_{0} + K_{1} + \dots + K_{M-1})^{M}$\par
-         Además todos los coeficientes $K_{i} \neq K_{j}$ son positivos.
-
-         Por lo tanto se demostró que $K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{0} + K_{1} + \dots + K_{M-1})^{M}$ \par
-         Es decir, $\prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}$. \par
-         Luego la cota dada es correcta.
+        Dado que nuestra cota máxima por enunciado era $\ord((\sum_{i = 0}^{M-1} K_{i})^{M}*(\sum_{i = 0}^{N-1} C_{i}))$ resta demostrar que. \par
+        \[
+            \prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}
+        \]
+        Para esto, podemos desarrollar la productoria y la sumatoria como,\par
+        \[
+            \prod_{i = 0}^{M-1} K_{i} = K_{0} * K_{1} * \dots * K_{M-1}
+        \]
+        \[
+            (\sum_{i = 0}^{M-1} K_{i})^{M} = (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Resta probar que, \par
+        \[
+            K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Sea $K_{j}$ la mayor capacidad de todas, entonces \par
+        \[
+            K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{j})^{M}
+        \]
+        Luego por propiedad de polinomios, seguro $(K_{j})^{M}$ pertenece a algún coeficiente de elevar a la M\par
+        \[
+            (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Además todos los coeficientes $K_{i} \neq K_{j}$ son positivos. \par
+        Por lo tanto se demostró que $K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{0} + K_{1} + \dots + K_{M-1})^{M}$ \par
+        Es decir, $\prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}$. \par
+        Luego la cota dada es correcta. \par
     
 
     % 4. Dar un código fuente claro que implemente la solución propuesta. Se deben incluir las partes relevantes del código como apéndice del informe impreso entregado.
