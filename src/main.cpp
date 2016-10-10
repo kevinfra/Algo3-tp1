@@ -21,7 +21,7 @@ void start_timer() {
 
 double stop_timer() {
 	chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-	return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
+	return double(chrono::duration_cast<chrono::microseconds>(end_time - start_time).count());
 }
 
 
@@ -199,15 +199,15 @@ int main(int argc, char *argv[]) {
 				capacidades.clear();
 				default_random_engine generator;
 				uniform_int_distribution <int> dameRandom(0,ks);
-				cantTesoros += 1;
+				cantTesoros = ks;
 				tesoroCant.push_back(1);
-				int valorTesoroActual = dameRandom(generator);
-				tesoroValor.push_back(valorTesoroActual);
-				int pesoTesoroActual = dameRandom(generator);
-				tesoroPeso.push_back(pesoTesoroActual);
+				int valorTesoroActual = dameRandom(generator); //NO IMPORTA
+				tesoroValor.push_back(valorTesoroActual); //NO IMPORTA
+				int pesoTesoroActual = dameRandom(generator); //NO IMPORTA
+				tesoroPeso.push_back(pesoTesoroActual); //NO IMPORTA
 				for (int mochilas = 1; mochilas <= 3; ++mochilas){
 					capacidades.push_back(ks);
-					for (int veces = 0; veces < 500; ++veces){
+					for (int veces = 0; veces < 50; ++veces){
 						start_timer();
 						Mochilero(cantMochilas, cantTesoros, capacidades, tesoroCant, tesoroValor, tesoroPeso);
 						cout << stop_timer() << "    " << ks << "    " << cantTesoros << "    " << mochilas << endl;

@@ -6,11 +6,16 @@ import sys
 
 # Antes de usar esto, tirar en consola "./tp1 2 -exp > resEj2.txt". CUIDADO CON PISAR EL ARCHIVO ANTERIOR
 
-arr = np.genfromtxt("ej3Exp2.txt")
+arr = np.genfromtxt("ej3Exp3.txt")
 x = [row[0] for row in arr]
 y = [row[1] for row in arr]
 nroMochilas = [row[3] for row in arr]
 
+
+def graph(formula, x_range):
+    x = np.array(x_range)
+    y = eval(formula)
+    return y
 
 def promedio(list):
    return sum(list)/len(list)
@@ -20,11 +25,11 @@ listaPromedio = []
 listaProducTamMochilas = []
 listaMochilas = []
 while k < len(x):
-  subList = x[k:k+500]
+  subList = x[k:k+50]
   listaPromedio.append(promedio(subList))
-  listaProducTamMochilas.append(y[k]**nroMochilas[k])
+  listaProducTamMochilas.append(y[k])
   listaMochilas.append(nroMochilas[k])
-  k += 500
+  k += 50
 
 k=0
 pares=[]
@@ -63,10 +68,10 @@ unasMochilasNP = np.array(unaMochila)
 dosMochilasNP = np.array(dosMochila)
 tresMochilasNP = np.array(tresMochila)
 
-# cota = 'np.log10(x)*1e3'
-# grafCota = graph(cota, range(1,4629))
-# deAUno = range(1,4629)
-# deAUno = np.array(deAUno)
+cota = 'x*x*x*x'
+grafCota = graph(cota, range(1,30))
+deAUno = range(1,30)
+deAUno = np.array(deAUno)
 
 
 
@@ -76,17 +81,17 @@ ax1 = fig.add_subplot(111)
 pylab.plot(unasMochilasNP, promedioUnoNP, color='red', marker='o', label= 'una mochila')
 pylab.plot(dosMochilasNP, promedioDosNP, color='blue', marker='o', label= 'dos mochilas')
 pylab.plot(tresMochilasNP, promedioTresNP, color='green', marker='o', label= 'tres mochilas')
-# pylab.plot(deAUno, grafCota,'black', label= 'Cota de Complejidad')
+pylab.plot(deAUno, grafCota,'black', label= 'Cota de Complejidad')
 
 
-ax1.set_title("Mochilas de distintos tamaños y tesoros")
-ax1.set_xlabel('productoria de los tamaños de las mochilas segun su cantidad')
+ax1.set_title("Mochilas de distintos tamaños")
+ax1.set_xlabel('capacidad de las mochilas y cantidad de tesoros totales')
 ax1.set_xscale('linear')
-ax1.set_ylabel('Tiempo de procesamiento en nanosegundos')
+ax1.set_ylabel('Tiempo de procesamiento en microsegundos')
 ax1.set_yscale('linear')
 
 leg = ax1.legend()
 
-leg = plt.legend( loc = 'lower right')
+leg = plt.legend( loc = 'upper left')
 
 plt.show()
