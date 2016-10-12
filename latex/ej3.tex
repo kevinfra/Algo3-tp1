@@ -165,78 +165,73 @@
 
     4) Una vez finalizados los primeros tres pasos, se copia en una tupla el valor obtenido entre todos los tesoros guardados en las mochilas, y un vector mochilas que contiene un vector por mochila. Cada uno de estos vectores guarda la cantidad de tesoros y los tipos de tesoro que hay en esa mochila.
 
-    % Para incluir una tercera mochila, se extendió la matriz a 3 dimensiones (4 para ser correctos, ya que una primera dimensión es para agrupar en un mismo vector la matriz de cada tesoro). Y cada vez que se realiza una comparación de valores máximos, se compara también con los valores de la tercer mochila.
-
-
-
- %    JULI:
- %    El objetivo de hacer esto, es tener en cuenta todos los casos y valores acumulados, de poner o no cada tesoro, y en qué mochila se pone. Utilizando en todo caso el mayor valor de tesoros acumulados. En los campos de la matriz ira el valor que queda de poner el tesoro o no, y las capacidades restantes de las mochilas. \par
- %    El algoritmo se divide en dos partes, una parte es completar las matrices de tesoros, con el maximo valor posible que se puede acumular en cada mochila según el peso disponible. La segunda parte, consiste en definir, qué tesoros van en cada mochila, ubicando según el valor restante, de poner el tesoro en una mochila u otra.
-
- %    Para esto, uno puede pensarlo como una matriz de tres dimensiones o un cubo por tesoro, además de un cubo nulo. Por cada tesoro que se analiza, los pasos son iguales. Si la capacidad de las mochilas, representado por el índice (i,j,k) que las recorre (i representa la capacidad de la M1, j de la M2 y K de la M3) es menor que el peso del tesoro, el valor obtenido es igual al acumulado en el tesoro anterior (salvo el primer caso, en donde el tesoro anterior es la matriz nula). Si entra en alguna mochila, uno debe fijarse, que valor restante se obtiene, de restarle a su índice, el peso del objeto. Y, en la posición de la matriz se deja el máximo de ponerlo en alguna mochila o no ponerlo.\par
-
- %    Una vez explicado brevemente, pasaremos a detallar el algoritmo, dividiéndolo en dos secciones. La primera, completa las matrices de los tesoros, según el valor máximo posible por capacidad. Mientras que la segunda sección, recorre de atras para adelante las matrices, para ubicar los tesoros.\par
-
- %    El siguiente pseudocodigo mostrara como se completan las matrices,
-
- %    \begin{codesnippet}
-	% \begin{verbatim}
- %    cuboMagico = Inicializo un vector de matrices de Int
- %    Inicializo cantTesoros+1 matrices de (N + 1)*(M + 1)*(K +1) y las guardo en el vector cuboMagico.
- %    //N, M y K capacidades de las mochilas.
- %    for(iTesoroActual= 0...cuboMagico.size()) do
- %        //Recorro todas las matrices de tesoros
- %        iTesoro = El indice a la matriz del tesoro anterior.
- %        valorTesoro = tesoroValor[iTesoroActual]
- %        pesoTesoro = tesoroPeso[iTesoroActual]
- %        valorNingunaMochila = 0; //Me guardo el valor por si no entra en ninguna mochila
- %        //Recorro todas las matrices de tesoros
- %        for(iMochila1 = 0 .. N + 1) do
- %            for(iMochila2 = 0 .. M + 1) do
- %                for(iMochila3 = 0 .. N + 1) do
- %                    if(pesoTesoro entra en alguna mochila) do
- %                        if(pesoTesoro entra en mochila M_{1})
- %                            valorMochila1 = valorTesoro + cuboMagico[iTesoro][iMochila1-pesoTesoro][iMochila2][iMochila3]; 
- %                            //Valor de la matriz del tesoro anterior.
- %                        endif
- %                        if(pesoTesoro entra en mochila M_{2}) do
- %                    	    valorMochila2 = valorTesoro +  cuboMagico[iTesoro][iMochila1][iMochila2 - pesoTesoro][iMochila3];
- %                    	    //Valor de la matriz del tesoro anterior.
- %                        endif
- %                        if(pesoTesoro entra en mochila M_{3}) do
- %                            valorMochila3 = valorTesoro + cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3 - pesoTesoro];
- %                            //Valor de la matriz del tesoro anterior.
- %                        endif
- %                    cuboMagico[iTesoro][iMochila1][iMochila2][iMochila3] = max(valorNingunaMochila, valorMochila1, valorMochila2, valorMochila3);
- %                    //Me quedo con el maximo de ponerlo en alguna mochila o no ponerlo.
- %                    iTesoro ++ //Avanzo el indice al tesoro anterior.
- %                end
- %            end
- %        end
-
-	% \end{verbatim}
-	% \end{codesnippet}
-
-
-
-
-
-
-	% Para la segunda parte, se decide por cada tesoro, en qué mochila irá. Para esto, se recorre desde la última posición de la matriz del último tesoro. En esta posición, se encuentra el mejor valor acumulado posible. La decisión se toma de la siguiente manera
-	% 	%Listita:
-	% 	 A) En qué mochilas entra?
-	% 	 B) Para cada mochila en la cual entra. Qué valor restante se encuentra en la posición de la matriz del del tesoro anterior en los pesos restantes, de ponerlo en cada una de las mochilas.
-	% 	 C) En el caso que el valor restante sea igual, lo pongo en cualquiera de las dos
-	% 	 D) En el caso que haya un máximo, ubico el tesoro en la mochila que obtiene el valor máximo restante.
-	% Sigo este algoritmo por cada matriz, hasta no tener capacidad disponible en ninguna de las mochilas.
-
-	% Si se analiza la forma en que se construye la solución, tanto en la primera como en la segunda etapa, se tienen en cuenta cuál es el valor máximo posible acumulado, de ubicar los tesoros. Es por esto que el resultado, siempre dará la suma máxima posible.
-	% FIN JULI
 
    
     \subsection{Complejidad teórica}
-        Por lo visto anteriormente, el algoritmo tiene complejidad temporal de $O(\prod_{i=0}^{C} (K+1)^M)$ donde $M$ es la cantidad de mochilas, $K$ es la capacidad de la mochila más grande y $C$ es la cantidad de tesoros.
-        En cuanto a la complejidad espacial, resulta también ser la misma.
+        Para analizar la complejidad teórica, vamos a hacer referencia a la \textbf{implementación} del algoritmo.
+        Para esto, el mismo, puede ser dividido en varias etapas independientes, donde al final, sus complejidades serán sumadas, dando así la complejidad teórica final. Las etapas son, 
+
+        \begin{itemize}
+            \item En primer lugar, se inicializan ciertas variables necesarias para el algoritmo en $\ord(1)$, además de inicializar la variable \emph{capacidades}, en la cual se insertan las capacidades de las distintas mochilas. Siendo M la cantidad de mochilas, y $\ord(1)$ la operación de \emph{incersión} en un vector, esto da un total de $\ord(M)$ la inicialización de variables.
+            \item Además de las variables, se inicializa un vector de matrices denominado \textbf{cuboMagico}. Las mismas serán usadas para almacenar las ganancias acumuladas de llevar un tesoro o no. Para esto, sea N los tipos de tesoros y $C_{i}$ la cantidad del tesoro de tipo i, se redimensionará el vector de matrices cuboMagico por cada uno de los tesoros además de una matriz nula. Es decir en 
+            $\ord(\sum_{i = 0}^{N-1} C_{i} + 1)$ inicializa el vector de matrices.
+            \item Luego sea T, la cantidad de tesoros total más la matríz nula, es decir
+            $T = \sum_{i = 0}^{N-1} C_{i} + 1$
+            A cada matríz se la redimensionará con la capacidad de las M mochilas. O sea para cada tesoro, se inicializa una matriz cuyas dimensiones son $ \prod_{i = 0}^{M-1} K_{i}$. Esta inicialización tiene una cota asintótica de $\ord((\prod_{i = 0}^{M-1} K_{i}})*T)$.
+            \item Luego recorro cada una de las matrices, para sumar el valor acumulado por cada posición de cada matriz. Esto es, recorrer todas las matrices una vez cada una tiene un costo de complejidad de $\ord((\prod_{i = 0}^{M-1} K_{i}})*T)$.
+
+            \item Finalmente debo recorrer desde la última matriz hasta la primera. Cada vez que el algoritmo determine que un tesoro es óptimo para llevar en una mochila, el tesoro será ingresado al vector de cada mochila. La inserción de un elemento a un vector es $\ord(1)$.Pero recorrer todas las matrices vuelve a tener una complejidad de $\ord((\prod_{i = 0}^{M-1} K_{i}})*T)$.
+
+
+        \end{itemize}
+
+
+        Por lo visto anteriormente, el algoritmo tiene complejidad temporal de\par
+
+        \[
+            \ord(M) + \ord(T) + \ord((\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord(M + (\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*T) =
+        \]
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i} + 1)) =
+        \]
+        Luego, la complejidad final de nuestro algoritmo es\par
+        \[
+            \ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i}))
+        \]
+
+        Dado que nuestra cota máxima por enunciado era $\ord((\sum_{i = 0}^{M-1} K_{i})^{M}*(\sum_{i = 0}^{N-1} C_{i}))$ resta demostrar que. \par
+        \[
+            \prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}
+        \]
+        Para esto, podemos desarrollar la productoria y la sumatoria como,\par
+        \[
+            \prod_{i = 0}^{M-1} K_{i} = K_{0} * K_{1} * \dots * K_{M-1}
+        \]
+        \[
+            (\sum_{i = 0}^{M-1} K_{i})^{M} = (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Resta probar que, \par
+        \[
+            K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Sea $K_{j}$ la mayor capacidad de todas, entonces \par
+        \[
+            K_{0} * K_{1} * \dots * K_{M-1} \leq (K_{j})^{M}
+        \]
+        Luego por propiedad de polinomios, seguro $(K_{j})^{M}$ pertenece a algún coeficiente de elevar a la M\par
+        \[
+            (K_{0} + K_{1} + \dots + K_{M-1})^{M}
+        \]
+        Además todos los coeficientes $K_{i} \neq K_{j}$ son positivos. \par
+        Por lo tanto se demostró que $K_{0} * K_{1} * \dots * K_{M-1}  \leq (K_{j})^{M} \leq  (K_{0} + K_{1} + \dots + K_{M-1})^{M}$ \par
+        Es decir, $\prod_{i = 0}^{M-1} K_{i} \leq (\sum_{i = 0}^{M-1} K_{i})^{M}$. \par
+        Luego la cota dada es correcta. \par
     
 
     % 4. Dar un código fuente claro que implemente la solución propuesta. Se deben incluir las partes relevantes del código como apéndice del informe impreso entregado.
@@ -244,15 +239,15 @@
     % 5. Realizar una experimentación computacional para medir la performance del programa implementado. Usar un conjunto de casos de test en función de los parámetros de entrada, con instancias aleatorias e instancias particulares (de peor/mejor caso en tiempo de ejecución, por ejemplo). Presentar en forma gráfica una comparación entre los tiempos medidos y la complejidad teórica calculada y extraer conclusiones.
     \subsection{Experimentación}
 
-        Al igual que con los otros dos ejercicios, se realizaron pruebas experimentales para verificar que el tiempo de ejecución del algoritmo cumpliera con la cota asintótica de $O((\prod_{i=0}^{M} K_i) * C + C)$, teóricamente demostrada para el peor caso. Las pruebas que se realizaron consistieron de probar con distinta cantidad de tamaños (1 a 30) para 1 a 3 mochilas, donde la cantidad de tesoros era igual a los tamaños de las mochilas. El objetivo era observar el tiempo que toma el algoritmo cambiando estos valores. Para cada tesoro, su peso y valor fue un número random entre 1 y el tamaño de la mochila, tomado utilizando random de la librería estandar y con una distribución uniforme.
+        Al igual que con los otros dos ejercicios, se realizaron pruebas experimentales para verificar que el tiempo de ejecución del algoritmo cumpliera con la cota asintótica de $(\ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i}))$, teóricamente demostrada para el peor caso. Las pruebas que se realizaron consistieron de probar con distinta cantidad de tamaños para 1 a 3 mochilas, donde la cantidad de tesoros era igual a los tamaños de las mochilas. El objetivo era observar el tiempo que toma el algoritmo cambiando estos valores. Para cada tesoro, su peso y valor fue un número random entre 1 y el tamaño de la mochila, tomado utilizando random de la librería estandar y con una distribución uniforme.
         El resultado de este experimento puede visualizarse en este gráfico:
 
 
       \begin{figure}[H]
       \begin{center}
-        \includegraphics[width=0.7\columnwidth]{imagenes/exp1Ej3.jpeg}
+        \includegraphics[width=0.7\columnwidth]{imagenes/ej3Nuevo.jpeg}
         \caption{}
       \end{center}
       \end{figure}
 
-        Notamos que la línea que corresponde al caso de una mochila sola no puede verse ya que al ser una productoria de los tamaños de las mochilas, ésta solo llega como máximo a 30.
+        Luego en base a los resultados, se puede observar que dentro de las variables es la cantidad de mochilas una de las que influye fuertemente en el tiempo de ejecución. Esto se debe pues, como fue explicado en la \textbf{solución propuesta}, a que las dimensiones de las matrices a recorrer, son del tamaño de la capacidad de las mochilas. Por esto a mayor cantidad de mochilas y mayor capacidad, el tiempo de ejecución es mayor. Por otro lado se puede obesrvar, que la complejidad teórica calculada es correcta según la experimentación.
