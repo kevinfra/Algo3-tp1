@@ -57,58 +57,50 @@
         \begin{verbatim}
 
     BTCruzarPuentes(Parámetros)
-        si estadoActual tiene linterna a la derecha
-          lado de origen  = lado derecho
-          lado de destino = lado izquierdo
-        si no
-          lado de origen  = lado izquierdo
-          lado de destino = lado derecho
-        linternaEnDeracha = !linternaEnDerecha
-        
-        ordenarVelocidades canibalesEnOrigen
-        ordenarVelocidades canibalesEnDestino
-        ordenarVelocidades arqueologosEnOrigen
-        ordenarVelocidades arqeuologosEnDestino
-        
-        para #CanibalesQueCruzan entre 0 y minimo(2, #canibales del lado de origen):
-            para #ArqueologosQueCruzan entre 0 y (2 - #CanibalesQueCruzan):
-                si esEstadoValido(#CanibalesEnOrigen - #canibalesQueCruzan,
-                                  #ArqueologosEnOrigen - #arqueologosQueCruzan,
-                                  #CanibalesEnDestino + #CanibalesQueCruzan,
-                                  #ArqueologosEnDestino + #ArqueologosQueCruzan,
-                                  linternaEnDerecha, estadosAnteriores):
-        
-                    canibalesQueCruzan = canibalesEnOrigen[0 hasta #CanibalesQueCruzan]
-                    agregar canibalesQueCruzan a CanibalesEnDestino
-                    eliminar canibalesQueCruzan de CanibalesEnOrigen
-        
-                    arqueologosQueCruzan = arqueologosEnOrigen[0 hasta #ArqeueologosQueCruzan]
-                    agregar arqueologosQueCruzan a ArqueologosEnDestino
-                    eliminar arqueologosQueCruzan de ArqueologosEnOrigen
-        
-                    nuevoEstado = (tamaño(ArqueologosEnOrigen),
-                                  tamaño(ArqueologosEnDestino),
-                                  tamaño(CanibalesEnOrigen),
-                                  tamaño(CanibalesEnDestino),
-                                  linternaEnDerecha)
-        
-                    nuevoTiempo = tiempoActual + max(si mandarArqueologos > 0
-                                            entonces maximo(arqueologosMasRapidos)
-                                            sino 0,
-                                            Si mandarCanibales > 0
-                                                entonces maximo(canibalesMasRapidos)
-                                            sino 0)
-        
-                    agregar nuevoEstado a EstadosAnteriores
-                    recursiónCruzarPuente(estadosAnteriores, nuevoTiempo, soluciones)
-                    eliminar nuevoEstado de EstadosAnteriores
-                fin si
-            fin para
-        fin para
+    si estadoActual tiene linterna a la derecha
+      lado de origen  = lado derecho
+      lado de destino = lado izquierdo
+    si no
+      lado de origen  = lado izquierdo
+      lado de destino = lado derecho
+    linternaEnDeracha = !linternaEnDerecha
+    
+    esSolucion = canibales_izq + arquielogos_izq == 0;
+    Si es solucion
+        encolar tiempo en soluciones
+    } sino    
+
+
+        for #mandarCanibales = 0 ... minimo(2, #canibales del lado de origen):
+          for #mandarArqueologos = 0 ... (2 - #CanibalesQueCruzan):
+            if esEstadoValido(#CanibalesEnOrigen - #canibalesQueCruzan,
+                              #ArqueologosEnOrigen - #arqueologosQueCruzan,
+                              #CanibalesEnDestino + #CanibalesQueCruzan,
+                              #ArqueologosEnDestino + #ArqueologosQueCruzan,
+                              linternaEnDerecha, estadosAnteriores):
+              
+
+              
+              switch((#mandarCanibales,#mandarArqueologos)
+                  moverEsaCantidad
+                  cambiarDeLadoLinterna
+                  guardarEstadoNuevo
+                  BTCruzarPuente
+              end switch
+
+            endif  
+          end for
+        end for
+      end if
         \end{verbatim}
         \end{codesnippet}
 
-            Esta es una porción del algoritmo completo, en la cual se muestra cómo funciona la parte recursiva del mismo. Por un lado, toma como parámetros de entrada \emph{canibalesOrigen, arqueologosOrigen, canibalesDestino, arqueologosDestino,linternaDer, &estadosAnteriores, tiempo, &soluciones}. Por otro lado, la variable \emph{soluciones} no se modifica en esta parte ya que es simplemente agregar el tiempoActual a la lista, siendo tiempoActual el contador de tiempo que toma hasta ese estado cruzar el puente. La idea de agregar nuevoEstado a EstadosAnterirores consiste en poder eliminar los caminos que lleven a una situación que ya se haya estado con anterioridad (por ejemplo, que cruce un canibal y luego vuelva). Además, al quitarla luego de la recursión hace que para cada altura del árbol de ejecución tengamos la misma cantidad de estados y que éstos sean todos distintos. La razón por la cual serán distintos proviene de que cada estado se arma basándose en la cantidad de arqueólogos y caníbales que hay de cada lado y de qué lado está la linterna. Entonces si cada vez que haya que cruzar el puente se elige una cantidad distinta de exploradores, cada nuevo estado tendrá como máximo 5 formas distintas (que cruce un solo canibal, un solo arqueólogo, dos canibales, dos arqueólogos o un arqueólogo y un canibal).
+            Esta es una porción del algoritmo completo, en la cual se muestra cómo funciona la parte recursiva del mismo. Por un lado, toma como parámetros de entrada \emph{&canibalesOrigen, &arqueologosOrigen, &canibalesDestino, &arqueologosDestino,linternaDer, &estadosAnteriores, tiempo, &soluciones}. 
+
+
+            Por otro lado, la variable \emph{soluciones} no se modifica en esta parte ya que es simplemente agregar el tiempoActual a la lista, siendo tiempoActual el contador de tiempo que toma hasta ese estado cruzar el puente. 
+
+            La idea de agregar nuevoEstado a EstadosAnterirores consiste en poder eliminar los caminos que lleven a una situación que ya se haya estado con anterioridad (por ejemplo, que cruce un canibal y luego vuelva). Además, al quitarla luego de la recursión hace que para cada altura del árbol de ejecución tengamos la misma cantidad de estados y que éstos sean todos distintos. La razón por la cual serán distintos proviene de que cada estado se arma basándose en la cantidad de arqueólogos y caníbales que hay de cada lado y de qué lado está la linterna. Entonces si cada vez que haya que cruzar el puente se elige una cantidad distinta de exploradores, cada nuevo estado tendrá como máximo 5 formas distintas (que cruce un solo canibal, un solo arqueólogo, dos canibales, dos arqueólogos o un arqueólogo y un canibal).
 
             La otra parte importante del algoritmo consiste en chequear si lograron cruzar todos los exploradores, que en tal caso como se menciona en el párrafo anterior, se agrega el tiempo que tomó cruzar el puente. Luego, se regresa hacia arriba en un nivel en el árbol de ejecución y se continúa probando las otras posibilidades de caminos.
 
