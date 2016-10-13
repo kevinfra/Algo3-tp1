@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
+int cruzarPuente(vector<int> const &canibales, vector<int> const &arqueologos){
   vector<int> arqDer;
   vector<int> caniDer;
   Estado primerEstado(arqueologos.size(), canibales.size(), arqDer.size(), caniDer.size(), false);
@@ -17,7 +17,7 @@ int cruzarPuente(vector<int> canibales, vector<int> arqueologos){
   return resultado;
 }
 
-void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, vector<int> canibalesDestino, vector<int> arqueologosDestino, bool linternaDer, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){
+void BTCruzarPuente(vector<int> const &canibalesOrigen, vector<int> const &arqueologosOrigen, vector<int> const &canibalesDestino, vector<int> const &arqueologosDestino, bool linternaDer, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){
   vector<int> canibalesDer = linternaDer ? canibalesOrigen : canibalesDestino;
   vector<int> canibalesIzq = linternaDer ? canibalesDestino : canibalesOrigen;
   vector<int> arqueologosDer = linternaDer ? arqueologosOrigen : arqueologosDestino;
@@ -31,7 +31,7 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
 
   }else{
 
-    Estado nuevoEstado;
+    // Estado nuevoEstado;
     vector<int> nuevoCanibalesOrigen;
     vector<int> nuevoArqueologosOrigen;
     vector<int> nuevoCanibalesDestino;
@@ -42,11 +42,6 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
     int cantCanibalesDestino = canibalesDestino.size();
     int cantArqueologosDestino = arqueologosDestino.size();
     bool nuevaLinternaDer = !linternaDer;
-
-    if (canibalesOrigen.size() > 0) { sort(canibalesOrigen.begin(), canibalesOrigen.end()); }
-    if (canibalesDestino.size() > 0) { sort(canibalesDestino.begin(), canibalesDestino.end()); }
-    if (arqueologosOrigen.size() > 0) { sort(arqueologosOrigen.begin(), arqueologosOrigen.end()); }
-    if (arqueologosDestino.size() > 0) { sort(arqueologosDestino.begin(), arqueologosDestino.end()); }
 
     //Mando 0 canibales y 1 arqueologo, o
     //0 canibales y 2 arqueologos, o
@@ -66,51 +61,185 @@ void BTCruzarPuente(vector<int> canibalesOrigen, vector<int> arqueologosOrigen, 
           nuevoCanibalesDestino = canibalesDestino;
           nuevoArqueologosDestino = arqueologosDestino;
 
-          vector<int> canibalesMasRapidos;
-          if (mandarCanibales > 0){
-            for (int q = 0; q < mandarCanibales; ++q){
-              canibalesMasRapidos.push_back(nuevoCanibalesOrigen[q]);
-            }
-
-            for (int i = 0; i < mandarCanibales; i++){
-              int index = indexOf(canibalesMasRapidos[i], nuevoCanibalesOrigen);
-              nuevoCanibalesOrigen.erase(nuevoCanibalesOrigen.begin() + index);
-              nuevoCanibalesDestino.push_back(canibalesMasRapidos[i]);
-            }
+          if(mandarCanibales == 2 && mandarArqueologos == 0){
+            mover2PersonasMismoGrupo(nuevoCanibalesOrigen,
+                                      nuevoCanibalesDestino,
+                                      nuevoArqueologosOrigen,
+                                      nuevoArqueologosDestino,
+                                      linternaDer, true,
+                                      estadosAnteriores, tiempo,
+                                      soluciones);
           }
 
-          vector<int> arqueologosMasRapidos;
-          if (mandarArqueologos > 0){
-            for (int q = 0; q < mandarArqueologos; ++q){
-              arqueologosMasRapidos.push_back(nuevoArqueologosOrigen[q]);
-            }
-
-            for (int i = 0; i < mandarArqueologos; i++){
-              int index = indexOf(arqueologosMasRapidos[i], nuevoArqueologosOrigen);
-              nuevoArqueologosOrigen.erase(nuevoArqueologosOrigen.begin() + index);
-              nuevoArqueologosDestino.push_back(arqueologosMasRapidos[i]);
-            }
+          if(mandarCanibales == 0 && mandarArqueologos == 2){
+            mover2PersonasMismoGrupo(nuevoArqueologosOrigen,
+                                      nuevoArqueologosDestino,
+                                      nuevoCanibalesOrigen,
+                                      nuevoCanibalesDestino,
+                                      linternaDer, false,
+                                      estadosAnteriores, tiempo,
+                                      soluciones);
           }
 
-          int arqueologosDerNuevoEstado = arqueologosDer.size() + (linternaDer ? -1 : 1) * mandarArqueologos;
-          int arqueologosIzqNuevoEstado = arqueologosIzq.size() + (linternaDer ? 1 : -1) * mandarArqueologos;
-          int canibalesDerNuevoEstado   = canibalesDer.size()   + (linternaDer ? -1 : 1) * mandarCanibales;
-          int canibalesIzqNuevoEstado   = canibalesIzq.size()   + (linternaDer ? 1 : -1) * mandarCanibales;
-          bool linternaDerNuevoEstado   = nuevaLinternaDer;
+          if(mandarCanibales == 1 && mandarArqueologos == 0){
+            mover1Persona1Grupo(nuevoCanibalesOrigen,
+                                nuevoCanibalesDestino,
+                                nuevoArqueologosOrigen,
+                                nuevoArqueologosDestino,
+                                linternaDer, true,
+                                estadosAnteriores, tiempo,
+                                soluciones);
+          }
 
-          nuevoEstado.set_estado(arqueologosIzqNuevoEstado, canibalesIzqNuevoEstado, arqueologosDerNuevoEstado, canibalesDerNuevoEstado, linternaDerNuevoEstado);
+          if(mandarCanibales == 0 && mandarArqueologos == 1){
+            mover1Persona1Grupo(nuevoArqueologosOrigen,
+                                nuevoArqueologosDestino,
+                                nuevoCanibalesOrigen,
+                                nuevoCanibalesDestino,
+                                linternaDer, false,
+                                estadosAnteriores, tiempo,
+                                soluciones);
+          }
 
-          estadosAnteriores.push_back(nuevoEstado);
-          int nuevoTiempo = tiempo + max(mandarArqueologos > 0 ? maximo(arqueologosMasRapidos) : 0, mandarCanibales > 0 ? maximo(canibalesMasRapidos) : 0);
-          BTCruzarPuente(nuevoCanibalesDestino, nuevoArqueologosDestino, nuevoCanibalesOrigen, nuevoArqueologosOrigen, nuevaLinternaDer, estadosAnteriores, nuevoTiempo, soluciones);
-          estadosAnteriores.pop_back();
+          if(mandarCanibales == 1 && mandarArqueologos == 1){
+            mover2PersonasDistintoGrupo(nuevoArqueologosOrigen,
+                                        nuevoArqueologosDestino,
+                                        nuevoCanibalesOrigen,
+                                        nuevoCanibalesDestino,
+                                        linternaDer,
+                                        estadosAnteriores, tiempo,
+                                        soluciones);
+          }
         }
       }
     }
   }
 }
 
-bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> estadosAnteriores){
+void mover2PersonasMismoGrupo(vector<int> &grupoOrigen, vector<int> &grupoDestino, vector<int> &grupoFijoOrigen, vector<int> &grupoFijoDestino,  bool linternaLadoDer, bool sonCanibales, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){ //linternaLadoDer == false ? origen = izquierda : origen = derecha
+  Estado nuevoEstado;
+  bool nuevaLinterna = !linternaLadoDer;
+  vector<int> copiaOrigen = grupoOrigen;
+  int cantGrupoOrigen = grupoOrigen.size();
+  for (int i = 0; i < cantGrupoOrigen; ++i){
+    grupoDestino.push_back(grupoOrigen[i]);
+    int velocidad1 = grupoOrigen[i];
+    grupoOrigen.erase(grupoOrigen.begin() + i);
+    for (int k = i ; k < cantGrupoOrigen-1; ++k){
+      grupoDestino.push_back(grupoOrigen[k]);
+      int velocidad2 = grupoOrigen[k];
+      vector<int> temp = grupoOrigen;
+      grupoOrigen.erase(grupoOrigen.begin() + k);
+      int nuevoTiempo = tiempo + max(velocidad1, velocidad2);
+      if(linternaLadoDer){
+        if(sonCanibales){
+          nuevoEstado.set_estado(grupoFijoDestino.size(), grupoDestino.size(), grupoFijoOrigen.size(), grupoOrigen.size(), nuevaLinterna);
+          estadosAnteriores.push_back(nuevoEstado);
+          BTCruzarPuente(grupoDestino, grupoFijoDestino, grupoOrigen, grupoFijoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+        }
+        else{
+          nuevoEstado.set_estado(grupoDestino.size(), grupoFijoDestino.size(), grupoOrigen.size(), grupoFijoOrigen.size(), nuevaLinterna);
+          estadosAnteriores.push_back(nuevoEstado);
+          BTCruzarPuente(grupoFijoDestino, grupoDestino, grupoFijoOrigen, grupoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+        }
+      }
+      else{
+        if(sonCanibales){
+          nuevoEstado.set_estado(grupoFijoOrigen.size(), grupoOrigen.size(), grupoFijoDestino.size(), grupoDestino.size(), nuevaLinterna);
+          estadosAnteriores.push_back(nuevoEstado);
+          BTCruzarPuente(grupoDestino, grupoFijoDestino, grupoOrigen, grupoFijoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+        }
+        else{
+          nuevoEstado.set_estado(grupoOrigen.size(), grupoFijoOrigen.size(), grupoDestino.size(), grupoFijoDestino.size(), nuevaLinterna);
+          estadosAnteriores.push_back(nuevoEstado);
+          BTCruzarPuente(grupoFijoDestino, grupoDestino, grupoFijoOrigen, grupoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+        }
+      }
+      estadosAnteriores.pop_back();
+      grupoDestino.pop_back();
+      grupoOrigen = temp;
+    }
+    grupoDestino.pop_back();
+    grupoOrigen = copiaOrigen;
+  }
+}
+
+void mover1Persona1Grupo(vector<int> &grupoOrigen, vector<int> &grupoDestino, vector<int> &grupoFijoOrigen, vector<int> &grupoFijoDestino,  bool linternaLadoDer, bool sonCanibales, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){  //linternaLadoDer == false ? origen = izquierda : origen = derecha
+  Estado nuevoEstado;
+  bool nuevaLinterna = !linternaLadoDer;
+  vector<int> copiaOrigen = grupoOrigen;
+  int cantGrupoOrigen = grupoOrigen.size();
+  for (int i = 0; i < cantGrupoOrigen; ++i){
+    grupoDestino.push_back(grupoOrigen[i]);
+    int velocidad1 = grupoOrigen[i];
+    grupoOrigen.erase(grupoOrigen.begin() + i);
+    int nuevoTiempo = tiempo + velocidad1;
+    if(linternaLadoDer){
+      if(sonCanibales){
+        nuevoEstado.set_estado(grupoFijoDestino.size(), grupoDestino.size(), grupoFijoOrigen.size(), grupoOrigen.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoDestino, grupoFijoDestino, grupoOrigen, grupoFijoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+      else{
+        nuevoEstado.set_estado(grupoDestino.size(), grupoFijoDestino.size(), grupoOrigen.size(), grupoFijoOrigen.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoFijoDestino, grupoDestino, grupoFijoOrigen, grupoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+    }
+    else{
+      if(sonCanibales){
+        nuevoEstado.set_estado(grupoFijoOrigen.size(), grupoOrigen.size(), grupoFijoDestino.size(), grupoDestino.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoDestino, grupoFijoDestino, grupoOrigen, grupoFijoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+      else{
+        nuevoEstado.set_estado(grupoOrigen.size(), grupoFijoOrigen.size(), grupoDestino.size(), grupoFijoDestino.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoFijoDestino, grupoDestino, grupoFijoOrigen, grupoOrigen, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+    }
+    estadosAnteriores.pop_back();
+    grupoDestino.pop_back();
+    grupoOrigen = copiaOrigen;
+  }
+}
+
+void mover2PersonasDistintoGrupo(vector<int> &grupoOrigenA, vector<int> &grupoDestinoA, vector<int> &grupoOrigenB, vector<int> &grupoDestinoB,  bool linternaLadoDer, vector<Estado> &estadosAnteriores, int tiempo, vector<int> &soluciones){
+  Estado nuevoEstado;
+  bool nuevaLinterna = !linternaLadoDer;
+  vector<int> copiaOrigenA = grupoOrigenA;
+  vector<int> copiaOrigenB = grupoOrigenB;
+  int cantGrupoOrigenA = grupoOrigenA.size();
+  int cantGrupoOrigenB = grupoOrigenB.size();
+  for (int i = 0; i < cantGrupoOrigenA; ++i){
+    grupoDestinoA.push_back(grupoOrigenA[i]);
+    int velocidad1 = grupoOrigenA[i];
+    grupoOrigenA.erase(grupoOrigenA.begin() + i);
+    for (int k = 0 ; k < cantGrupoOrigenB; ++k){
+      grupoDestinoB.push_back(grupoOrigenB[k]);
+      int velocidad2 = grupoOrigenB[k];
+      grupoOrigenB.erase(grupoOrigenB.begin() + k);
+      int nuevoTiempo = tiempo + max(velocidad1, velocidad2);
+      if(linternaLadoDer){
+        nuevoEstado.set_estado(grupoDestinoA.size(), grupoDestinoB.size(), grupoOrigenA.size(), grupoOrigenB.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoDestinoB, grupoDestinoA, grupoOrigenB, grupoOrigenA, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+      else{
+        nuevoEstado.set_estado(grupoOrigenA.size(), grupoOrigenB.size(), grupoDestinoA.size(), grupoDestinoB.size(), nuevaLinterna);
+        estadosAnteriores.push_back(nuevoEstado);
+        BTCruzarPuente(grupoDestinoB, grupoDestinoA, grupoOrigenB, grupoOrigenA, nuevaLinterna, estadosAnteriores, nuevoTiempo, soluciones);
+      }
+      estadosAnteriores.pop_back();
+      grupoDestinoB.pop_back();
+      grupoOrigenB = copiaOrigenB;
+    }
+    grupoDestinoA.pop_back();
+    grupoOrigenA = copiaOrigenA;
+  }
+}
+
+bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCanibalesDestino, int cantArqueologosDestino, bool linternaDer, vector<Estado> const &estadosAnteriores){
   if (cantCanibalesOrigen < 0 || cantArqueologosOrigen < 0){ return false; }
 
   int canibalesDer = linternaDer ? cantCanibalesOrigen : cantCanibalesDestino;
@@ -134,8 +263,7 @@ bool estadoValido(int cantCanibalesOrigen, int cantArqueologosOrigen, int cantCa
   return true;
 }
 
-
-int indexOf(int valor, vector<int> lista){
+int indexOf(int valor, vector<int> const &lista){
   int largo = lista.size();
   for (int k = 0; k < largo; ++k){
     if(lista[k] == valor){
@@ -145,7 +273,7 @@ int indexOf(int valor, vector<int> lista){
   return -1;
 }
 
-int maximo(vector<int> lista){
+int maximo(vector<int> const &lista){
   int largo = lista.size();
   int res;
   if (largo > 0) {
@@ -159,7 +287,7 @@ int maximo(vector<int> lista){
   return res;
 }
 
-int minimo(vector<int> lista){
+int minimo(vector<int> const &lista){
   int largo = lista.size();
   int res;
   if (largo > 0) {
