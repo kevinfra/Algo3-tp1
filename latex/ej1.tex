@@ -108,14 +108,14 @@
 
 
     \subsection{Demostración de la correctitud}
-      Para demostrar correctitud del algoritmo debemos demostrar por un lado, que utilizar la técnica backtracking cumple que recorre todos los casos y devuelve el más rápido. Y por otro lado que la poda de  evitar que se repitan casos es válidas.
-      Esto último se puede ver dentro del algoritmo. Pues por cada nuevo estado, es guardado en un struct \emph{Estados} o variable \emph{nuevoEstado}, luego el mismo es usado como parámetro para la función \emph{estadoValido}, el cual chequea en un vector de estadosAnteriores, si a ese estado ya se llegó. Si esto pasa, el algoritmo no hace nada para ese caso y prueba mandar otro/s arqueólogo/s o caníbal/es según toque en el ciclo principal para encontrar un nuevo estado.\par
+      Para demostrar correctitud del algoritmo debemos demostrar por un lado, que utilizar la técnica backtracking cumple con recorrer todos los casos y devuelve el más rápido. Y por otro lado que la poda de evitar que se repitan casos es válida.
+      \par Esto último se puede ver en el algoritmo. Pues al generarse un estado nuevo, el mismo es guardado en un struct \emph{Estados} o variable \emph{nuevoEstado}, luego éste es usado como parámetro para la función \emph{estadoValido}, la cual chequea en un vector de estadosAnteriores, si ese estado ya había sido alcanzado. Si esto pasa, el algoritmo no hace nada para ese caso y prueba mandar otro/s arqueólogo/s o caníbal/es según toque en el ciclo principal para encontrar un nuevo estado.
 
-      La función principal del algoritmo depende de la técnica de backtracking. En esta, intentamos probar cada uno de los casos posibles, descartando la mayor cantidad de casos inválidos posibles a la vez. Para esto último utilizamos la poda anteriormente mencionada. Esto es para, una vez recorrido todas las maneras de cruzar el puente, se llegue a (si hay o no) una solución, y en caso de que haya, cual es la más rápida.
+      \par La función principal del algoritmo depende de la técnica de backtracking. En esta, intentamos probar cada uno de los casos posibles, descartando la mayor cantidad de casos inválidos posibles a la vez. Para esto último utilizamos la poda anteriormente mencionada. Esto es para, una vez recorrido todas las maneras de cruzar el puente, se llegue a (si hay o no) una solución, y en caso de que haya, se llegue a la más rápida.
 
-      Luego sin importar cual es el estado inicial del algoritmo. Lo primero que realiza es chequear que tenga solución. Es decir, dado el caso inicial donde hay más caníbales que arqueólogos, el algoritmo termina. En cambio si esto no se cumple pasa a la etapa de recursión. 
+      \par Luego, sin importar cual es el estado inicial del algoritmo, lo primero que se realiza es chequear que el estado no sea inválido. Es decir que, dado el caso inicial donde hay más caníbales que arqueólogos, el algoritmo termine. En cambio, si esto no se cumple pasa a la etapa de recursión. 
 
-      Lo primero que realiza el algoritmo dado el caso donde no esté encontrada la solución, es fijarse los 5 casos posibles de mandar por el puente:
+      \par Lo primero que realiza el algoritmo dado el caso donde no esté encontrada la solución, es fijarse los 5 casos posibles de mandar por el puente:
 
       \begin{itemize}
       	\item 2 Arqueólogos
@@ -125,22 +125,22 @@
       	\item 1 Caníbal
       \end{itemize}
 
-       Por cada uno de estos casos, si es viable mover esa cantidad sin entrar en un caso inválido (un caso donde ya se encontraba la misma cantidad de caníbales y arqueólogos de un lado del puente y del otro en un estado anterior), continúa a su función de \emph{mover} correspondiente, que es aquella que realiza la recursión. Caso contrario, prueba entrar a la recursión con algún otro caso. 
+       Por cada uno de estos casos, si es viable mover esa cantidad sin entrar en un caso inválido (un caso donde ya se encontraba la misma cantidad de caníbales y arqueólogos de un lado del puente y del otro, en un estado anterior), continúa a su función de \emph{mover} correspondiente, que es aquella que realiza la recursión. Caso contrario, prueba entrar a la recursión con algún otro caso. 
 
        Es decir sea $E_{i}$ el i-ésimo estado válido. Al probar con el estado $E_{i+1}$, existen dos casos:
 
        \begin{itemize}
        	\item $E_{i+1}$ es válido. Esto significa que accede a su función correspondiente y es agregado a \textbf{estadosAnteriores}.
-       	\item $E_{i+1}$ no es válido. Esto significa que  $E_{i+1} \in$estadosAnteriores. Lo que realiza el algoritmo es volver al $E_{i+1}$ y probar con el estado $E_{i+2}$.. Hasta agotar las 5 posibilidades.
+       	\item $E_{i+1}$ no es válido. Esto significa que $E_{i+1} \in$estadosAnteriores. Lo que realiza el algoritmo es volver al $E_{i+1}$ y probar con el estado $E_{i+2}$.. Hasta agotar las 5 posibilidades.
        \end{itemize}
 
-       Luego, esta función de \emph{mover} mencionada, que realiza la recursión, hay una por cada uno de los 5 casos. Cada una sirve para, dado con cual de los 5 casos posibles se entró a esta función específica, entrar nuevamente a la función recursiva con todas las combinaciones posibles de mandar a cada caníbal o arqueólogo disponible en el destino. De esta manera, no sólo se estaría abarcando todos los movimientos por el puente posibles, sino que también, la combinación de los integrantes de cada grupo, en cada uno de los movimientos.
+       Luego, esta función de \emph{mover} mencionada, que realiza la recursión, es llamada una vez por cada uno de los 5 casos. Cada una sirve para, dado con cual de los 5 casos posibles se entró a esta función específica, entrar nuevamente a la función recursiva con todas las combinaciones posibles de mandar a cada caníbal o arqueólogo disponible en el destino. De esta manera, no sólo se estaría abarcando todos los movimientos por el puente posibles, sino que también, la combinación de los integrantes (cada uno con su velocidad) de cada grupo de exploradores, en cada uno de los movimientos.
 
        Por ejemplo si el movimiento es mandar 2 caníbales y este estado es válido. Entonces sean C1, C2 y C3 caníbales, las posibles combinaciones para envíar del otro lado del puente seríán (C1,C2), (C2,C3) y (C3, C1). Hacemos esto sin importar el órden (C1, C2) o (C2, C1). Pues dado que el objetivo del problema era dar la solución más rapida, la velocidad de elegir primero a C1 y luego a C2, será la misma que hacer lo contrario. Esto se realiza para los 5 casos, independientemente de que tipo de explorador sea.
 
        Luego, por cada posibilidad, al entrar nuevamente al árbol de recursión, se vuelve a chequear si es un estado válido y se repite el procedimiento. 
 
-       Para este entonces, el algoritmo recorrió cada uno de los estados $E_{j}$. Quedandose en el vector \textbf{soluciones} con conjuntos de soluciones, donde cada uno tendrá una velocidad diferente y todos serán válidos o serán -1. Finalmente el algoritmo recorre este vector y devuelve el más rápido. De esta manera tenemos garantizado que, en el vector \textbf{soluciones}, estarán todas las soluciones posibles, de combinar cada uno de los movimientos con quién mover y su velocidad. También garantizamos que dado el caso que no haya solución se devolverá -1 y dado el caso que sí haya, devolverá quien cruzó en menor tiempo.
+       Para este entonces, el algoritmo recorrió cada uno de los estados $E_{j}$. Quedandose en el vector \textbf{soluciones} con conjuntos de soluciones, donde cada uno tendrá una velocidad diferente y todos serán válidos o serán -1. Finalmente el algoritmo recorre este vector y devuelve el más rápido. De esta manera tenemos garantizado que, en el vector \textbf{soluciones}, estarán todas las soluciones posibles de combinar cada uno de los movimientos, a quién mover y su velocidad. También garantizamos que dado el caso que no haya solución se devolverá -1 y dado el caso que sí haya, devolverá quien cruzó en menor tiempo.
 
 
 
