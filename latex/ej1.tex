@@ -102,9 +102,9 @@
 
             Un \texttt{Estado} es una clase la cual consiste de 4 \texttt{Int}, 2 para la cantidad de arqueólogos y 2 para la cantidad de caníbales de cada uno de los lados en ese momento, y de un \texttt{Bool} para indicar si la linterna se encuentra a la derecha o no.
 
-            Llamamos \emph{árbol de ejecución} al árbol que se va generando de acuerdo a las desiciones tomadas en cuanto a qué explorador cruzará el puente.
+            Llamamos \emph{árbol de ejecución} al árbol que se va generando de acuerdo a las desiciones tomadas en cuanto a qué explorador(es) cruzará(n) el puente.
 
-            La forma en que se elige quiénes cruzarán de un lado a otro luego de haber decidido a qué grupo pertenecen, es simplemente tomar los primeros (1 o 2) valores del vector que contiene a los arqueólogos o caníbales que vayan a pasar. De esta forma se están tomando siempre los más rápidos, como se mencionó anteriormente, ya que en cada iteración los 4 vectores de personas se ordenan de menor a mayor.
+            La forma en que se elige quiénes cruzarán de un lado a otro luego de haber decidido a qué grupo pertenecen, es iterar sobre el vector del grupo y lado correspondiente y probar todas las combinaciones de una o dos personas. Si bien se considera un \emph{estado} a la cantidad de caníbales y arqueólogos que haya de cada lado y la ubicación de la linterna, es importante considerar que cualquier par de personas pueda cruzar (si van a cruzar dos o una si cruza una sola). Es por esto que se realizan ciclos que recorran a los vectores y se entra en una nueva recursión por cada persona que se decide enviar al otro lado.
 
 
     \subsection{Demostración de la correctitud}

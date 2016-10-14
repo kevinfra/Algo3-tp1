@@ -79,18 +79,18 @@ int main(int argc, char *argv[]) {
 		else {
 			vector<int> canibales;
 			vector<int> arqueologos;
-			for (int i = 0; i < 7; ++i)
-			{
+			//Exp 1
+			for (int i = 0; i < 7; ++i){
 				canibales.push_back(i);
-				for (int veces = 0; veces < 30; ++veces)
-				{
+				for (int veces = 0; veces < 30; ++veces){
 					start_timer();
 					cruzarPuente(canibales, arqueologos);
 					cout << stop_timer() << "    " << canibales.size() << endl;
 				}
 			}
 			canibales.clear();
-			for (int q = 0; q <= 4; ++q){
+			//Exp 2
+			for (int q = 0; q <= 6; ++q){
 				for (int k = 0; k < q; ++k){
 					canibales.push_back(k);
 					for (int times = 0; times < 30; ++times){
@@ -101,6 +101,19 @@ int main(int argc, char *argv[]) {
 				}
 				canibales.clear();
 				arqueologos.push_back(q);
+			}
+			// Exp 3
+			for (int w = 0; w < 6; w++){
+				arqueologos.push_back(w);
+			}
+			for (int q = 6; q >= 0; q--){
+				for (int times = 0; times < 30; ++times){
+					start_timer();
+					cruzarPuente(canibales, arqueologos);
+					cout << stop_timer() << "    " << arqueologos.size() << "    " << canibales.size() << endl;
+				}
+				canibales.push_back(q);
+				arqueologos.pop_back();
 			}
 		}
 	}
