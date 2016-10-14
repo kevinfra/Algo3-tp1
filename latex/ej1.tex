@@ -33,9 +33,6 @@
 
         Más específicamente, la aplicación de \emph{backtracking} en este problema consiste en probar todos los idas y vueltas de todas las combinaciones de personas, pero sumado a que la poda utilizada es la de no repetir estados, cuya correctitud será explicada posteriormente. El algoritmo tiene forma recursiva que depende de la cantidad de arqueólogos y caníbales de cada lado y la unicación de la linterna (al igual que la validez de los estados).
 
-        El caso base de la recursión es la que hay 0 arqueólogos y 0 caníbales del lado de izquierdo momento en el cual la iteración finaliza al agregar el tiempo acumulado hasta el momento en la lista de soluciones. Este tiempo acumulado corresponde a la suma de velocidadades con las que se cruzó el puente cada vez.
-
-        Para el caso recursivo, se chequeará antes de entrar en la recursión que el estado al que se va a cambiar sea uno válido. Si no lo es, cambia la cantidad de exploradores que vayan a cruzar entre alguna de las 5 posibilidades antes mencionadas. Si siguen obteniéndose estados inválidos, entonces no quedarán casos para probar y simplemente terminará la búsqueda sin haber encontrado una solución válida. Si venía de una recursión, entonces el algoritmo probara con otro estado en el punto anterior. Si no, termina el algoritmo.
 
     \begin{codesnippet}
     \begin{verbatim}
