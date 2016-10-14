@@ -36,7 +36,7 @@ while k < len(x):
 # print(listaPares)
 # np.savetxt("mydata.csv", listaPromedio, fmt='%1u' )
 
-cota = '(2*(x**2))*(5**(x**2))'
+cota = '((x**6))*(5**(x**2))'
 grafCota = graph(cota, range(1,6))
 
 promedio1NP = np.array(listaPromedio) # 1arq
