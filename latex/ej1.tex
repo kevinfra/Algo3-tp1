@@ -157,7 +157,9 @@
     % 5. Realizar una experimentación computacional para medir la performance del programa implementado. Usar un conjunto de casos de test en función de los parámetros de entrada, con instancias aleatorias e instancias particulares (de peor/mejor caso en tiempo de ejecución, por ejemplo). Presentar en forma gráfica una comparación entre los tiempos medidos y la complejidad teórica calculada y extraer conclusiones.
     \subsection{Experimentación}
 
-	Para poder visualizar que la cota propuesta en la complejidad temporal funciona para el algoritmo que resuelve este problema, realizamos experimentos con entre 1 y 7 arqueólogos y caníbales, pero siempre con mayor o igual número de los primeros que de los segundos. Los casos de prueba pueden observarse en la tabla que se encuentra en el anexo de este informe.
+	Para poder visualizar que la cota propuesta en la complejidad temporal funciona para el algoritmo que resuelve este problema, realizamos tres experimentos. Por un lado, un experimento que fijó la cantidad de arqueólogos en 0, y varió la cantidad de caníbales de 0 a 6. Por cada cantidad de caníbales, se corrió 30 veces el algoritmo, y en base a este resultado se sacó un promedio el cual será graficado. Por otro lado,  el segundo experimento, se iteró la cantidad de arqueólogos de 0 a 4. Luego por cada valor, se iteró la cantidad de caníbales de 0 a cantidad de arqueólogos. Luego al igual que el primer experimento, se corrió 30 veces el algoritmo con cada uno de los casos y se graficó el tiempo promedio. Luego el último experimento, consistió en la distintas combinaciones de n arqueólogos, con m caníbales, tal que $n+m = 6$. Y nuevamente, se corrió 30 veces con cada cantidad el algoritmo y se calculó el promedio.
+
+  Los casos de prueba pueden observarse en la tabla que se encuentra en el anexo de este informe. En la experimentación nos independizamos de las distintas velocidades, dado que, independientemente del valor de cada una, el algoritmo se fija en la cantidad de arqueólogos/caníbales y no en sus velocidades.
 
   Los resultados obtenidos fueron plasmados en el siguiente gráfico. El mismo es la representación del tiempo en funcion de la cantidad de arqueólogos. También se muestra la funcion propuesta como cota de complejidad temporal.
 
@@ -169,13 +171,8 @@
       \end{center}
   \end{figure}
 
-  Pudimos notar como la cota de complejidad efectivamente cumple su propósito a pesar de que tiene un crecimiento completamente distinto al del algoritmo. Los peores casos encontrados se mantuvieron entre 2 y 3 caníbales para los 7 casos de arqueólogos. Entre 0 y ellos, el crecimiento se asemeja a la función de cota propuesta.
+  Pudimos notar como la cota de complejidad efectivamente cumple su propósito a pesar de que tiene un crecimiento mayor al del algoritmo. Los peores casos dados se mantuvieron entre 2 y 3 caníbales para los 7 casos de arqueólogos. Entre 0 y ellos, el crecimiento se asemeja a la función de cota propuesta.
   Evidentemente, lo que pasaba era que a partir de cierta cantidad de caníbales y arqueólogos, el algoritmo encontraba de manera más rápida que no había forma de que crucen todos los arqueólogos y se salven.
-
-  COMPLETAR?!?!?!?!?!?!?!?!?
-  COMPLETAR?!?!?!?!?!?!?!?!?
-  COMPLETAR?!?!?!?!?!?!?!?!?
-  COMPLETAR?!?!?!?!?!?!?!?!?
 
   Para el caso en que no haya arqueólogos y solo haya caníbales, esperábamos que la resolución del problema sea más rápida que en los casos que hay más arqueólogos que caníbales. Probamos con cantidades de caníbales entre 1 y 200 y en el próximo grafico se ilustran los resultados de tiempo en función del número de personas.
 
@@ -186,4 +183,7 @@
       \end{center}
   \end{figure}
 
-  Notamos como el tiempo que toma a mayor cantidad de caníbales sin arqueólogos crece mucho más lento que para los casos con arqueólogos. Esto se debe a que las ramas en que cruzan arqueologos no se prueban, sino que solo se intenta que crucen 1 o 2 caníbales. Luego, la cantidad de estados posibles se reduce a 2 veces la cantidad de formas que se pueden distribuir los caníbales en ambos lados del puente (una por cada lado de la linterna), que es igual a $2*(n^2)$; reducimos la cota de complejidad a $O(n^2*2^{n^2})$. El cambio no es muy grande debido a que las cotas no están totalmente ajustadas, pero funcionan para dar una idea del peor caso acotado por arriba.
+  Notamos como el tiempo que toma a mayor cantidad de caníbales sin arqueólogos crece mucho más lento que para los casos con arqueólogos. Esto se debe a que las ramas en que cruzan arqueologos no se prueban, sino que solo se intenta que crucen 1 o 2 caníbales.
+
+
+   Luego, la cantidad de estados posibles se reduce a 2 veces la cantidad de formas que se pueden distribuir los caníbales en ambos lados del puente (una por cada lado de la linterna), que es igual a $2*(n^2)$; reducimos la cota de complejidad a $O(n^2*2^{n^2})$. El cambio no es muy grande debido a que las cotas no están totalmente ajustadas, pero funcionan para dar una idea del peor caso acotado por arriba.
