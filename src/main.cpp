@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 		else {
 			vector<int> canibales;
 			vector<int> arqueologos;
-			//Exp 1
+			//Exp 2
 			for (int i = 0; i < 7; ++i){
 				canibales.push_back(i);
 				for (int veces = 0; veces < 30; ++veces){
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 				}
 			}
 			canibales.clear();
-			//Exp 2
+			//Exp 1
 			for (int q = 0; q <= 6; ++q){
 				for (int k = 0; k < q; ++k){
 					canibales.push_back(k);
