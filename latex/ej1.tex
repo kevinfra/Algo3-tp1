@@ -113,9 +113,10 @@
 
       \par La función principal del algoritmo depende de la técnica de backtracking. En esta, intentamos probar cada uno de los casos posibles, descartando la mayor cantidad de casos inválidos posibles a la vez. Para esto último utilizamos la poda anteriormente mencionada. Esto es para, una vez recorrido todas las maneras de cruzar el puente, se llegue a (si hay o no) una solución, y en caso de que haya, se llegue a la más rápida.
 
-      \par Luego, sin importar cual es el estado inicial del algoritmo, lo primero que se realiza es chequear que el estado no sea inválido. Es decir que, dado el caso inicial donde hay más caníbales que arqueólogos, el algoritmo termine. En cambio, si esto no se cumple pasa a la etapa de recursión. 
+      \par Lo primero que se realiza es chequear que el estado no sea inválido. Es decir, que no haya más caníbales que arqueólogos o que haya 0 arqueólogos. Si esto se cumple pasa a la etapa de recursión. Caso contrario, termina inmediatamente la ejecución devolviendo -1.
 
-      \par Lo primero que realiza el algoritmo dado el caso donde no esté encontrada la solución, es fijarse los 5 casos posibles de mandar por el puente:
+      \par En la parte recursiva, se chequea si todas las personas pasaron al otro lado del puente. Si no, se realiza lo siguiente:
+      Lo primero que realiza el algoritmo dado el caso donde no esté encontrada la solución, es fijarse los 5 casos posibles de mandar por el puente:
 
       \begin{itemize}
       	\item 2 Arqueólogos
@@ -134,13 +135,17 @@
        	\item $E_{i+1}$ no es válido. Esto significa que $E_{i+1} \in$estadosAnteriores. Lo que realiza el algoritmo es volver al $E_{i+1}$ y probar con el estado $E_{i+2}$.. Hasta agotar las 5 posibilidades.
        \end{itemize}
 
-       Luego, esta función de \emph{mover} mencionada, que realiza la recursión, es llamada una vez por cada uno de los 5 casos. Cada una sirve para, dado con cual de los 5 casos posibles se entró a esta función específica, entrar nuevamente a la función recursiva con todas las combinaciones posibles de mandar a cada caníbal o arqueólogo disponible en el destino. De esta manera, no sólo se estaría abarcando todos los movimientos por el puente posibles, sino que también, la combinación de los integrantes (cada uno con su velocidad) de cada grupo de exploradores, en cada uno de los movimientos.
+       Luego, esta función de \emph{mover} mencionada, que realiza la recursión, es llamada una vez por cada uno de los 5 casos que sean validos. Cada una sirve para, dado con cual de los 5 casos posibles se entró a esta función específica, entrar nuevamente a la función recursiva con todas las combinaciones posibles de mandar a cada caníbal o arqueólogo disponible en el destino. De esta manera, no sólo se estaría abarcando todos los movimientos por el puente posibles, sino que también, la combinación de los integrantes (cada uno con su velocidad) de cada grupo de exploradores, en cada uno de los movimientos.
 
        Por ejemplo si el movimiento es mandar 2 caníbales y este estado es válido. Entonces sean C1, C2 y C3 caníbales, las posibles combinaciones para envíar del otro lado del puente seríán (C1,C2), (C2,C3) y (C3, C1). Hacemos esto sin importar el órden (C1, C2) o (C2, C1). Pues dado que el objetivo del problema era dar la solución más rapida, la velocidad de elegir primero a C1 y luego a C2, será la misma que hacer lo contrario. Esto se realiza para los 5 casos, independientemente de que tipo de explorador sea.
 
-       Luego, por cada posibilidad, al entrar nuevamente al árbol de recursión, se vuelve a chequear si es un estado válido y se repite el procedimiento. 
+       Entonces, por cada uno de estas situaciones, al entrar nuevamente al árbol de recursión, se vuelve a chequear si es un estado válido y se repite el procedimiento. 
 
-       Para este entonces, el algoritmo recorrió cada uno de los estados $E_{j}$. Quedandose en el vector \textbf{soluciones} con conjuntos de soluciones, donde cada uno tendrá una velocidad diferente y todos serán válidos o serán -1. Finalmente el algoritmo recorre este vector y devuelve el más rápido. De esta manera tenemos garantizado que, en el vector \textbf{soluciones}, estarán todas las soluciones posibles de combinar cada uno de los movimientos, a quién mover y su velocidad. También garantizamos que dado el caso que no haya solución se devolverá -1 y dado el caso que sí haya, devolverá quien cruzó en menor tiempo.
+       Para este entonces, el algoritmo recorrió cada uno de los estados $E_{j}$. Quedandose en el vector \textbf{soluciones} con conjuntos de soluciones, donde cada uno tendrá una velocidad diferente y todos serán válidos o serán -1. Finalmente el algoritmo recorre este vector y devuelve el más rápido (que es recorrer el vector de soluciones y buscar el mínimo). De esta manera tenemos garantizado que, en el vector \textbf{soluciones}, estarán todas las soluciones posibles de combinar cada uno de los movimientos; a quién mover y su velocidad. También garantizamos que dado el caso que no haya solución se devolverá -1 y dado el caso que sí haya, devolverá quien cruzó en menor tiempo.
+
+       En cuanto a la poda, podemos decir que es correcta utilizando el absurdo:
+       Sea un Estado $E \in estadosAnteriores$. Supongamos que un estado $K \not \in estadosAnteriores$. Si $E = K$ entonces podríamos volver a pasar por todos los estados que hubo entre $E$ y $K$. Entonces podríamos pasar infinitas veces por todos esos estados y sumar tiempos infinitas veces, lo cual es absurdo.
+       Por otro lado, el hecho de chequear solamente las cantidades de arqueólogos y caníbales de cada lado y la ubicación de la linterna, podemos afirmar que es correcto porque la misma razón que antes. Si bien podemos tener distintas personas, los movimientos que habrá entre cada estado será de un número de personas y no de cuáles personas. Lo que puede variar es la velocidad con la que se llega a cada estado, pero es por eso que se prueban todas las combinaciones de personas para que crucen el puente en cada estado.
 
 
 
