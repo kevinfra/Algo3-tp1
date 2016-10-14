@@ -125,13 +125,13 @@
       	\item 1 Caníbal
       \end{itemize}
 
-       Por cada uno de estos casos, si es viable mover esa cantidad sin entrar en un caso inválido (un caso donde ya se encontraba la misma cantidad de caníbales y arqueólogos de un lado del puente y del otro en un estado anterior), continúa a su función de \emph{mover}correspondiente, que es aquella que realiza la recursión. Caso contrario, prueba entrar a la recursión con algún otro caso. 
+       Por cada uno de estos casos, si es viable mover esa cantidad sin entrar en un caso inválido (un caso donde ya se encontraba la misma cantidad de caníbales y arqueólogos de un lado del puente y del otro en un estado anterior), continúa a su función de \emph{mover} correspondiente, que es aquella que realiza la recursión. Caso contrario, prueba entrar a la recursión con algún otro caso. 
 
        Es decir sea $E_{i}$ el i-ésimo estado válido. Al probar con el estado $E_{i+1}$, existen dos casos:
 
        \begin{itemize}
        	\item $E_{i+1}$ es válido. Esto significa que accede a su función correspondiente y es agregado a \textbf{estadosAnteriores}.
-       	\item $E_{i+1}$ no es válido. Esto significa que  $E_{i+1} \in$estadosAnteriores. Lo que realiza el algoritmo es probar con el estado $E_{i+2}$.. Hasta agotar las 5 posibilidades.
+       	\item $E_{i+1}$ no es válido. Esto significa que  $E_{i+1} \in$estadosAnteriores. Lo que realiza el algoritmo es volver al $E_{i+1}$ y probar con el estado $E_{i+2}$.. Hasta agotar las 5 posibilidades.
        \end{itemize}
 
        Luego, esta función de \emph{mover} mencionada, que realiza la recursión, hay una por cada uno de los 5 casos. Cada una sirve para, dado con cual de los 5 casos posibles se entró a esta función específica, entrar nuevamente a la función recursiva con todas las combinaciones posibles de mandar a cada caníbal o arqueólogo disponible en el destino. De esta manera, no sólo se estaría abarcando todos los movimientos por el puente posibles, sino que también, la combinación de los integrantes de cada grupo, en cada uno de los movimientos.
@@ -140,7 +140,8 @@
 
        Luego, por cada posibilidad, al entrar nuevamente al árbol de recursión, se vuelve a chequear si es un estado válido y se repite el procedimiento. 
 
-       Una vez que el algoritmo encuentra para cada una de sus ramas una solución, o que no encuentra ninguna solución posible o ninguna de ellas. El algoritmo recorre el vector solución para devolver el más rápido o -1 en el caso donde no se encuentre solución.
+       Para este entonces, el algoritmo recorrió cada uno de los estados $E_{j}$. Quedandose en el vector \textbf{soluciones} con conjuntos de soluciones, donde cada uno tendrá una velocidad diferente y todos serán válidos o serán -1. Finalmente el algoritmo recorre este vector y devuelve el más rápido. De esta manera tenemos garantizado que, en el vector \textbf{soluciones}, estarán todas las soluciones posibles, de combinar cada uno de los movimientos con quién mover y su velocidad. También garantizamos que dado el caso que no haya solución se devolverá -1 y dado el caso que sí haya, devolverá quien cruzó en menor tiempo.
+
 
 
     % 3. Deducir una cota de complejidad temporal del algoritmo propuesto y justificar por qué el algoritmo cumple la cota dada. Utilizar el modelo uniforme.

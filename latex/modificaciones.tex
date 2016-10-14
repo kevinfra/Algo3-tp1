@@ -6,13 +6,13 @@ A continuación se señalan los cambios realizados para la reentrega del trabajo
 	\item{
 		Ejercicio 1
 		\begin{itemize}
-			\item Se agrega pseudocódigo a la sección de detalles implementativos, para mejorar
-			la comprensión de la implementación y la demostración de su complejidad.
-			\item Para la experimentación se generaron de forma lineal en lugar
-			de exponencial los tiempos de ejecución.
-			\item En los gráficos de la experimentación se ignoraron los primeros
-			valores para no tener picos al comienzo. Esto además se aclara en la
-			descripción de la sección.
+			\item Se eliminó la decisión de tomar a los dos más rapidos en cada caso. Se reemplazó por abarcar todos los casos posibles de mandar a cada uno de los arqueólogos y caníbales.
+			\item Se agregó y modificó el pseudocódigo en solución propuesta.
+			\item Se ajustó la cota de complejidad con las modificaciones de código hechas. Y se demostró.
+			\item Se agregó la demostración de correctitud.
+			\item Se volvió a explicar más detallado los experimentos
+			\item Se modificaron los gráficos para que estén más claros.
+			\item Se agregó el tercer experimento.
 		\end{itemize}
 	}
 	\item{
@@ -28,9 +28,8 @@ A continuación se señalan los cambios realizados para la reentrega del trabajo
 	\item{
 		Ejercicio 3
 		\begin{itemize}
-			\item En la experimentación se reemplazó la cota de complejidad de $N^{N+2}$ por $N^3 \times N!$. Esto incluye la función utilizada como cota en los gráficos.
-			\item En la experimentación se reemplazó la constante de la cota teórica $0.001$ por $0.1$.
-			\item Se agregó pseudocódigo en la explicación de las podas para una mejor comprensión.
+			\item Se modificó la cota de complejidad por $\ord((\prod_{i = 0}^{M-1} K_{i})*(\sum_{i = 0}^{N-1} C_{i}))$
+			\item En la experimentación se cambió las escalas de las funciones para que sean posibles de visualizar y comparar.
 		\end{itemize}
 	}
 \end{itemize}
